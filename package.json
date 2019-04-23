@@ -27,5 +27,7 @@
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "collect.js": "^4.6.5"
+    }
 }
