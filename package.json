@@ -28,6 +28,9 @@
         "sass-loader": "^7.1.0"
     },
     "dependencies": {
-        "collect.js": "^4.6.5"
+        "bootswatch": "^4.3.1",
+        "collect.js": "^4.6.5",
+        "react-bootstrap": "^1.0.0-beta.8",
+        "redux": "^4.0.1"
     }
 }

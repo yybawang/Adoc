@@ -3,10 +3,12 @@
 //@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
-@import 'variables';
+//@import 'variables';
 
 // Bootstrap
+@import "~bootswatch/dist/Pulse/variables";
 @import '~bootstrap/scss/bootstrap';
+@import "~bootswatch/dist/Pulse/bootswatch";
 
 .navbar-laravel {
     background-color: #fff;
