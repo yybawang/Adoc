@@ -19,10 +19,10 @@ mix.react('resources/js/auth.js', 'js')
 
 mix.disableNotifications();
 
-    mix.browserSync({
-        proxy: 'adoc.test',
-        open: false
-    });
+mix.browserSync({
+    proxy: 'adoc.test',
+    open: false
+});
 
 mix.options.publicPath = 'dist/';
 mix.setPublicPath('public/dist').setResourceRoot('/dist/');

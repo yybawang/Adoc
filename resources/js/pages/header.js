@@ -4,7 +4,7 @@ import {Navbar, Nav, NavDropdown, Form, FormControl, Button} from 'react-bootstr
 
 // 异步加载其他组件
 // const Index = React.lazy(() => import('./index/index'));
-import Index from './index/index';
+import Index from './Index/Index.jsx';
 
 function About() {
     return <h2>About</h2>;
