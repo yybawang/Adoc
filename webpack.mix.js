@@ -11,13 +11,18 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/js/auth.js', 'public/js')
-    .react('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+mix.react('resources/js/auth.js', 'js')
+    .react('resources/js/app.js', 'js')
+    .sass('resources/sass/app.scss', 'css')
+    .extract(['jquery', 'collect.js','axios'])
+;
 
 mix.disableNotifications();
 
-mix.browserSync({
-    proxy: 'adoc.test',
-    open: false
-});
+    mix.browserSync({
+        proxy: 'adoc.test',
+        open: false
+    });
+
+mix.options.publicPath = 'dist/';
+mix.setPublicPath('public/dist').setResourceRoot('/dist/');

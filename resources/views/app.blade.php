@@ -5,12 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Adoc</title>
-    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+    <link href="{{mix('css/app.css', '/dist')}}" rel="stylesheet" type="text/css">
+    <title>{{config('app.name')}}</title>
 </head>
 <body>
 <div id="app"></div>
 <div id="example"></div>
-<script src="{{asset('js/app.js')}}" ></script>
+<script src="{{mix('js/manifest.js', '/dist')}}"></script>
+<script src="{{mix('js/vendor.js', '/dist')}}"></script>
+<script src="{{mix('js/app.js', '/dist')}}"></script>
 </body>
 </html>

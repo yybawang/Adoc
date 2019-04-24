@@ -10,14 +10,17 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/auth.js') }}" defer></script>
-
+    <script src="{{mix('js/manifest.js', '/dist')}}"></script>
+    <script src="{{mix('js/vendor.js', '/dist')}}"></script>
+    <script src="{{mix('js/auth.js', '/dist')}}"></script>
+    
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
     <!-- Fonts -->
 {{--    <link rel="dns-prefetch" href="//fonts.gstatic.com">--}}
 {{--    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">--}}
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css', '/dist') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">

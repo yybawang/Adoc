@@ -2,12 +2,12 @@
  * 主页
  * 项目列表，区分公共、有权限两种列表
  */
-import React, {Component} from 'react';
+import React from 'react';
 import store from './store';
 
 import {Container, Row, Col, Card} from 'react-bootstrap';
 
-export default class Index extends Component {
+export default class Index extends React.Component {
     render() {
         return (
             <Container>

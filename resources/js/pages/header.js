@@ -1,6 +1,9 @@
 import React from "react";
 import { HashRouter as Router, Route, Link } from "react-router-dom";
 import {Navbar, Nav, NavDropdown, Form, FormControl, Button} from 'react-bootstrap';
+
+// 异步加载其他组件
+// const Index = React.lazy(() => import('./index/index'));
 import Index from './index/index';
 
 function About() {
@@ -19,7 +22,7 @@ function AppRouter() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link href="#/index">Home</Nav.Link>
+                        <Nav.Link href="#/">Home</Nav.Link>
                         <Nav.Link href="#/about">About</Nav.Link>
                         <Nav.Link href="#/users">Users</Nav.Link>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
@@ -37,9 +40,13 @@ function AppRouter() {
                 </Navbar.Collapse>
             </Navbar>
             <div>
-                <Route path="/" exact component={Index} />
-                <Route path="/about" component={About} />
-                <Route path="/users" component={Users} />
+                <React.StrictMode>
+                    <React.Suspense fallback={<div>Loading</div>}>
+                        <Route path="/" exact component={Index}/>
+                        <Route path="/about" component={About} />
+                        <Route path="/users" component={Users} />
+                    </React.Suspense>
+                </React.StrictMode>
             </div>
         </Router>
     );
