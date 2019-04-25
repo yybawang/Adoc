@@ -12,6 +12,22 @@ export default class Index extends React.Component {
         return (
             <Container>
                 <Row>
+                    <Col md={3} sm={4} className={'my-3'}>
+                        <Card>
+                            <Card.Body>
+                                This is some text within a card body.</Card.Body>
+                        </Card>
+                    </Col>
+                    <Col md={3} sm={4}>
+                        <Card>
+                            <Card.Body>This is some text within a card body.</Card.Body>
+                        </Card>
+                    </Col>
+                    <Col md={3} sm={4}>
+                        <Card>
+                            <Card.Body>This is some text within a card body.</Card.Body>
+                        </Card>
+                    </Col>
                     <Col md={3} sm={4}>
                         <Card>
                             <Card.Body>This is some text within a card body.</Card.Body>
