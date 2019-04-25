@@ -52,4 +52,10 @@ export default class Index extends React.Component {
             </Container>
         )
     }
+    
+    componentDidMount() {
+        axios.get('/project').then((data) => {
+            console.log(data);
+        }).catch((response) => {});
+    }
 }

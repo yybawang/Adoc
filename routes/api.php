@@ -18,6 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::namespace('Api')->group(function(){
-   Route::prefix('projects', 'ProjectController@index');
+Route::middleware('auth:api')->namespace('Api')->group(function(){
+   Route::resource('project', 'ProjectController');
 });

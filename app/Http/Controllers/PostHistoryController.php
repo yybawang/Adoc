@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ProjectController extends BaseController
+class PostHistoryController extends Controller
 {
     /**
      * Display a listing of the resource.
