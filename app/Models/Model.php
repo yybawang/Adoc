@@ -7,4 +7,16 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class Model extends Eloquent
 {
     protected $guarded = [];
+    
+    protected $perPage = 20;
+    
+    /**
+     * 模型别名
+     * @param $query
+     * @param string $as
+     * @return mixed
+     */
+    protected function scopeAs($query, string $as){
+        return $query->from("{$this->table} as {$as}");
+    }
 }

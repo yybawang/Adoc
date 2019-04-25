@@ -20,4 +20,15 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::resource('message', 'MessageController');
+Route::patch('message/read/{id}', 'MessageController@read');
+Route::patch('message/read_all/{type}', 'MessageController@read_all');
+
+Route::resource('post_comment', 'PostCommentCommentController');
+Route::resource('post', 'PostController');
+Route::resource('post_history', 'PostHistoryController');
+Route::resource('post_like', 'PostLikeController');
+Route::resource('post_template', 'PostTemplateController');
 Route::resource('project', 'ProjectController');
+Route::resource('project_group', 'ProjectGroupController');
+Route::resource('project_permission', 'ProjectPermissionController');

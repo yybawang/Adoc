@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends HomeController
@@ -14,17 +16,15 @@ class ProjectController extends HomeController
      */
     public function index()
     {
-        return Auth::user();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $uid = Auth::id();
+        $list = Project::as('p')->select('p.id', 'p.user_id', 'p.name', 'p.type', 'p.flower', 'p.description', 'pp.write', 'pp.admin')
+            ->leftJoin('project_permissions as pp', 'pp.project_id', '=', 'p.id')
+            ->where(['p.user_id' => $uid])
+            ->orWhere(['pp.user_id' => $uid])
+            ->orderByDesc('p.flower')
+            ->orderByDesc('p.id')
+            ->get();
+        return Response::json($list);
     }
 
     /**
@@ -35,7 +35,17 @@ class ProjectController extends HomeController
      */
     public function store(Request $request)
     {
-        //
+        $post = $request->validate([
+            'id'    => '',
+            'name'  => 'required|string',
+            'type'  => 'required|integer',
+            'flower'=> 'integer',
+            'description' => '',
+        ]);
+        $uid = Auth::id();
+        $post['user_id'] = $uid;
+        $data = Project::updateOrCreate(['id' => $post['id']], $post);
+        return Response::json($data);
     }
 
     /**
@@ -46,18 +56,13 @@ class ProjectController extends HomeController
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $data = Project::firstOrNew(['id' => $id], [
+            'name'  => '',
+            'type'  => 0,
+            'flower'=> 0,
+            'description' => '',
+        ]);
+        return Response::json($data);
     }
 
     /**
@@ -80,6 +85,7 @@ class ProjectController extends HomeController
      */
     public function destroy($id)
     {
-        //
+        $res = Project::destroy($id);
+        return Response::json($res);
     }
 }
