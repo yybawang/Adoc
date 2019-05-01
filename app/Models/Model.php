@@ -16,7 +16,7 @@ class Model extends Eloquent
      * @param string $as
      * @return mixed
      */
-    protected function scopeAs($query, string $as){
-        return $query->from("{$this->table} as {$as}");
+    public function scopeAs($query, string $as){
+        return $query->from($this->getTable() . ' as ' . $as);
     }
 }

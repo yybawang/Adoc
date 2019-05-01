@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class ProjectPermission extends Model
+class ProjectTag extends Model
 {
     /**
      * 反向关联项目
