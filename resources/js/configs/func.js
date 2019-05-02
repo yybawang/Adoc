@@ -1,4 +1,4 @@
-import {Loading} from '../pages/layout/store'
+import {Loading} from '../pages/Layout/store'
 
 /**
  * 显示/隐藏 loading 状态

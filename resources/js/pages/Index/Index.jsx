@@ -19,12 +19,14 @@ export default class Index extends React.Component {
         return (
             <Container>
                 <Row>
-                    {t.state.projects.map(({project}) =>
-                        <Col md={3} sm={4} key={project.id} className={'mt-4'}>
+                    {t.state.projects.map((project) =>
+                        <Col md={3} sm={4} key={project.id} className={'mt-4 project-card'+ (parseInt(project.type) === 1 ? ' project-share' : '')}>
                             <Card>
+                                <a href={'#/post/project/'+project.id} title={project.description}>
                                 <Card.Body>
-                                    <a href={'#/project/'+project.id}>{project.name}</a>
+                                    {project.name}
                                 </Card.Body>
+                                </a>
                             </Card>
                         </Col>
                     )}
@@ -36,9 +38,9 @@ export default class Index extends React.Component {
     componentDidMount() {
         let t = this;
         axios.get('/project', {name: '测试哦', type: 0, description: '描述的说法是'}).then((data) => {
-            // t.setState({
-            //     projects: data
-            // });
+            t.setState({
+                projects: data
+            });
             console.log(data);
         }).catch((response) => {});
     }

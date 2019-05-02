@@ -19,7 +19,7 @@ class AppRouter extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            loading: ''
+            loading: Loading.getState(),
         };
         Loading.subscribe(() => this.setState({loading: Loading.getState()}));
     }
@@ -31,7 +31,7 @@ class AppRouter extends React.Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link href="#/">Home</Nav.Link>
+                            <Nav.Link href="#/project">Home</Nav.Link>
                             <Nav.Link href="#/about">About</Nav.Link>
                             <Nav.Link href="#/users">Users</Nav.Link>
                             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
@@ -52,7 +52,8 @@ class AppRouter extends React.Component {
                 <div>
                     <React.StrictMode>
                         <React.Suspense fallback={<div>Loading</div>}>
-                            <Route path="/" exact component={Index}/>
+                            <Route path="/project" exact component={Index}/>
+                            <Route path="/project/:id" component={Index}/>
                             <Route path="/about" component={About} />
                             <Route path="/users" component={Users} />
                         </React.Suspense>

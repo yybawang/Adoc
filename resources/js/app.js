@@ -17,6 +17,6 @@ require('./bootstrap');
 import React from 'react';
 import ReactDom from 'react-dom';
 
-import AppRouter from './pages/layout/Header.jsx';
+import AppRouter from './pages/Layout/Header.jsx';
 
 ReactDom.render(<AppRouter />, document.getElementById('app'));

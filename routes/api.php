@@ -18,6 +18,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->namespace('Api')->group(function(){
-   Route::resource('project', 'ProjectController');
+Route::namespace('Api')->group(function(){
+    Route::get('/', 'IndexController@index');
+    Route::get('/{id}', 'IndexController@project');
+    Route::get('/post/{id}', 'IndexController@post');
+    Route::post('/login', 'UserController@login');
+    Route::post('/register', 'UserController@register');
+    
+    Route::middleware('auth:api')->group(function(){
+        Route::get('/project/{id}', 'ProjectController@detail');
+        Route::post('/project/{id}', 'ProjectController@store');
+        Route::get('/project/{project_id}/permission', 'ProjectController@permission');
+        Route::post('/project/{project_id}/user/{keyword}', 'ProjectController@permission_user')->name('添加权限关键词搜索用户');
+        Route::post('/project/{project_id}/permission/{user_id}', 'ProjectController@permission_store');
+    });
+    Route::resource('project', 'ProjectController');
 });

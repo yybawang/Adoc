@@ -2,14 +2,13 @@ import {createStore} from 'redux';
 
 function loading(state, action){
     switch (action.type) {
-        case true:
-            state = 'd-none';
-            break;
         case false:
             state = '';
             break;
+        case true:
+        
         default:
-            state = '';
+            state = 'd-none';
     }
     return state;
 }
