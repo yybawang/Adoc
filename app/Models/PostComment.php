@@ -8,8 +8,19 @@ namespace App\Models;
 
 class PostComment extends Model
 {
+    /**
+     * 点赞列表
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function likes(){
+        return $this->hasMany(PostCommentLike::class);
+    }
     
-    public function likeEmoji(){
+    /**
+     * 点赞的 emoji 表情分组
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
+    public function likeEmojis(){
         return $this->hasMany(PostCommentLike::class)->selectRaw("id, post_comment_id, emoji, count(*) as count")->groupBy('post_comment_id')->groupBy('emoji');
     }
     

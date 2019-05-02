@@ -13,7 +13,7 @@ class Post extends Model
      * 附件列表
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function attachment(){
+    public function attachments(){
         return $this->hasMany(PostAttachment::class);
     }
     
@@ -31,6 +31,10 @@ class Post extends Model
      */
     public function comment(){
         return $this->hasMany(PostComment::class)->where('pid', 0)->latest()->limit(10);
+    }
+    
+    public function likes(){
+        return $this->hasMany(PostLike::class);
     }
     
     /**

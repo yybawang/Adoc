@@ -14,6 +14,14 @@ class Project extends Model
     }
     
     /**
+     * 文档列表
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+    
+    /**
      * 权限列表
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -26,6 +34,22 @@ class Project extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function events(){
-        return $this->hasMany(Project::class);
+        return $this->hasMany(PostEvent::class);
+    }
+    
+    /**
+     * 项目文档模版
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function templates(){
+        return $this->hasMany(PostTemplate::class);
+    }
+    
+    /**
+     * 项目置顶
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tops(){
+        return $this->hasMany(ProjectTop::class);
     }
 }
