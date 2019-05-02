@@ -66,7 +66,7 @@ class ProjectController extends BaseController
         $Project->posts->each->comment->each->delete();                     // 删除文档留言
         $Project->events->each->delete();                                   // 删除操作日志
         $Project->templates->each->delete();                                // 删除文档模版
-        $Project->tops->each->delete();                                // 删除项目置顶
+        $Project->tops->each->delete();                                     // 删除项目置顶
         $Project->delete();
         return $id;
     }
