@@ -17,14 +17,4 @@ class BaseController extends Controller
         $logined = Auth::check();
         abort_unless($logined, 401, 'Login first');
     }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        return view('home');
-    }
 }

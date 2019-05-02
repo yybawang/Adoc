@@ -36,9 +36,9 @@ export default class Index extends React.Component {
     componentDidMount() {
         let t = this;
         axios.get('/project', {name: '测试哦', type: 0, description: '描述的说法是'}).then((data) => {
-            t.setState({
-                projects: data
-            });
+            // t.setState({
+            //     projects: data
+            // });
             console.log(data);
         }).catch((response) => {});
     }

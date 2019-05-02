@@ -20,4 +20,12 @@ class Project extends Model
     public function permissions(){
         return $this->hasMany(ProjectPermission::class);
     }
+    
+    /**
+     * 文档 CRUD 事件列表，发生在文档上，但都归属于项目
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function events(){
+        return $this->hasMany(Project::class);
+    }
 }

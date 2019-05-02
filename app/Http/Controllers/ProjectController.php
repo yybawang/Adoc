@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\ProjectPermission;
+use App\Models\ProjectTop;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -18,15 +19,21 @@ class ProjectController extends BaseController
     public function index()
     {
         $uid = Auth::id();
-        $list = collect();
-        ProjectPermission::where(['user_id' => $uid])
-            ->orderByDesc('flower_at')
-            ->orderBy('id')
-            ->with(['project', 'project.tags'])
-            ->get()
-            ->each(function($v) use ($list){
-                $list->push($v);
-            });
+        $list = Project::as('p')->selectRaw('p.*')
+            ->leftJoinSub(ProjectPermission::select('id', 'user_id', 'project_id'), 'pp', function($join) use ($uid){
+                $join->on('pp.project_id', '=', 'p.id')->where('pp.user_id', '=', $uid);
+            })
+            ->leftJoinSub(ProjectTop::select('created_at', 'user_id', 'project_id'), 'pt', function($join) use ($uid){
+                $join->on('pt.project_id', '=', 'p.id')->where('pt.user_id', '=', $uid);
+            })
+            // 所属人是自己，或者是开放项目，或者有权限的
+            ->where(function($query) use ($uid){
+                $query->where(['p.user_id' => $uid])->orWhere(['p.type' => 0])->orWhereNotNull('pp.id');
+            })
+            ->orderByDesc('pt.created_at')
+            ->orderBy('p.id')
+            ->with(['tags'])
+            ->get();
             
         return $list;
     }
@@ -39,7 +46,7 @@ class ProjectController extends BaseController
      */
     public function show($id)
     {
-        Auth::check();
+        $this->auth_check();
         $data = Project::firstOrNew(['id' => $id], [
             'name'  => '',
             'type'  => 0,
@@ -71,11 +78,6 @@ class ProjectController extends BaseController
             exception(__('该项目名已存在'));
         }
         $data = Project::updateOrCreate(['id' => $id], $post);
-        // 添加权限
-        ProjectPermission::updateOrCreate(['user_id' => $uid, 'project_id' => $data->id], [
-            'write' => 1,
-            'admin' => 1,
-        ]);
         return $data;
     }
 
@@ -87,7 +89,7 @@ class ProjectController extends BaseController
      */
     public function destroy(int $id)
     {
-        Auth::check();
+        $this->auth_check();
         Project::destroy($id);
         return [];
     }
