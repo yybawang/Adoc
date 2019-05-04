@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\Project;
 use App\Models\ProjectPermission;
 use App\Models\ProjectTag;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -81,5 +82,33 @@ class ProjectController extends BaseController
     public function permission(Request $request, int $project_id){
         $Permissions = ProjectPermission::where(['project_id' => $project_id])->get();
         return $Permissions;
+    }
+    
+    /**
+     * 关键词检索用户
+     * @param string $keyword
+     * @return mixed
+     */
+    public function permission_user(string $keyword){
+        $Users = User::select('id', 'name', 'email')->where(function($query) use ($keyword){
+            $query->where('name', 'like', $keyword.'%')->orWhere('email', 'like', $keyword.'%');
+        })->limit(20)->get();
+        return $Users;
+    }
+    
+    /**
+     * 权限编辑
+     * @param Request $request
+     * @param int $project_id
+     * @param int $user_id
+     * @return mixed
+     */
+    public function permission_store(Request $request, int $project_id, int $user_id){
+        $post = $request->validate([
+            'write'     => 'required|integer|min:0|max:1',
+            'admin'     => 'required|integer|min:0|max:1',
+        ]);
+        $Permission = ProjectPermission::updateOrCreate(['project_id' => $project_id, 'user_id' => $user_id], $post);
+        return $Permission;
     }
 }

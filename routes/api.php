@@ -30,7 +30,7 @@ Route::namespace('Api')->group(function(){
         Route::post('/project/{id}', 'ProjectController@store');
         Route::delete('/project/{id}', 'ProjectController@destroy');
         Route::get('/project/{project_id}/permission', 'ProjectController@permission');
-        Route::post('/project/{project_id}/user/{keyword}', 'ProjectController@permission_user')->name('添加权限关键词搜索用户');
+        Route::get('/project/permission/user/{keyword}', 'ProjectController@permission_user')->name('添加权限关键词搜索用户');
         Route::post('/project/{project_id}/permission/{user_id}', 'ProjectController@permission_store');
     });
     Route::resource('project', 'ProjectController');
