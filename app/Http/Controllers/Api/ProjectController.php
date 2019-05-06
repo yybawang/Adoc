@@ -5,6 +5,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Post;
+use App\Models\PostTemplate;
 use App\Models\Project;
 use App\Models\ProjectPermission;
 use App\Models\ProjectTag;
@@ -14,14 +15,14 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends BaseController
 {
-    public function detail(Request $request, int $id){
+    public function detail(int $id){
         $Project = Project::firstOrNew(['id' => $id], [
             'name'  => '',
             'type'  => 0,
             'description' => '',
             'tags'  => [],
         ]);
-        return $Project;
+        return $this->success($Project);
     }
     
     public function store(Request $request, int $id){
@@ -44,7 +45,21 @@ class ProjectController extends BaseController
                 'name'      => $tag,
             ]);
         }
-        return $Project;
+        return $this->success($Project);
+    }
+    
+    /**
+     * 项目所有权转让
+     * @param Request $request
+     * @param int $id
+     * @return mixed
+     */
+    public function transfer(Request $request, int $id){
+        $post = $request->validate([
+            'to_user_id'   => 'required|integer|min:1',        //  要转让的用户ID
+        ]);
+        Project::where(['id' => $id])->update(['user_id' => $post['to_user_id']]);
+        return $this->success();
     }
     
     /**
@@ -69,7 +84,7 @@ class ProjectController extends BaseController
         $Project->templates->each->delete();                                // 删除文档模版
         $Project->tops->each->delete();                                     // 删除项目置顶
         $Project->delete();
-        return $id;
+        return $this->success();
     }
     
     /**
@@ -79,7 +94,7 @@ class ProjectController extends BaseController
      * @param int $project_id
      * @return mixed
      */
-    public function permission(Request $request, int $project_id){
+    public function permission(int $project_id){
         $Permissions = ProjectPermission::where(['project_id' => $project_id])->get();
         return $Permissions;
     }
@@ -93,22 +108,48 @@ class ProjectController extends BaseController
         $Users = User::select('id', 'name', 'email')->where(function($query) use ($keyword){
             $query->where('name', 'like', $keyword.'%')->orWhere('email', 'like', $keyword.'%');
         })->limit(20)->get();
-        return $Users;
+        return $this->success($Users);
     }
     
     /**
      * 权限编辑
      * @param Request $request
      * @param int $project_id
-     * @param int $user_id
      * @return mixed
      */
-    public function permission_store(Request $request, int $project_id, int $user_id){
+    public function permission_store(Request $request, int $project_id){
         $post = $request->validate([
+            'user_id'   => 'required|integer|min:1',
             'write'     => 'required|integer|min:0|max:1',
             'admin'     => 'required|integer|min:0|max:1',
         ]);
-        $Permission = ProjectPermission::updateOrCreate(['project_id' => $project_id, 'user_id' => $user_id], $post);
-        return $Permission;
+        // 操作人
+        $post['admin_id'] = Auth::id();
+        $Permission = ProjectPermission::updateOrCreate(['project_id' => $project_id, 'user_id' => $post['user_id']], $post);
+        return $this->success($Permission);
+    }
+    
+    /**
+     * @param int $project_id
+     * @return mixed
+     */
+    public function template(int $project_id){
+        $Templates = PostTemplate::where(['project_id' => $project_id])->get();
+        return $this->success($Templates);
+    }
+    
+    /**
+     * @param Request $request
+     * @param int $project_id
+     * @return mixed
+     */
+    public function template_store(Request $request, int $project_id){
+        $post = $request->validate([
+            'name'      => 'required',
+            'content'   => 'required',
+        ]);
+        $post['user_id'] = Auth::id();
+        $Template = PostTemplate::updateOrCreate(['project_id' => $project_id, 'name' => $post['name']]);
+        return $this->success($Template);
     }
 }

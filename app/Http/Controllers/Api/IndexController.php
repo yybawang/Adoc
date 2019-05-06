@@ -37,16 +37,15 @@ class IndexController extends BaseController
             ->with(['tags'])
             ->get();
     
-        return $list;
+        return $this->success($list);
     }
     
     /**
      * 项目文档列表、文档日志
-     * @param Request $request
      * @param int $id
      * @return array
      */
-    public function project(Request $request, int $id){
+    public function project(int $id){
         $Post = new Post();
         $project = Project::find($id);
         $posts = $Post->children($id, 0, 'id, pid, user_id, name');
@@ -56,20 +55,19 @@ class IndexController extends BaseController
             'posts'     => $posts,
             'events'    => $events,
         ];
-        return $res;
+        return $this->success($res);
     }
     
     /**
      * 文档内容
-     * @param Request $request
      * @param int $id
      * @return Post
      */
-    public function post(Request $request, int $id){
-        $Post = Post::active()->with(['comment', 'comment.likeEmojis'])->where('id', $id)->firstOrFail();
+    public function post(int $id){
+        $Post = Post::active()->with(['comment', 'comment.likeEmojis', 'likes'])->where('id', $id)->firstOrFail();
         $Post->comment->each->parent;
-        $Post->views+=1;
+        $Post->views += 1;
         $Post->save();
-        return $Post;
+        return $this->success($Post);
     }
 }

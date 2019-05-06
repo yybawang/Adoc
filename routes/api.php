@@ -28,10 +28,21 @@ Route::namespace('Api')->group(function(){
     Route::middleware('auth:api')->group(function(){
         Route::get('/project/{id}', 'ProjectController@detail');
         Route::post('/project/{id}', 'ProjectController@store');
+        Route::patch('/project/{id}', 'ProjectController@transfer');
         Route::delete('/project/{id}', 'ProjectController@destroy');
         Route::get('/project/{project_id}/permission', 'ProjectController@permission');
-        Route::get('/project/permission/user/{keyword}', 'ProjectController@permission_user')->name('添加权限关键词搜索用户');
-        Route::post('/project/{project_id}/permission/{user_id}', 'ProjectController@permission_store');
+        Route::get('/project/permission/user/{keyword}', 'ProjectController@permission_user');
+        Route::post('/project/{project_id}/permission', 'ProjectController@permission_store');
+        Route::get('/project/{project_id}/template', 'ProjectController@template');
+        Route::post('/project/{project_id}/template', 'ProjectController@template_store');
+        
+        Route::get('/post/{id}/edit', 'PostController@detail');
+        Route::post('/post/{id}', 'PostController@store');
+        Route::get('/post/{post_id}/history', 'PostController@history');
+        
+        Route::post('/like/{post_id}', 'PostController@like');
+        Route::post('/comment/{post_id}', 'PostController@comment');
+        Route::post('/comment/{comment_id}/like', 'PostController@comment_like');
     });
     Route::resource('project', 'ProjectController');
 });

@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\PostCommentEvent;
+use App\Events\PostDeleteEvent;
+use App\Events\PostLikeEvent;
+use App\Events\PostStoreEvent;
+use App\Listeners\PostCommentListener;
+use App\Listeners\PostDeleteListener;
+use App\Listeners\PostLikeListener;
+use App\Listeners\PostListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -17,6 +25,15 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        PostStoreEvent::class => [
+            PostListener::class
+        ],
+        PostLikeEvent::class => [
+            PostLikeListener::class
+        ],
+        PostCommentEvent::class => [
+            PostCommentListener::class
         ],
     ];
 

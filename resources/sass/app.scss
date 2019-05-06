@@ -28,3 +28,39 @@
 .project-share a {
     background-color: #fffded;
 }
+
+.toast {
+    position:fixed;
+    right: 10px;
+    top: 10px;
+    z-index:2000;
+    small {
+        width:150px;
+    }
+}
+.project-left {
+    height:calc(100vh - 75.38px);
+    width:240px;
+    a {
+        color: #303132;
+        img {
+            width: 15px;
+            margin-top: -2px;
+        }
+        span {
+            padding-left: 8px;
+        }
+    }
+    a:hover{
+        background-color: #e4e4e4 !important;
+    }
+    .post-link-2 {
+        padding-left:2rem;
+    }
+    .post-link-3 {
+        padding-left:3rem;
+    }
+}
+.project-right {
+    width: calc(100% - 240px);
+}

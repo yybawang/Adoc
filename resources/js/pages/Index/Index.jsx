@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import store from './store';
-
+import axios from '../../configs/axios'
 import {Container, Row, Col, Card} from 'react-bootstrap';
 
 export default class Index extends React.Component {
@@ -20,9 +20,9 @@ export default class Index extends React.Component {
             <Container>
                 <Row>
                     {t.state.projects.map((project) =>
-                        <Col md={3} sm={4} key={project.id} className={'mt-4 project-card'+ (parseInt(project.type) === 1 ? ' project-share' : '')}>
+                        <Col md={3} sm={4} key={project.id} className={{'mt-4': true, 'project-card': true, 'project-share' : (parseInt(project.type) === 1)}}>
                             <Card>
-                                <a href={'#/post/project/'+project.id} title={project.description}>
+                                <a href={'#/'+project.id} title={project.description}>
                                 <Card.Body>
                                     {project.name}
                                 </Card.Body>
@@ -37,11 +37,10 @@ export default class Index extends React.Component {
     
     componentDidMount() {
         let t = this;
-        axios.get('/project', {name: '测试哦', type: 0, description: '描述的说法是'}).then((data) => {
+        axios.get('/').then((data) => {
             t.setState({
                 projects: data
             });
-            console.log(data);
-        }).catch((response) => {});
+        }).catch(() => {});
     }
 }
