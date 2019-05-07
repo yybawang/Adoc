@@ -45,7 +45,7 @@ class Project extends React.Component {
                                     <Nav className={'flex-column'}>
                                     {post.children.map((children) => (
                                         <div key={children.id}>
-                                        <Nav.Link eventKey={post.id} onSelect={() => {this.post(children.id); children.open = !children.open}} className={'post-link-2'}>
+                                        <Nav.Link eventKey={children.id} onSelect={() => {this.post(children.id); children.open = !children.open}} className={'post-link-2'}>
                                             {children.children.length <= 0 ?
                                                 <Image src={ListPng} />
                                                 : <Image src={!children.open ? FolderOpenFill : FolderFill} />
@@ -56,13 +56,29 @@ class Project extends React.Component {
                                                 <Collapse in={!children.open}>
                                                     <Nav className={'flex-column'}>
                                                         {children.children.map((child) => (
-                                                            <Nav.Link key={child.id} eventKey={post.id} onSelect={() => this.post(child.id)} className={'post-link-3'}>
+                                                            <div key={child.id}>
+                                                            <Nav.Link eventKey={child.id} onSelect={() => this.post(child.id)} className={'post-link-3'}>
                                                                 {child.children.length <= 0 ?
                                                                     <Image src={ListPng} />
                                                                     : <Image src={!child.open ? FolderOpenFill : FolderFill} />
                                                                 }
                                                                 <span>{child.name}</span>
                                                             </Nav.Link>
+                                                                {child.children.length > 0 && (
+                                                                    <Collapse in={!child.open}>
+                                                                        <Nav className={'flex-column'}>
+                                                                            {child.children.map((child_sub) => (
+                                                                                <div key={child_sub.id}>
+                                                                                    <Nav.Link eventKey={child_sub.id} onSelect={() => this.post(child_sub.id)} className={'post-link-4'}>
+                                                                                        <Image src={ListPng} />
+                                                                                        <span>{child_sub.name}</span>
+                                                                                    </Nav.Link>
+                                                                                </div>
+                                                                            ))}
+                                                                        </Nav>
+                                                                    </Collapse>
+                                                                )}
+                                                            </div>
                                                         ))}
                                                     </Nav>
                                                 </Collapse>
