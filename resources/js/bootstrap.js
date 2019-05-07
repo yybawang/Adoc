@@ -17,10 +17,10 @@ try {
 
 window.logger = function(...args){
     for(let i in args){
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  start');
+        console.log('-----------------------------------  start');
         console.info(typeof args[i]);
         console.log(args[i]);
-        console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  end');
+        console.log('-----------------------------------  end');
     }
 };
 

@@ -3,6 +3,9 @@ import {Navbar} from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown/with-html'
 import axios from '../../configs/axios'
 import {Container, Row, Col, Nav, Image, Collapse} from "react-bootstrap";
+import ListPng from '../../../images/list.png'
+import FolderOpenFill from '../../../images/folder open-fill.png'
+import FolderFill from '../../../images/folder-fill.png'
 
 class Project extends React.Component {
     constructor(props){
@@ -32,8 +35,8 @@ class Project extends React.Component {
                             <div key={post.id}>
                             <Nav.Link eventKey={post.id} onSelect={() => {this.post(post.id); post.open = !post.open}}>
                                 {post.children.length <= 0 ?
-                                    <Image src={'/dist/images/list.png'} />
-                                    : <Image src={!post.open ? '/dist/images/folder open-fill.png' : '/dist/images/folder-fill.png'} />
+                                    <Image src={ListPng} />
+                                    : <Image src={!post.open ? FolderOpenFill : FolderFill} />
                                 }
                                 <span>{post.name}</span>
                             </Nav.Link>
@@ -44,8 +47,8 @@ class Project extends React.Component {
                                         <div key={children.id}>
                                         <Nav.Link eventKey={post.id} onSelect={() => {this.post(children.id); children.open = !children.open}} className={'post-link-2'}>
                                             {children.children.length <= 0 ?
-                                                <Image src={'/dist/images/list.png'} />
-                                                : <Image src={!children.open ? '/dist/images/folder open-fill.png' : '/dist/images/folder-fill.png'} />
+                                                <Image src={ListPng} />
+                                                : <Image src={!children.open ? FolderOpenFill : FolderFill} />
                                             }
                                             <span>{children.name}</span>
                                         </Nav.Link>
@@ -55,8 +58,8 @@ class Project extends React.Component {
                                                         {children.children.map((child) => (
                                                             <Nav.Link key={child.id} eventKey={post.id} onSelect={() => this.post(child.id)} className={'post-link-3'}>
                                                                 {child.children.length <= 0 ?
-                                                                    <Image src={'/dist/images/list.png'} />
-                                                                    : <Image src={!child.open ? '/dist/images/folder open-fill.png' : '/dist/images/folder-fill.png'} />
+                                                                    <Image src={ListPng} />
+                                                                    : <Image src={!child.open ? FolderOpenFill : FolderFill} />
                                                                 }
                                                                 <span>{child.name}</span>
                                                             </Nav.Link>
