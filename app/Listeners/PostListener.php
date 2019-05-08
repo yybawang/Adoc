@@ -29,8 +29,7 @@ class PostListener
     public function handle(PostStoreEvent $event)
     {
         $Post = $event->Post;
-        $User = User::where(['id' => $Post->user_id])->first();
-        $description = "{$User->name} 编辑了文档 {$Post->name} {$Post->updated_at}";
+        $description = '<abbr title="{$user_email}">{$user_name}</abbr> 编辑了文档 「{$post_name}」<span class="text-muted float-right">{$updated_at}</span>';
         
         PostEvent::create([
             'project_id'    => $Post->project_id,

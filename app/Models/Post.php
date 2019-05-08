@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
+
 class Post extends Model
 {
     
@@ -35,6 +37,25 @@ class Post extends Model
     
     public function likes(){
         return $this->hasMany(PostLike::class);
+    }
+    
+    /**
+     * 递归上级文章
+     * @return mixed
+     */
+    public function parentsEach(){
+        return $this->_parentsEach($this->pid)->reverse()->values();
+    }
+    private function _parentsEach($pid){
+        $res = collect();
+        $Parent = Post::where(['id' => $pid])->active()->first();
+        if($Parent){
+            $Parent->siblings = Post::where(['pid' => $Parent->pid])->active()->get();
+            $parent = $this->_parentsEach($Parent->pid);
+            $res->push($Parent);
+            $res = $res->merge($parent);
+        }
+        return $res;
     }
     
     /**

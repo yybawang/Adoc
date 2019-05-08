@@ -24,7 +24,19 @@ class PostController extends BaseController
     public function detail(int $id){
         $Post = Post::active()->with(['comment', 'comment.likeEmojis'])->where('id', $id)->firstOrFail();
         $Post->comment->each->parent;
+        $Post->parents = $Post->parentsEach();
         return $this->success($Post);
+    }
+    
+    public function children(int $id){
+        $res = [];
+        $Children = Post::active()->where('id', $id)->firstOrFail();
+        $Children->siblings = Post::active()->where('pid', $Children->id)->get();
+    
+        if($Children->siblings->isNotEmpty()){
+            array_push($res, $Children);
+        }
+        return $this->success($res);
     }
     
     /**

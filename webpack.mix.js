@@ -14,7 +14,7 @@ const mix = require('laravel-mix');
 mix.react('resources/js/auth.js', 'js')
     .react('resources/js/app.js', 'js')
     .sass('resources/sass/app.scss', 'css')
-    .extract(['jquery', 'collect.js','axios'])
+    .extract(['collect.js', 'axios'])
 ;
 
 mix.disableNotifications();

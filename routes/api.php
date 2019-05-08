@@ -20,13 +20,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::namespace('Api')->group(function(){
     Route::get('/', 'IndexController@index');
-    Route::get('/{id}', 'IndexController@project');
+    Route::get('/project/{id}', 'IndexController@project');
     Route::get('/post/{id}', 'IndexController@post');
+    Route::post('/upload_md', 'IndexController@upload_md');
     Route::post('/login', 'UserController@login');
     Route::post('/register', 'UserController@register');
     
     Route::middleware('auth:api')->group(function(){
-        Route::get('/project/{id}', 'ProjectController@detail');
+        Route::get('/project/{id}/edit', 'ProjectController@detail');
         Route::post('/project/{id}', 'ProjectController@store');
         Route::patch('/project/{id}', 'ProjectController@transfer');
         Route::delete('/project/{id}', 'ProjectController@destroy');
@@ -37,6 +38,7 @@ Route::namespace('Api')->group(function(){
         Route::post('/project/{project_id}/template', 'ProjectController@template_store');
         
         Route::get('/post/{id}/edit', 'PostController@detail');
+        Route::get('/post/{id}/children', 'PostController@children');
         Route::post('/post/{id}', 'PostController@store');
         Route::get('/post/{post_id}/history', 'PostController@history');
         

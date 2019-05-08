@@ -8,7 +8,8 @@ import Index from '../Index/Index.jsx';
 import Login from '../Layout/Login.jsx';
 import Tip from '../Layout/Tip.jsx';
 import Project from '../Project/Project.jsx';
-import {Loading, LoginModal} from './store';
+import Post from '../Project/Post.jsx';
+import {Loading, LoginModal, ProjectName} from './store';
 
 function About() {
     return <h2>About</h2>;
@@ -22,17 +23,21 @@ class AppRouter extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            projectName: 'Adoc',     // 设置默认左上角显示名称，内页为项目名
             loading: true,
         };
         Loading.subscribe(() => {
             this.setState({loading: Loading.getState()});
+        });
+        ProjectName.subscribe(() => {
+            this.setState({projectName: ProjectName.getState()});
         });
     }
     render () {
         return (
             <Router>
                 <Navbar bg="light" expand="md">
-                    <Navbar.Brand href="#/">React-Bootstrap</Navbar.Brand>
+                    <Navbar.Brand href="#/">{this.state.projectName}</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
@@ -58,7 +63,8 @@ class AppRouter extends React.Component {
                     {/*<React.StrictMode>*/}
                         <React.Suspense fallback={<div>Loading</div>}>
                             <Route path="/" exact component={Index}/>
-                            <Route path="/:id" component={Project}/>
+                            <Route path="/project/:id" component={Project}/>
+                            <Route path="/post/:id/edit" component={Post}/>
                             <Route path="/about" component={About} />
                             <Route path="/users" component={Users} />
                         </React.Suspense>

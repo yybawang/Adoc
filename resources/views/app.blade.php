@@ -7,11 +7,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
     <link href="{{mix('css/app.css', '/dist')}}" rel="stylesheet" type="text/css">
+    <link href="/editor.md/css/editormd.min.css" rel="stylesheet" type="text/css">
     <title>{{config('app.name')}}</title>
 </head>
 <body>
 <div id="app"></div>
 <div id="example"></div>
+<script src="/editor.md/lib/jquery-1.11.3.min.js"></script>
+<script src="/editor.md/editormd.min.js"></script>
 <script src="{{mix('js/manifest.js', '/dist')}}"></script>
 <script src="{{mix('js/vendor.js', '/dist')}}"></script>
 <script src="{{mix('js/app.js', '/dist')}}"></script>

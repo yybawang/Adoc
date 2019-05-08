@@ -36,6 +36,12 @@ function login_modal(state, action){
     return state;
 }
 
+/**
+ * 右上角提示
+ * @param state
+ * @param action
+ * @returns {{show: boolean, messages: (*|Array|string[]|*[])}}
+ */
 function tips(state, action){
     switch (action.type) {
         case 'show':
@@ -48,10 +54,26 @@ function tips(state, action){
     return state;
 }
 
+/**
+ * 设置项目名，页面头部左上角显示
+ * @param state
+ * @param action
+ * @returns {*}
+ */
+function project_name(state, action){
+    switch(action.type){
+        case 'set':
+            state = action.name;
+            break;
+    }
+    return state;
+}
+
 const Loading = createStore(loading);
 const LoginModal = createStore(login_modal);
 const Tips = createStore(tips);
+const ProjectName = createStore(project_name);
 // Loading.subscribe(() => {console.log(Loading.getState())});
 // Logined.subscribe(() => {console.log(Logined.getState())});
 
-export {Loading, LoginModal, Tips};
+export {Loading, LoginModal, Tips, ProjectName};

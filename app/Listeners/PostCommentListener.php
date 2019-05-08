@@ -32,8 +32,7 @@ class PostCommentListener
     {
         $PostComment = $event->PostComment;
         $Post = Post::find($PostComment->post_id);
-        $User = User::find($PostComment->user_id);
-        $description = "{$User->name} 评论了文档 {$Post->name} {$Post->updated_at}";
+        $description = '<abbr title="{$user_email}">{$user_name}</abbr> 评论了文档 「{$post_name}」<span class="text-muted float-right">{$updated_at}</span>';
     
         PostEvent::create([
             'project_id'    => $Post->project_id,

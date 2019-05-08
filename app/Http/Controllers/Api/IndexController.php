@@ -20,7 +20,7 @@ class IndexController extends BaseController
      * @return mixed
      */
     public function index(Request $request){
-        $uid = Auth::id();
+        $uid = Auth::guard('api')->id();
         $list = Project::as('p')->selectRaw('p.*')
             ->leftJoinSub(ProjectPermission::select('id', 'user_id', 'project_id'), 'pp', function($join) use ($uid){
                 $join->on('pp.project_id', '=', 'p.id')->where('pp.user_id', '=', $uid);
@@ -49,7 +49,7 @@ class IndexController extends BaseController
         $Post = new Post();
         $project = Project::find($id);
         $posts = $Post->children($id, 0, 'id, pid, user_id, name');
-        $events = PostEvent::where(['project_id' => $id])->latest()->limit(20)->get();
+        $events = PostEvent::where(['project_id' => $id])->with(['user', 'post'])->latest()->limit(20)->get()->each->parse();
         $res = [
             'project'   => $project,
             'posts'     => $posts,
@@ -69,5 +69,24 @@ class IndexController extends BaseController
         $Post->views += 1;
         $Post->save();
         return $this->success($Post);
+    }
+    
+    /**
+     * markdown 单独上传配置
+     * @param Request $request
+     * @return array
+     */
+    public function upload_md(Request $request){
+        $allFile = $request->allFiles();
+        $files = [];
+        collect($allFile)->each(function($v,$k) use ($request,&$files){
+            $path = $v->store('files');
+            $files[$k] = \Illuminate\Support\Facades\Storage::url($path);
+        });
+        return [
+            'success'   => 1,
+            'message'   => 'OK',
+            'url'       => array_shift($files)
+        ];
     }
 }

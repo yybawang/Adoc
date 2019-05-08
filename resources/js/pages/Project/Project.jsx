@@ -1,8 +1,8 @@
 import React from 'react';
-import {Navbar} from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown/with-html'
 import axios from '../../configs/axios'
-import {Container, Row, Col, Nav, Image, Collapse} from "react-bootstrap";
+import {Container, Row, Col, Button, Nav, Image, Collapse} from "react-bootstrap";
+import {ProjectName} from "../Layout/store";
 import ListPng from '../../../images/list.png'
 import FolderOpenFill from '../../../images/folder open-fill.png'
 import FolderFill from '../../../images/folder-fill.png'
@@ -20,7 +20,6 @@ class Project extends React.Component {
     
     post(id){
         let t = this;
-        logger(id);
         axios.get('/post/'+id).then((post)=>{
             t.setState({post})
         }).catch(()=>{})
@@ -29,7 +28,7 @@ class Project extends React.Component {
     render() {
         return (
             <div>
-                <div className={'float-left position-sticky overflow-auto project-left'}>
+                <div className={'float-left position-sticky overflow-auto border-right project-left'}>
                     <Nav defaultActiveKey={this.state.posts.length && this.state.posts.slice(0,1).shift().id} className="flex-column">
                         {this.state.posts.map((post) => (
                             <div key={post.id}>
@@ -57,7 +56,7 @@ class Project extends React.Component {
                                                     <Nav className={'flex-column'}>
                                                         {children.children.map((child) => (
                                                             <div key={child.id}>
-                                                            <Nav.Link eventKey={child.id} onSelect={() => this.post(child.id)} className={'post-link-3'}>
+                                                            <Nav.Link eventKey={child.id} onSelect={() => {this.post(child.id);child.open = !child.open}} className={'post-link-3'}>
                                                                 {child.children.length <= 0 ?
                                                                     <Image src={ListPng} />
                                                                     : <Image src={!child.open ? FolderOpenFill : FolderFill} />
@@ -93,17 +92,40 @@ class Project extends React.Component {
                     </Nav>
                 </div>
                 <div className={'float-left project-right'}>
-                    <h4 className={'py-3 border-bottom'}>{this.state.post.name}</h4>
-                    <ReactMarkdown className={'mt-3'} source={this.state.post.content} escapeHtml={false} />
+                    {this.state.post.id ? (
+                        <Container fluid className={'p-0'}>
+                            <Row className={'border-bottom p-3'} noGutters>
+                                <Col>
+                                    <h4>{this.state.post.name}</h4>
+                                </Col>
+                                <Col className={'text-right'}>
+                                    <Button href={'#/post/'+this.state.post.id+'/edit'} size={'sm'} variant={'outline-dark'}>编辑</Button>
+                                </Col>
+                            </Row>
+                            <div className={'p-3'}>
+                                <ReactMarkdown source={this.state.post.content} escapeHtml={false} />
+                            </div>
+                        </Container>
+                        ): (
+                        <div className={'mt-3'}>
+                            <ul>
+                            {this.state.events.map((event) => (
+                                <li className={'pr-4 my-1'} key={event.id} dangerouslySetInnerHTML={{__html: event.description}} />
+                            ))}
+                            </ul>
+                        </div>
+                        )}
                 </div>
             </div>
         );
     }
     
     componentDidMount() {
-        axios.get('/'+this.props.match.params.id).then((data) => {
+        axios.get('/project/'+this.props.match.params.id).then((data) => {
             let state = Object.assign({}, this.state, data);
             this.setState(state);
+            // 设置左上角显示名
+            ProjectName.dispatch({type: 'set', name: state.project.name});
         }).catch(()=>{})
     }
 }
