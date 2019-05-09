@@ -8,7 +8,7 @@ class Post extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            id: '',
+            id: this.props.match.params.id,
             editor: '',
             post: {
                 name: '',
@@ -100,7 +100,7 @@ class Post extends React.Component {
                             </Col>
                             <Col xs={2} className={'text-right'}>
                                 <Button onClick={() => this.submit()}>保存</Button>
-                                <Button href={'#/project/'+this.state.post.project_id} className={'ml-4'} variant={'outline-primary'}>返回</Button>
+                                <Button href={'#/project/'+this.state.post.project_id+'/post/'+this.state.id} className={'ml-4'} variant={'outline-primary'}>返回</Button>
                             </Col>
                         </Row>
                         <Row noGutters>
@@ -162,9 +162,8 @@ class Post extends React.Component {
     }
     
     componentDidMount() {
-        let t = this, id = this.props.match.params.id;
-        this.setState({id});
-        axios.get('/post/'+this.props.match.params.id+'/edit').then((post) => {
+        let t = this;
+        axios.get('/post/'+this.state.id+'/edit').then((post) => {
             this.setState({post});
         }).catch(()=>{});
         

@@ -65,6 +65,9 @@ function project_name(state, action){
         case 'set':
             state = action.name;
             break;
+        case 'default':
+            state = 'Adoc';
+            break;
     }
     return state;
 }

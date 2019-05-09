@@ -11,7 +11,7 @@ class Tip extends React.Component {
         };
         Tips.subscribe(() => {
             this.setState(Tips.getState());
-            $('.toast').toast(this.state.show ? 'show' : 'hide');
+            $('.toast').toast(Tips.getState() ? 'show' : 'hide');
         });
     }
     

@@ -13,7 +13,7 @@
 <body>
 <div id="app"></div>
 <div id="example"></div>
-<script src="/editor.md/lib/jquery-1.11.3.min.js"></script>
+<script src="/editor.md/lib/jquery-3.4.1.min.js"></script>
 <script src="/editor.md/editormd.min.js"></script>
 <script src="{{mix('js/manifest.js', '/dist')}}"></script>
 <script src="{{mix('js/vendor.js', '/dist')}}"></script>

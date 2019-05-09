@@ -6,6 +6,7 @@ import React from 'react';
 import store from './store';
 import axios from '../../configs/axios'
 import {Container, Row, Col, Card} from 'react-bootstrap';
+import {ProjectName} from "../Layout/store";
 
 export default class Index extends React.Component {
     constructor(props){
@@ -13,6 +14,7 @@ export default class Index extends React.Component {
         this.state = {
             projects: []
         };
+        ProjectName.dispatch({type: 'default'});
     }
     render() {
         let t = this;

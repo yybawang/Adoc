@@ -89,4 +89,8 @@ class IndexController extends BaseController
             'url'       => array_shift($files)
         ];
     }
+    
+    public function menu(){
+        return $this->success();
+    }
 }

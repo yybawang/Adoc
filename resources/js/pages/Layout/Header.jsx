@@ -8,7 +8,7 @@ import Index from '../Index/Index.jsx';
 import Login from '../Layout/Login.jsx';
 import Tip from '../Layout/Tip.jsx';
 import Project from '../Project/Project.jsx';
-import Post from '../Project/Post.jsx';
+import Post from '../Post/Post.jsx';
 import {Loading, LoginModal, ProjectName} from './store';
 
 function About() {

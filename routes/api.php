@@ -23,6 +23,7 @@ Route::namespace('Api')->group(function(){
     Route::get('/project/{id}', 'IndexController@project');
     Route::get('/post/{id}', 'IndexController@post');
     Route::post('/upload_md', 'IndexController@upload_md');
+    Route::get('/menu', 'IndexController@menu');
     Route::post('/login', 'UserController@login');
     Route::post('/register', 'UserController@register');
     
