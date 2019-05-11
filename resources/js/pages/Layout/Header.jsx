@@ -30,9 +30,9 @@ class AppRouter extends React.Component {
         Loading.subscribe(() => {
             this.setState({loading: Loading.getState()});
         });
-        ProjectStore.subscribe(() => {
-            this.setState({projectName: ProjectStore.getState().name});
-        });
+        // ProjectStore.subscribe(() => {
+        //     this.setState({projectName: ProjectStore.getState().name});
+        // });
     }
     render () {
         return (

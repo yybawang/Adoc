@@ -40,7 +40,7 @@ class Project extends React.Component {
                 <div className={'float-left position-sticky overflow-auto border-right project-left'}>
                     <ListGroup>
                         <ListGroup.Item variant={'light'} className={'text-dark'}>
-                            <ButtonGroup className={'h4 mb-0 text-truncate'} style={{width: '169px'}}>{this.state.project.name}</ButtonGroup>
+                            <ButtonGroup className={'h4 mb-0 text-truncate'} style={{width: '169px'}} title={this.state.project.name}>{this.state.project.name}</ButtonGroup>
                             <ButtonGroup>
                                 <Button variant={'link'} href={'#/project_manager/'+this.state.id+'/basic'}>管理</Button>
                                 <Button variant={'link'} href={'/post/0/edit'}>+</Button>
