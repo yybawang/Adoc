@@ -35,7 +35,9 @@ class IndexController extends BaseController
             ->orderByDesc('pt.created_at')
             ->orderBy('p.id')
             ->with(['tags'])
-            ->get();
+            ->get()->each(function($v) use ($uid){
+                $v->share = $v->user_id == $uid ? false : true;
+            });
     
         return $this->success($list);
     }

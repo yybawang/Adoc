@@ -28,6 +28,9 @@ Route::namespace('Api')->group(function(){
     Route::post('/register', 'UserController@register');
     
     Route::middleware('auth:api')->group(function(){
+        // 公用的
+        Route::post('/check_password', 'UserController@check_password');
+        
         Route::get('/project/{id}/edit', 'ProjectController@detail');
         Route::post('/project/{id}', 'ProjectController@store');
         Route::patch('/project/{id}', 'ProjectController@transfer');
@@ -35,6 +38,7 @@ Route::namespace('Api')->group(function(){
         Route::get('/project/{project_id}/permission', 'ProjectController@permission');
         Route::get('/project/permission/user/{keyword}', 'ProjectController@permission_user');
         Route::post('/project/{project_id}/permission', 'ProjectController@permission_store');
+        Route::delete('/project/{project_id}/permission', 'ProjectController@permission_destroy');
         Route::get('/project/{project_id}/template', 'ProjectController@template');
         Route::post('/project/{project_id}/template', 'ProjectController@template_store');
         

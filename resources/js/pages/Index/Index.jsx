@@ -22,7 +22,7 @@ export default class Index extends React.Component {
             <Container>
                 <Row>
                     {t.state.projects.map((project) =>
-                        <Col md={3} sm={4} key={project.id} className={{'mt-4': true, 'project-card': true, 'project-share' : (parseInt(project.type) === 1)}}>
+                        <Col md={3} sm={4} key={project.id} className={{'mt-4': true, 'project-card': true, 'project-share' : project.share}}>
                             <Card>
                                 <a href={'#/project/'+project.id} title={project.description}>
                                 <Card.Body>

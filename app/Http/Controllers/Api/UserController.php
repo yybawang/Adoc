@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -41,5 +42,20 @@ class UserController extends BaseController
         $post['api_token'] = $token;
         $User = User::create($post);
         return $this->success($User);
+    }
+    
+    /**
+     * 验证登陆人的登陆密码
+     * @param Request $request
+     * @return array
+     */
+    public function check_password(Request $request){
+        $User = User::find(Auth::id());
+        $password = $request->input('password');
+        $pass = Hash::check($password, $User->password);
+        if(!$pass){
+            exception(__('密码错误'));
+        }
+        return $this->success();
     }
 }

@@ -42,7 +42,7 @@ class Project extends React.Component {
                         <ListGroup.Item variant={'light'} className={'text-dark'}>
                             <ButtonGroup className={'h4 mb-0 text-truncate'} style={{width: '169px'}}>{this.state.project.name}</ButtonGroup>
                             <ButtonGroup>
-                                <Button variant={'link'} href={'#/project/'+this.state.id+'/edit'}>管理</Button>
+                                <Button variant={'link'} href={'#/project_manager/'+this.state.id+'/basic'}>管理</Button>
                                 <Button variant={'link'} href={'/post/0/edit'}>+</Button>
                             </ButtonGroup>
                         </ListGroup.Item>
@@ -51,8 +51,8 @@ class Project extends React.Component {
                 </div>
                 <div className={'float-left project-right'}>
                     <Switch>
-                    <Route path={this.props.match.path+'/post/:post_id'} strict component={ProjectPost} />
-                    <Route path={this.props.match.path+'/edit'} strict render={() => (
+                    <Route path={this.props.match.path+'/post/:post_id'} component={ProjectPost} />
+                    <Route path={this.props.match.path+'/edit'} render={() => (
                         <div>edit</div>
                     )} />
                     <Route path={this.props.match.path} extra render={() => (

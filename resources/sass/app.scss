@@ -71,3 +71,29 @@
         margin:0 auto;
     }
 }
+
+.project-manager {
+    max-width: 1100px;
+    margin:0 auto;
+    .manager-left {
+        width: 180px;
+        padding-right:20px;
+        a {
+            color: #303132;
+        }
+        a:hover, a.nav-link.active{
+            background-color: #e4e4e4 !important;
+        }
+    }
+    .manager-right {
+        width: calc(100% - 200px);
+    }
+    .permission-search {
+        left: 15px;
+        top: 35px;
+        min-width: 300px;
+        .list-group-item:hover {
+            background-color: #e4e4e4 !important;
+        }
+    }
+}

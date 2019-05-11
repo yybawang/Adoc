@@ -56,9 +56,18 @@ class ProjectController extends BaseController
      */
     public function transfer(Request $request, int $id){
         $post = $request->validate([
-            'to_user_id'   => 'required|integer|min:1',        //  要转让的用户ID
+            'email'   => 'required|email',        //  要转让的用户邮箱
         ]);
-        Project::where(['id' => $id])->update(['user_id' => $post['to_user_id']]);
+        // 自己不用转让，没有权限不能转让
+        $User = User::where('email', $post['email'])->firstOrFail();
+        $project_user_id = Project::where('id', $id)->value('user_id');
+        if($User->id == $project_user_id){
+            exception(__('该项目所有者已经是所填接收者'));
+        }
+        if($project_user_id != Auth::id() && !ProjectPermission::where(['project_id' => $id, 'user_id' => Auth::id(), 'admin' => 1])->exists()){
+            exception(__('无操作权限'));
+        }
+        Project::where(['id' => $id])->update(['user_id' => $User->id]);
         return $this->success();
     }
     
@@ -95,8 +104,8 @@ class ProjectController extends BaseController
      * @return mixed
      */
     public function permission(int $project_id){
-        $Permissions = ProjectPermission::where(['project_id' => $project_id])->get();
-        return $Permissions;
+        $Permissions = ProjectPermission::where(['project_id' => $project_id])->with(['user'])->get();
+        return $this->success($Permissions);
     }
     
     /**
@@ -104,8 +113,11 @@ class ProjectController extends BaseController
      * @param string $keyword
      * @return mixed
      */
-    public function permission_user(string $keyword){
-        $Users = User::select('id', 'name', 'email')->where(function($query) use ($keyword){
+    public function permission_user(Request $request, string $keyword){
+        if(strlen($keyword) < 3){
+            exception('关键字最少为 3 个字符');
+        }
+        $Users = User::select('id', 'name', 'email')->where('id', '!=', Auth::id())->where(function($query) use ($keyword){
             $query->where('name', 'like', $keyword.'%')->orWhere('email', 'like', $keyword.'%');
         })->limit(20)->get();
         return $this->success($Users);
@@ -120,13 +132,24 @@ class ProjectController extends BaseController
     public function permission_store(Request $request, int $project_id){
         $post = $request->validate([
             'user_id'   => 'required|integer|min:1',
-            'write'     => 'required|integer|min:0|max:1',
-            'admin'     => 'required|integer|min:0|max:1',
+            'write'     => 'required|boolean',
+            'admin'     => 'required|boolean',
         ]);
         // 操作人
         $post['admin_id'] = Auth::id();
         $Permission = ProjectPermission::updateOrCreate(['project_id' => $project_id, 'user_id' => $post['user_id']], $post);
         return $this->success($Permission);
+    }
+    
+    /**
+     * 删除某一用户权限
+     * @param Request $request
+     * @param int $id
+     * @return mixed
+     */
+    public function permission_destroy(Request $request, int $id){
+        ProjectPermission::destroy($id);
+        return $this->success();
     }
     
     /**
