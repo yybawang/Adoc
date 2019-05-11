@@ -26,7 +26,7 @@ export default class Index extends React.Component {
                             <Card>
                                 <a href={'#/project/'+project.id} title={project.description}>
                                 <Card.Body>
-                                    {project.name}
+                                    <div className={'my-3'}>{project.name}</div>
                                 </Card.Body>
                                 </a>
                             </Card>

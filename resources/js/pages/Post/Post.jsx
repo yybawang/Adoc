@@ -8,7 +8,6 @@ class Post extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            id: this.props.match.params.id,
             editor: '',
             post: {
                 name: '',
@@ -20,13 +19,19 @@ class Post extends React.Component {
         }
     }
     
+    post(id){
+        axios.get('/project/'+this.props.match.params.id+'/post/'+id+'/edit').then((post) => {
+            this.setState({post});
+        }).catch(()=>{});
+    }
+    
     selectParents(event, index){
         let post = Object.assign({}, this.state.post);
         post.parents[index].id = event.target.value;
         this.setState({post});
         
         // 每次都要重新请求服务器，得到新的父级数据并渲染
-        axios.get('/post/'+post.parents[index].id+'/children').then((data) => {
+        axios.get('/project/'+this.props.match.params.id+'/post/'+post.parents[index].id+'/children').then((data) => {
             let parents = post.parents.slice(0, index+1);
             parents = parents.concat(data);
             let post2 = Object.assign({}, this.state.post, {parents});
@@ -39,7 +44,7 @@ class Post extends React.Component {
         let pid = last.id || 0;
         let post = Object.assign({}, this.state.post, {content: this.state.editor.getMarkdown(), pid: pid});
         this.setState({post});
-        axios.post('/post/'+this.state.id, post).then((post) => {
+        axios.post('/project/'+this.props.match.params.id+'/post/'+this.props.match.params.post_id, post).then((post) => {
             this.setState({id: post.id});
         }).catch(()=>{})
     }
@@ -100,7 +105,7 @@ class Post extends React.Component {
                             </Col>
                             <Col xs={2} className={'text-right'}>
                                 <Button onClick={() => this.submit()}>保存</Button>
-                                <Button href={'#/project/'+this.state.post.project_id+'/post/'+this.state.id} className={'ml-4'} variant={'outline-primary'}>返回</Button>
+                                <Button href={'#/project/'+this.props.match.params.id+'/post/'+this.props.match.params.post_id} className={'ml-4'} variant={'outline-primary'}>返回</Button>
                             </Col>
                         </Row>
                         <Row noGutters>
@@ -163,9 +168,7 @@ class Post extends React.Component {
     
     componentDidMount() {
         let t = this;
-        axios.get('/post/'+this.state.id+'/edit').then((post) => {
-            this.setState({post});
-        }).catch(()=>{});
+        this.post(this.props.match.params.post_id);
         
         $(window).keydown(function(e){
             // ctrl + s

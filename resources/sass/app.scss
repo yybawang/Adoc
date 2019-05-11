@@ -40,7 +40,7 @@
 }
 .project-left {
     height:calc(100vh - 75.38px);
-    width:240px;
+    width:300px;
     a {
         color: #303132;
         img {
@@ -51,7 +51,7 @@
             padding-left: 8px;
         }
     }
-    a:hover{
+    a:hover, a.nav-link.actived{
         background-color: #e4e4e4 !important;
     }
     .post-link-2 {
@@ -65,5 +65,9 @@
     }
 }
 .project-right {
-    width: calc(100% - 240px);
+    width: calc(100% - 300px);
+    .post-center {
+        max-width:900px;
+        margin:0 auto;
+    }
 }

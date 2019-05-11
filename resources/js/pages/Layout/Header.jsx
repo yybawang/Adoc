@@ -8,7 +8,6 @@ import Index from '../Index/Index.jsx';
 import Login from '../Layout/Login.jsx';
 import Tip from '../Layout/Tip.jsx';
 import Project from '../Project/Project.jsx';
-import Post from '../Post/Post.jsx';
 import {Loading, LoginModal, ProjectName} from './store';
 
 function About() {
@@ -64,7 +63,6 @@ class AppRouter extends React.Component {
                         <React.Suspense fallback={<div>Loading</div>}>
                             <Route path="/" exact component={Index}/>
                             <Route path="/project/:id" component={Project}/>
-                            <Route path="/post/:id/edit" component={Post}/>
                             <Route path="/about" component={About} />
                             <Route path="/users" component={Users} />
                         </React.Suspense>

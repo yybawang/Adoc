@@ -3,34 +3,34 @@ import {Image ,Nav, Collapse} from "react-bootstrap";
 import ListPng from '../../../images/list.png'
 import FolderOpenFill from '../../../images/folder open-fill.png'
 import FolderFill from '../../../images/folder-fill.png'
-import axios from "../../configs/axios";
+import {postId} from "./store";
 
 
 class ProjectMenu extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            posts: []
-        }
+            post_id: 0,
+        };
+    
+        this.postIdSubscribe = postId.subscribe(() => {
+            this.setState({post_id: postId.getState()});
+        });
     }
     
-    post(id){
-        // const as = async function(){
-        //     return Promise.resolve("hello async").then(()=>{}).catch(()=>{});
-        // };
-        // const run = await as();
-        axios.get('/menu')
+    toggle(post){
+        post.toggle = !post.toggle;
+        this.props.toggle(this.props.posts);
     }
     
     subMenu(posts, padding = 1){
-        // logger(posts);
         return (
             <div>
                 {posts && posts.length > 0 && (
                     <Nav className={'flex-column'}>
                         {posts.map((post) => (
                             <div key={post.id}>
-                                <Nav.Link href={'#/project/'+this.props.project_id+'/post/'+post.id} onSelect={() => {this.post(post.id);post.open = !post.open;}} style={{paddingLeft: padding+'em'}} aria-controls={'collapse_post_'+post.id}>
+                                <Nav.Link className={{'actived':parseInt(post.id) === this.state.post_id}} href={'#/project/'+this.props.project_id+'/post/view/'+post.id} onSelect={() => {this.toggle(post)}} style={{paddingLeft: padding+'em'}}>
                                     {post.children.length <= 0 ?
                                         <Image src={ListPng} />
                                         : <Image src={!post.open ? FolderOpenFill : FolderFill} />
@@ -38,10 +38,8 @@ class ProjectMenu extends React.Component{
                                     <span>{post.name}</span>
                                 </Nav.Link>
                                 {post.children.length > 0 &&
-                                    <Collapse in={!post.open}>
-                                        <div id={'collapse_post_'+post.id}>
+                                    <Collapse in={!post.toggle}>
                                         {this.subMenu(Array.from(post.children), padding + 1.7)}
-                                        </div>
                                     </Collapse>
                                 }
                             </div>
@@ -56,10 +54,8 @@ class ProjectMenu extends React.Component{
         return this.subMenu(this.props.posts);
     }
     
-    componentDidMount() {
-        this.setState({
-            posts: Array.from(this.props.posts),
-        })
+    componentWillUnmount() {
+        this.postIdSubscribe();
     }
 }
 
