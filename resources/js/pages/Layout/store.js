@@ -55,18 +55,18 @@ function tips(state, action){
 }
 
 /**
- * 设置项目名，页面头部左上角显示
+ * 全局设置项目
  * @param state
  * @param action
  * @returns {*}
  */
-function project_name(state, action){
+function project(state, action){
     switch(action.type){
         case 'set':
-            state = action.name;
+            state = action.project;
             break;
         case 'default':
-            state = 'Adoc';
+            state = {id: 0, name: 'Adoc'};
             break;
     }
     return state;
@@ -75,8 +75,8 @@ function project_name(state, action){
 const Loading = createStore(loading);
 const LoginModal = createStore(login_modal);
 const Tips = createStore(tips);
-const ProjectName = createStore(project_name);
+const Project = createStore(project);
 // Loading.subscribe(() => {console.log(Loading.getState())});
 // Logined.subscribe(() => {console.log(Logined.getState())});
 
-export {Loading, LoginModal, Tips, ProjectName};
+export {Loading, LoginModal, Tips, Project};

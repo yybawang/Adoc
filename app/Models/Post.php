@@ -51,6 +51,9 @@ class Post extends Model
         $Parent = Post::where(['id' => $pid])->active()->first();
         if($Parent){
             $Parent->siblings = Post::where(['pid' => $Parent->pid])->active()->get();
+//            if($Parent->siblings){
+//                $Parent->siblings = collect([['id' => 0, 'name' => '-- 选择 --']])->merge($Parent->siblings);
+//            }
             $parent = $this->_parentsEach($Parent->pid);
             $res->push($Parent);
             $res = $res->merge($parent);

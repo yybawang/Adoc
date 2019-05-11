@@ -38,9 +38,9 @@ Route::namespace('Api')->group(function(){
         Route::get('/project/{project_id}/template', 'ProjectController@template');
         Route::post('/project/{project_id}/template', 'ProjectController@template_store');
         
-        Route::get('/project/{project_id}/post/{id}/edit', 'PostController@detail');
-        Route::get('/project/{project_id}/post/{id}/children', 'PostController@children');
-        Route::post('/project/{project_id}/post/{id}', 'PostController@store');
+        Route::get('/post/{id}/edit', 'PostController@detail');
+        Route::get('/post/{id}/children', 'PostController@children');
+        Route::post('/post/{id}', 'PostController@store');
         Route::get('/post/{post_id}/history', 'PostController@history');
         
         Route::post('/like/{post_id}', 'PostController@like');

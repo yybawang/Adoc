@@ -30,7 +30,7 @@ class ProjectMenu extends React.Component{
                     <Nav className={'flex-column'}>
                         {posts.map((post) => (
                             <div key={post.id}>
-                                <Nav.Link className={{'actived':parseInt(post.id) === this.state.post_id}} href={'#/project/'+this.props.project_id+'/post/view/'+post.id} onSelect={() => {this.toggle(post)}} style={{paddingLeft: padding+'em'}}>
+                                <Nav.Link className={{'actived': parseInt(post.id) === this.state.post_id}} href={'#/project/'+this.props.project_id+'/post/'+post.id} onSelect={() => {this.toggle(post)}} style={{paddingLeft: padding+'em'}}>
                                     {post.children.length <= 0 ?
                                         <Image src={ListPng} />
                                         : <Image src={!post.open ? FolderOpenFill : FolderFill} />

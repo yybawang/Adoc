@@ -4,8 +4,7 @@ import {Route, Switch} from "react-router-dom";
 import {Button, ButtonGroup, ListGroup} from "react-bootstrap";
 import ProjectPost from './ProjectPost';
 import ProjectMenu from './ProjectMenu';
-import Post from '../Post/Post';
-import {ProjectName} from "../Layout/store";
+import {Project as ProjectStore} from "../Layout/store";
 
 
 function events({match}){
@@ -26,7 +25,7 @@ class Project extends React.Component {
         super(props);
         
         this.state = {
-            id: parseInt(this.props.match.params.id),
+            id: this.props.match.params.id,
             post_id: 0,
             project: {},
             posts: [],
@@ -44,7 +43,7 @@ class Project extends React.Component {
                             <ButtonGroup className={'h4 mb-0 text-truncate'} style={{width: '169px'}}>{this.state.project.name}</ButtonGroup>
                             <ButtonGroup>
                                 <Button variant={'link'} href={'#/project/'+this.state.id+'/edit'}>管理</Button>
-                                <Button variant={'link'} href={'#/project/'+this.state.id+'/post/edit/0'}>+</Button>
+                                <Button variant={'link'} href={'/post/0/edit'}>+</Button>
                             </ButtonGroup>
                         </ListGroup.Item>
                     </ListGroup>
@@ -52,8 +51,7 @@ class Project extends React.Component {
                 </div>
                 <div className={'float-left project-right'}>
                     <Switch>
-                    <Route path={this.props.match.path+'/post/view/:post_id'} strict component={ProjectPost} />
-                    <Route path={this.props.match.path+'/post/edit/:post_id'} strict component={Post} />
+                    <Route path={this.props.match.path+'/post/:post_id'} strict component={ProjectPost} />
                     <Route path={this.props.match.path+'/edit'} strict render={() => (
                         <div>edit</div>
                     )} />
@@ -76,8 +74,8 @@ class Project extends React.Component {
         axios.get('/project/'+this.state.id).then((data) => {
             let state = Object.assign({}, this.state, data);
             this.setState(state);
-            // 设置左上角显示名
-            ProjectName.dispatch({type: 'set', name: state.project.name});
+            // 设置全局项目信息
+            ProjectStore.dispatch({type: 'set', project: state.project});
         }).catch(()=>{});
     }
 }

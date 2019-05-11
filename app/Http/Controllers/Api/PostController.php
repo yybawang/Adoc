@@ -21,30 +21,31 @@ class PostController extends BaseController
      * @param int $id
      * @return mixed
      */
-    public function detail(int $project_id, int $id){
+    public function detail(int $id){
         $Post = Post::active()->with(['comment', 'comment.likeEmojis'])->firstOrNew(['id' => $id], [
             'pid'       => 0,
-            'project_id'=> $project_id,
+            'project_id'=> 0,
             'name'      => '',
             'content'   => '',
             'sort'      => 0,
-            'status'    => 0,
+            'status'    => 1,
         ]);
         $Post->comment->each->parent;
         $Parents = $Post->parentsEach();
-        $ParentsRoot = collect([
-            [
-                'id'        => 0,
-                'siblings'  => [
-                    ['id' => '0', 'name' => '顶级菜单']
-                ],
-            ]
-        ]);
-        $Post->parents = $ParentsRoot->merge($Parents);
+//        $ParentsRoot = collect([
+//            [
+//                'id'        => 0,
+//                'siblings'  => [
+//                    ['id' => 0, 'name' => '顶级菜单'],
+//                ],
+//            ]
+//        ]);
+//        $Post->parents = $ParentsRoot->merge($Parents);
+        $Post->parents = $Parents;
         return $this->success($Post);
     }
     
-    public function children(int $project_id, int $id){
+    public function children(int $id){
         $res = [];
         $Children = Post::active()->where('id', $id)->firstOrFail();
         $Children->siblings = Post::active()->where('pid', $Children->id)->get();
@@ -56,19 +57,18 @@ class PostController extends BaseController
     
     /**
      * @param Request $request
-     * @param int $project_id
      * @param int $id
      * @return mixed
      */
-    public function store(Request $request, int $project_id, int $id){
+    public function store(Request $request, int $id){
         $post = $request->validate([
             'pid'       => 'required',
+            'project_id'=> 'required|integer|min:1',
             'name'      => 'required',
             'content'   => '',
             'status'    => 'required|integer|min:0',
         ]);
         $post['user_id'] = Auth::id();
-        $post['project_id'] = $project_id;
         
         // 存入修改记录
         if($post['content']){
