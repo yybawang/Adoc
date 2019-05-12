@@ -40,7 +40,7 @@ class ProjectManager extends React.Component {
     }
     
     componentDidMount() {
-        axios.get('/project/'+this.props.match.params.id+'/edit').then((project) => {
+        axios.get('/project/'+this.props.match.params.id).then((project) => {
             this.setState({project});
         }).catch(()=>{})
     }

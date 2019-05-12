@@ -43,21 +43,34 @@ class IndexController extends BaseController
     }
     
     /**
-     * 项目文档列表、文档日志
+     * 项目基本信息
      * @param int $id
      * @return array
      */
     public function project(int $id){
-        $Post = new Post();
         $project = Project::find($id);
+        return $this->success($project);
+    }
+    
+    /**
+     * 项目下文档递归结构
+     * @param int $id
+     * @return mixed
+     */
+    public function posts(int $id){
+        $Post = new Post();
         $posts = $Post->children($id, 0, 'id, pid, user_id, name');
+        return $this->success($posts);
+    }
+    
+    /**
+     * 项目日志
+     * @param int $id
+     * @return mixed
+     */
+    public function events(int $id){
         $events = PostEvent::where(['project_id' => $id])->with(['user', 'post'])->latest()->limit(20)->get()->each->parse();
-        $res = [
-            'project'   => $project,
-            'posts'     => $posts,
-            'events'    => $events,
-        ];
-        return $this->success($res);
+        return $this->success($events);
     }
     
     /**

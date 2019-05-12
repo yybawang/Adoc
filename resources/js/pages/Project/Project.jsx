@@ -71,11 +71,18 @@ class Project extends React.Component {
     }
     
     componentDidMount() {
-        axios.get('/project/'+this.state.id).then((data) => {
-            let state = Object.assign({}, this.state, data);
-            this.setState(state);
+        axios.get('/project/'+this.state.id).then((project) => {
+            this.setState({project});
             // 设置全局项目信息
-            ProjectStore.dispatch({type: 'set', project: state.project});
+            ProjectStore.dispatch({type: 'set', project: project});
+        }).catch(()=>{});
+    
+        axios.get('/project/'+this.state.id+'/posts').then((posts) => {
+            this.setState({posts});
+        }).catch(()=>{});
+    
+        axios.get('/project/'+this.state.id+'/events').then((events) => {
+            this.setState({events});
         }).catch(()=>{});
     }
 }

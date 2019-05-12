@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::namespace('Api')->group(function(){
     Route::get('/', 'IndexController@index');
     Route::get('/project/{id}', 'IndexController@project');
+    Route::get('/project/{id}/posts', 'IndexController@posts');
+    Route::get('/project/{id}/events', 'IndexController@events');
     Route::get('/post/{id}', 'IndexController@post');
     Route::post('/upload_md', 'IndexController@upload_md');
     Route::get('/menu', 'IndexController@menu');
@@ -31,7 +33,6 @@ Route::namespace('Api')->group(function(){
         // 公用的
         Route::post('/check_password', 'UserController@check_password');
         
-        Route::get('/project/{id}/edit', 'ProjectController@detail');
         Route::post('/project/{id}', 'ProjectController@store');
         Route::patch('/project/{id}', 'ProjectController@transfer');
         Route::delete('/project/{id}', 'ProjectController@destroy');
