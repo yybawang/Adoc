@@ -17,30 +17,32 @@ class ProjectManager extends React.Component {
     
     render() {
         return (
-            <Card className={'mt-3 border project-manager'}>
-                <Card.Header>
-                    <Button href={'#/project/'+this.props.match.params.id} variant={'link'}>&lt; {this.state.project.name}</Button>
-                </Card.Header>
-                <Card.Body>
-                <div className={'float-left manager-left'}>
-                    <Nav defaultActiveKey="#/project_manager/1/basic" className="flex-column">
-                        <Nav.Link href={'#'+this.props.match.url+'/basic'}>基本信息</Nav.Link>
-                        <Nav.Link href={'#'+this.props.match.url+'/permission'}>权限配置</Nav.Link>
-                        <Nav.Link href={'#'+this.props.match.url+'/advanced'}>高级</Nav.Link>
-                    </Nav>
-                </div>
-                <div className={'float-left manager-right'}>
-                    <Route path={this.props.match.path+'/basic'} component={Basic} />
-                    <Route path={this.props.match.path+'/permission'} component={Permission} />
-                    <Route path={this.props.match.path+'/advanced'} component={Advanced} />
-                </div>
-                </Card.Body>
-            </Card>
+            <div className="m-3">
+                <Card className={'project-manager'}>
+                    <Card.Header>
+                        <Button href={'#/project/'+this.props.match.params.id} variant={'link'}>&lt; {this.state.project.name}</Button>
+                    </Card.Header>
+                    <Card.Body>
+                    <div className={'float-left manager-left'}>
+                        <Nav defaultActiveKey={'#'+this.props.match.url} className="flex-column">
+                            <Nav.Link href={'#'+this.props.match.url+'/basic'}>基本信息</Nav.Link>
+                            <Nav.Link href={'#'+this.props.match.url+'/permission'}>权限配置</Nav.Link>
+                            <Nav.Link href={'#'+this.props.match.url+'/advanced'}>高级</Nav.Link>
+                        </Nav>
+                    </div>
+                    <div className={'float-left manager-right'}>
+                        <Route path={this.props.match.path+'/basic'} component={Basic} />
+                        <Route path={this.props.match.path+'/permission'} component={Permission} />
+                        <Route path={this.props.match.path+'/advanced'} component={Advanced} />
+                    </div>
+                    </Card.Body>
+                </Card>
+            </div>
         )
     }
     
     componentDidMount() {
-        axios.get('/project/'+this.props.match.params.id).then((project) => {
+        axios.get('/project/'+this.props.match.params.id+'/edit').then((project) => {
             this.setState({project});
         }).catch(()=>{})
     }

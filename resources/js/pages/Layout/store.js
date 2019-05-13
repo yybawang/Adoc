@@ -55,6 +55,24 @@ function tips(state, action){
 }
 
 /**
+ * 右上角提示
+ * @param state
+ * @param action
+ * @returns {{show: boolean, messages: (*|Array|string[]|*[])}}
+ */
+function passwor_modal(state, action){
+    switch (action.type) {
+        case 'show':
+            state = true;
+            break;
+        case 'hide':
+            state = false;
+            break;
+    }
+    return state;
+}
+
+/**
  * 全局设置项目
  * @param state
  * @param action
@@ -75,8 +93,9 @@ function project(state, action){
 const Loading = createStore(loading);
 const LoginModal = createStore(login_modal);
 const Tips = createStore(tips);
+const PasswordModal = createStore(passwor_modal);
 const Project = createStore(project);
 // Loading.subscribe(() => {console.log(Loading.getState())});
 // Logined.subscribe(() => {console.log(Logined.getState())});
 
-export {Loading, LoginModal, Tips, Project};
+export {Loading, LoginModal, Tips, PasswordModal, Project};

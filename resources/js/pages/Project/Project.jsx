@@ -71,7 +71,7 @@ class Project extends React.Component {
     }
     
     componentDidMount() {
-        axios.get('/project/'+this.state.id).then((project) => {
+        axios.get('/project/'+this.state.id+'/edit').then((project) => {
             this.setState({project});
             // 设置全局项目信息
             ProjectStore.dispatch({type: 'set', project: project});

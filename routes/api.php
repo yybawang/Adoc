@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::namespace('Api')->group(function(){
     Route::get('/', 'IndexController@index');
     Route::get('/project/{id}', 'IndexController@project');
@@ -31,8 +27,9 @@ Route::namespace('Api')->group(function(){
     
     Route::middleware('auth:api')->group(function(){
         // 公用的
-        Route::post('/check_password', 'UserController@check_password');
+        Route::post('/password_check', 'UserController@password_check');
         
+        Route::get('/project/{id}/edit', 'ProjectController@detail');
         Route::post('/project/{id}', 'ProjectController@store');
         Route::patch('/project/{id}', 'ProjectController@transfer');
         Route::delete('/project/{id}', 'ProjectController@destroy');
@@ -51,6 +48,9 @@ Route::namespace('Api')->group(function(){
         Route::post('/like/{post_id}', 'PostController@like');
         Route::post('/comment/{post_id}', 'PostController@comment');
         Route::post('/comment/{comment_id}/like', 'PostController@comment_like');
+    
+        Route::get('/user', 'UserController@user');
+        Route::post('/user/password', 'UserController@password_update');
     });
     Route::resource('project', 'ProjectController');
 });

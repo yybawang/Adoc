@@ -63,15 +63,18 @@ class Permission extends React.Component {
                                         this.keyword_users(event.target.value);
                                     }
                                 }} />
-                                <ListGroup className={'position-absolute permission-search border shadow'}>
-                                    {this.state.keyword_users.map((user) => (
-                                        <ListGroupItem key={user.id} variant={'light'} className={'text-dark border-bottom'} onClick={() => {
-                                            this.setState({keyword: user.name, keyword_users: [], user_id: user.id});
-                                        }}>
-                                            {user.name}
-                                        </ListGroupItem>
-                                    ))}
-                                </ListGroup>
+                                {this.state.keyword_users.length > 0 && (
+                                    <ListGroup className={'position-absolute permission-search border shadow'}>
+                                        {this.state.keyword_users.map((user) => (
+                                            <ListGroupItem key={user.id} variant={'light'} className={'text-dark border-bottom'} onClick={() => {
+                                                this.setState({keyword: user.name, keyword_users: [], user_id: user.id});
+                                            }}>
+                                                {user.name}
+                                            </ListGroupItem>
+                                        ))}
+                                    </ListGroup>
+                                    )
+                                }
                             </Col>
                             <Col>
                                 <Button type={'submit'} onClick={() => this.add()}>添加</Button>

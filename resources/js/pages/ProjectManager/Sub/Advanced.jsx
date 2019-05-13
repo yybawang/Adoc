@@ -14,7 +14,7 @@ class Advanced extends React.Component {
     }
     
     transfer(){
-        axios.post('/check_password', {password: this.state.password}).then(() => {
+        axios.post('/password_check', {password: this.state.password}).then(() => {
             axios.patch('/project/'+this.props.match.params.id, {email: this.state.email}).then(()=> {
                 this.props.history.push('/');
             }).catch(()=>{})
@@ -23,7 +23,7 @@ class Advanced extends React.Component {
     }
     
     delete(){
-        axios.post('/check_password', {password: this.state.password2}).then(() => {
+        axios.post('/password_check', {password: this.state.password2}).then(() => {
             axios.delete('/project/'+this.props.match.params.id).then(()=>{
                 this.props.history.push('/');
             }).catch(()=>{})

@@ -45,17 +45,46 @@ class UserController extends BaseController
     }
     
     /**
+     * 获取登陆人基本信息
+     * @param Request $request
+     * @return mixed
+     */
+    public function user(Request $request){
+        return $this->success($request->user());
+    }
+    
+    /**
      * 验证登陆人的登陆密码
      * @param Request $request
      * @return array
      */
-    public function check_password(Request $request){
+    public function password_check(Request $request){
         $User = User::find(Auth::id());
         $password = $request->input('password');
         $pass = Hash::check($password, $User->password);
         if(!$pass){
             exception(__('密码错误'));
         }
+        return $this->success();
+    }
+    
+    /**
+     * 修改用户密码
+     * @param Request $request
+     * @return mixed
+     */
+    public function password_update(Request $request){
+        $post = $request->validate([
+            'password_old'  => 'required|min:6',
+            'password'      => 'required|confirmed|min:6',
+        ]);
+        $User = User::find(Auth::id());
+        $password_old = $post['password_old'];
+        $pass = Hash::check($password_old, $User->password);
+        if(!$pass){
+            exception(__('密码错误'));
+        }
+        User::where('id', $User->id)->update(['password' => Hash::make($post['password'])]);
         return $this->success();
     }
 }

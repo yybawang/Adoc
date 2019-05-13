@@ -1,16 +1,18 @@
 import React from "react";
 import { HashRouter as Router, Route } from "react-router-dom";
 import {Navbar, Nav, NavDropdown, Form, FormControl, Button, Spinner} from 'react-bootstrap';
+import axios from '../../configs/axios'
 
 // 异步加载其他组件
 // const Index = React.lazy(() => import('./index/index'));
 import Index from '../Index/Index.jsx';
 import Login from '../Layout/Login.jsx';
 import Tip from '../Layout/Tip.jsx';
+import PasswordUpdate from '../Layout/PasswordUpdate.jsx';
 import Project from '../Project/Project.jsx';
 import ProjectManager from '../ProjectManager/ProjectManager';
 import Post from '../Post/Post.jsx';
-import {Loading, LoginModal, Project as ProjectStore} from './store';
+import {Loading, LoginModal, PasswordModal, Project as ProjectStore} from './store';
 
 function About() {
     return <h2>About</h2>;
@@ -26,6 +28,7 @@ class AppRouter extends React.Component {
         this.state = {
             projectName: 'Adoc',     // 设置默认左上角显示名称，内页为项目名
             loading: true,
+            user: {},
         };
         Loading.subscribe(() => {
             this.setState({loading: Loading.getState()});
@@ -34,6 +37,11 @@ class AppRouter extends React.Component {
         //     this.setState({projectName: ProjectStore.getState().name});
         // });
     }
+    
+    password_update(){
+        PasswordModal.dispatch({type: 'show'});
+    }
+    
     render () {
         return (
             <Router>
@@ -43,15 +51,16 @@ class AppRouter extends React.Component {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
                             <Nav.Link href="#/">项目列表</Nav.Link>
-                            <Nav.Link onClick={() => LoginModal.dispatch({type: 'show'})}>登录</Nav.Link>
-                            <Nav.Link href="#/user">用户中心</Nav.Link>
-                            {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">*/}
-                            {/*    <NavDropdown.Item href="#/logout">Action</NavDropdown.Item>*/}
-                            {/*    <NavDropdown.Item href="#/register">Another action</NavDropdown.Item>*/}
-                            {/*    <NavDropdown.Item href="#/login">Something</NavDropdown.Item>*/}
-                            {/*    <NavDropdown.Divider />*/}
-                            {/*    <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>*/}
-                            {/*</NavDropdown>*/}
+                            {this.state.user.id > 0 ? (
+                                <NavDropdown title={this.state.user.name}>
+                                    <NavDropdown.Header>用户ID：{this.state.user.id}</NavDropdown.Header>
+                                    <NavDropdown.Header>{this.state.user.email}</NavDropdown.Header>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item onClick={() => {this.password_update()}}>修改密码</NavDropdown.Item>
+                                </NavDropdown>
+                            ) : (
+                                <Nav.Link onClick={() => LoginModal.dispatch({type: 'show'})}>登录</Nav.Link>
+                            )}
                         </Nav>
                         <Form inline>
                             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -74,8 +83,15 @@ class AppRouter extends React.Component {
                 </div>
                 <Login />
                 <Tip />
+                <PasswordUpdate />
             </Router>
         );
+    }
+    
+    componentDidMount() {
+        axios.get('/user').then((user) => {
+            this.setState({user});
+        }).catch(()=>{});
     }
 }
 export default AppRouter;
