@@ -5,6 +5,7 @@ import Basic from './Sub/Basic'
 import Permission from './Sub/Permission'
 import Advanced from './Sub/Advanced'
 import axios from '../../configs/axios'
+import {Active} from "./store";
 
 class ProjectManager extends React.Component {
     constructor(props) {
@@ -13,6 +14,10 @@ class ProjectManager extends React.Component {
             project: {},
             permissions: [],
         };
+        
+        this.active = Active.subscribe(() => {
+            this.setState({page: Active.getState()});
+        });
     }
     
     render() {
@@ -24,10 +29,10 @@ class ProjectManager extends React.Component {
                     </Card.Header>
                     <Card.Body>
                     <div className={'float-left manager-left'}>
-                        <Nav defaultActiveKey={'#'+this.props.match.url} className="flex-column">
-                            <Nav.Link href={'#'+this.props.match.url+'/basic'}>基本信息</Nav.Link>
-                            <Nav.Link href={'#'+this.props.match.url+'/permission'}>权限配置</Nav.Link>
-                            <Nav.Link href={'#'+this.props.match.url+'/advanced'}>高级</Nav.Link>
+                        <Nav className="flex-column">
+                            <Nav.Link href={'#'+this.props.match.url+'/basic'} className={{active: this.state.page === 'basic'}}>基本信息</Nav.Link>
+                            <Nav.Link href={'#'+this.props.match.url+'/permission'} className={{active: this.state.page === 'permission'}}>权限配置</Nav.Link>
+                            <Nav.Link href={'#'+this.props.match.url+'/advanced'} className={{active: this.state.page === 'advanced'}}>高级</Nav.Link>
                         </Nav>
                     </div>
                     <div className={'float-left manager-right'}>
@@ -45,6 +50,9 @@ class ProjectManager extends React.Component {
         axios.get('/project/'+this.props.match.params.id+'/edit').then((project) => {
             this.setState({project});
         }).catch(()=>{})
+    }
+    componentWillUnmount() {
+        this.active();
     }
 }
 

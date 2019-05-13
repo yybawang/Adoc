@@ -2,6 +2,7 @@ import React from 'react'
 import axios from '../../../configs/axios'
 import {Button, ButtonGroup, Col, Form, OverlayTrigger, ListGroup, ListGroupItem, Popover, Row, Table} from "react-bootstrap";
 import {Tips} from "../../Layout/store";
+import {Active} from "../store";
 
 class Permission extends React.Component {
     constructor(props) {
@@ -151,6 +152,7 @@ class Permission extends React.Component {
     
     componentDidMount() {
         this.permissions();
+        Active.dispatch({type: 'set', page: 'permission'});
     }
 }
 

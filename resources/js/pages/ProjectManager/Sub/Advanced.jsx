@@ -1,6 +1,7 @@
 import React from 'react'
 import {Button, ButtonGroup, Card, Form, FormControl, FormGroup, FormLabel, Media} from "react-bootstrap";
 import axios from '../../../configs/axios'
+import {Active} from "../store";
 
 class Advanced extends React.Component {
     constructor(props) {
@@ -73,6 +74,10 @@ class Advanced extends React.Component {
                 </Form>
             </div>
         )
+    }
+    
+    componentDidMount() {
+        Active.dispatch({type: 'set', page: 'advanced'});
     }
 }
 

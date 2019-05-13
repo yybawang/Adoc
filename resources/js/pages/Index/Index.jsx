@@ -20,13 +20,13 @@ export default class Index extends React.Component {
         let t = this;
         return (
             <Container>
-                <Row>
+                <Row className={'align-items-center'}>
                     {t.state.projects.map((project) =>
                         <Col md={3} sm={4} key={project.id} className={{'mt-4': true, 'project-card': true, 'project-share' : project.share}}>
-                            <Card>
+                            <Card className={'shadow-sm'}>
                                 <a href={'#/project/'+project.id} title={project.description}>
                                 <Card.Body>
-                                    <div className={'my-3'}>{project.name}</div>
+                                    <div className={'my-3 text-center'}>{project.name}</div>
                                 </Card.Body>
                                 </a>
                             </Card>

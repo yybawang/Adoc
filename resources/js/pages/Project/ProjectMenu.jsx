@@ -25,7 +25,7 @@ class ProjectMenu extends React.Component{
     
     subMenu(posts, padding = 1){
         return (
-            <div>
+            <div className={'project-left-posts'}>
                 {posts && posts.length > 0 && (
                     <Nav className={'flex-column'}>
                         {posts.map((post) => (

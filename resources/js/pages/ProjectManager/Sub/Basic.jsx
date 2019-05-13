@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from '../../../configs/axios'
 import {Button, Form} from "react-bootstrap";
+import {Active} from "../store";
 
 class Basic extends React.Component {
     constructor(props) {
@@ -47,6 +48,7 @@ class Basic extends React.Component {
         axios.get('/project/'+this.props.match.params.id+'/edit').then((project) => {
             this.setState({project});
         }).catch(()=>{})
+        Active.dispatch({type: 'set', page: 'basic'});
     }
 }
 

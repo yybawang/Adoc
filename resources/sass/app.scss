@@ -18,11 +18,23 @@
 .project-card {
     a {
         color:black;
+        transition: all 0.3s ease-in-out;
+        .text-center {
+            transition: all 0.3s ease-in-out;
+        }
     }
     a:hover{
         opacity:1;
         text-decoration: none;
-        background-color: #f8f8f8;
+        background-color: #efefef;
+        //-webkit-transform:translateY(-6px);
+        //transform: translateY(-6px);
+        transition: all 0.3s ease-in-out;
+        .text-center {
+            transform:scale(1.05);
+            -webkit-transform:scale(1.05);
+            transition: all 0.3s ease-in-out;
+        }
     }
 }
 .project-share a {
@@ -41,27 +53,20 @@
 .project-left {
     height:calc(100vh - 75.38px);
     width:300px;
-    a {
-        color: #303132;
-        img {
-            width: 15px;
-            margin-top: -2px;
+    .project-left-posts {
+        a {
+            color: #303132;
+            img {
+                width: 15px;
+                margin-top: -2px;
+            }
+            span {
+                padding-left: 8px;
+            }
         }
-        span {
-            padding-left: 8px;
+        a:hover, a.nav-link.actived{
+            background-color: #e4e4e4 !important;
         }
-    }
-    a:hover, a.nav-link.actived{
-        background-color: #e4e4e4 !important;
-    }
-    .post-link-2 {
-        padding-left:2rem;
-    }
-    .post-link-3 {
-        padding-left:3rem;
-    }
-    .post-link-4 {
-        padding-left:4rem;
     }
 }
 .project-right {
