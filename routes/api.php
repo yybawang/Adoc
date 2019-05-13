@@ -30,6 +30,7 @@ Route::namespace('Api')->group(function(){
         Route::post('/password_check', 'UserController@password_check');
         
         Route::get('/project/{id}/edit', 'ProjectController@detail');
+        Route::post('/project/{id}/search', 'ProjectController@search');
         Route::post('/project/{id}', 'ProjectController@store');
         Route::patch('/project/{id}', 'ProjectController@transfer');
         Route::delete('/project/{id}', 'ProjectController@destroy');

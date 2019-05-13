@@ -49,6 +49,20 @@ class ProjectController extends BaseController
     }
     
     /**
+     * 搜索项目下文档
+     * @param Request $request
+     * @param int $id
+     * @return mixed
+     */
+    public function search(Request $request, int $id){
+        $keyword = $request->input('keyword');
+        $Posts = Post::where('project_id', $id)->where(function($query) use ($keyword){
+            $query->where('name', 'like', "%{$keyword}%")->orWhere('content', 'like', "%{$keyword}%");
+        })->limit(10)->get();
+        return $this->success($Posts);
+    }
+    
+    /**
      * 项目所有权转让
      * @param Request $request
      * @param int $id

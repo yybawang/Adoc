@@ -78,7 +78,7 @@ class Post extends React.Component {
     render() {
         return (
             <div className={'px-5 py-3'}>
-                <Form>
+                <Form onSubmit={(event) => {event.preventDefault()}}>
                     <Container fluid className={'p-0'}>
                         <Row noGutters>
                             <Col>
@@ -105,7 +105,7 @@ class Post extends React.Component {
                                 </Form.Group>
                             </Col>
                             <Col xs={2} className={'text-right'}>
-                                <Button onClick={() => this.submit()}>保存</Button>
+                                <Button type={'submit'} onClick={() => this.submit()}>保存</Button>
                                 <Button href={'#/project/'+this.state.post.project_id+'/post/'+this.props.match.params.id} className={'ml-4'} variant={'outline-primary'}>返回</Button>
                             </Col>
                         </Row>

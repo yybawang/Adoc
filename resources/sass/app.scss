@@ -14,7 +14,9 @@
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
-
+.loading {
+    width: 22px;
+}
 .project-card {
     a {
         color:black;
@@ -40,7 +42,16 @@
 .project-share a {
     background-color: #fffded;
 }
-
+.search-results {
+    width:300px;
+    right: 8px;
+    top:38px;
+    z-index: 1020;
+    background-color: #FFFFFF;
+    > .items:hover {
+        background-color: #e4e4e4;
+    }
+}
 .toast {
     position:fixed;
     right: 10px;

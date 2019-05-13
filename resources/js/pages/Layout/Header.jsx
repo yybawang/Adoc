@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router, Route, Link } from "react-router-dom";
 import {Navbar, Nav, NavDropdown, Form, FormControl, Button, Spinner} from 'react-bootstrap';
 import axios from '../../configs/axios'
 
@@ -26,27 +26,46 @@ class AppRouter extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            projectName: 'Adoc',     // 设置默认左上角显示名称，内页为项目名
+            project: {id: 0, name: 'Adoc'},     // 设置默认左上角显示名称，内页为项目名
             loading: true,
             user: {},
+            search_timer: false,
+            keyword: '',
+            keyword_results: [],
         };
         Loading.subscribe(() => {
             this.setState({loading: Loading.getState()});
         });
-        // ProjectStore.subscribe(() => {
-        //     this.setState({projectName: ProjectStore.getState().name});
-        // });
+        ProjectStore.subscribe(() => {
+            this.setState({project: ProjectStore.getState()});
+        });
     }
     
     password_update(){
         PasswordModal.dispatch({type: 'show'});
     }
     
+    search(keyword){
+        if(this.state.search_timer){
+            return;
+        }
+        if(keyword.length < 2){
+            return;
+        }
+        this.setState({keyword_results: [], search_timer: true});
+        axios.post('/project/'+this.state.project.id+'/search', {keyword: keyword}).then((keyword_results) => {
+            this.setState({keyword_results: keyword_results, search_timer: false});
+        }).catch(()=>{
+            this.setState({keyword_results: [], search_timer: false});
+        })
+    }
+    
     render () {
         return (
+            <div>
             <Router>
                 <Navbar bg="light" expand="md">
-                    <Navbar.Brand href="#/">{this.state.projectName}</Navbar.Brand>
+                    <Navbar.Brand href="#/">Adoc</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
@@ -62,11 +81,30 @@ class AppRouter extends React.Component {
                                 <Nav.Link onClick={() => LoginModal.dispatch({type: 'show'})}>登录</Nav.Link>
                             )}
                         </Nav>
-                        <Form inline>
-                            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                            <Button variant="outline-primary">Search</Button>
+                        {this.state.project.id > 0 &&
+                            <div className={'position-relative'}>
+                            <Form inline onSubmit={(event) => {event.preventDefault()}}>
+                                <FormControl type="text" placeholder="搜索文档" className="mr-sm-2" value={this.state.keyword} onChange={(event) => {
+                                    this.setState({keyword: event.target.value})
+                                    this.search(event.target.value);
+                                }} />
+                                
+                            </Form>
+                                <div className={'position-absolute shadow search-results'}>
+                                    {this.state.keyword_results.map((result) => (
+                                        <div key={result.id} className={'border-bottom p-2 items'}>
+                                            <span className={'text-muted'}>文档：</span>
+                                            <Link to={'/project/'+this.state.project.id+'/post/'+result.id} onClick={() => {
+                                                this.setState({keyword: '', keyword_results: []})
+                                            }}>{result.name}</Link>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        }
+                        <div className={'loading'}>
                             <Spinner animation="border" size={'sm'} className={{'ml-2' : true, 'd-none': this.state.loading}} />
-                        </Form>
+                        </div>
                     </Navbar.Collapse>
                 </Navbar>
                 <div>
@@ -82,9 +120,10 @@ class AppRouter extends React.Component {
                     {/*</React.StrictMode>*/}
                 </div>
                 <Login />
-                <Tip />
+                {/*<Tip />*/}
                 <PasswordUpdate />
             </Router>
+            </div>
         );
     }
     
