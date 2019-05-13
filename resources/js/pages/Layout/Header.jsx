@@ -42,16 +42,16 @@ class AppRouter extends React.Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link href="#/">Home</Nav.Link>
-                            <Nav.Link onClick={() => LoginModal.dispatch({type: 'show'})}>Login</Nav.Link>
-                            <Nav.Link href="#/users">Users</Nav.Link>
-                            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="#/logout">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#/register">Another action</NavDropdown.Item>
-                                <NavDropdown.Item href="#/login">Something</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                            </NavDropdown>
+                            <Nav.Link href="#/">项目列表</Nav.Link>
+                            <Nav.Link onClick={() => LoginModal.dispatch({type: 'show'})}>登录</Nav.Link>
+                            <Nav.Link href="#/user">用户中心</Nav.Link>
+                            {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">*/}
+                            {/*    <NavDropdown.Item href="#/logout">Action</NavDropdown.Item>*/}
+                            {/*    <NavDropdown.Item href="#/register">Another action</NavDropdown.Item>*/}
+                            {/*    <NavDropdown.Item href="#/login">Something</NavDropdown.Item>*/}
+                            {/*    <NavDropdown.Divider />*/}
+                            {/*    <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>*/}
+                            {/*</NavDropdown>*/}
                         </Nav>
                         <Form inline>
                             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
