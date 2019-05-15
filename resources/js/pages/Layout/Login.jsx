@@ -1,5 +1,5 @@
 import React from 'react'
-import {LoginModal} from './store';
+import {LoginModal, User} from './store';
 import {Modal, Button, Form} from 'react-bootstrap'
 import axios from '../../configs/axios'
 
@@ -29,6 +29,7 @@ class Login extends React.Component {
             localStorage.setItem('name', data.name);
             localStorage.setItem('user_id', data.id);
             LoginModal.dispatch({type: 'hide'});
+            User.dispatch({type: 'show'});
         }).catch(()=>{});
     }
     

@@ -11,8 +11,8 @@ class Permission extends React.Component {
             keyword: '',
             keyword_users: [],
             user_id: 0,
-            write: 0,
-            admin: 0,
+            write: false,
+            admin: false,
             permissions: [],
         };
     }

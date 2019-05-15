@@ -13,7 +13,7 @@ import Project from '../Project/Project';
 import ProjectAdd from '../Project/ProjectAdd';
 import ProjectManager from '../ProjectManager/ProjectManager';
 import Post from '../Post/Post';
-import {Loading, LoginModal, PasswordModal, Project as ProjectStore} from './store';
+import {Loading, LoginModal, PasswordModal, Project as ProjectStore, User} from './store';
 
 function About() {
     return <h2>About</h2>;
@@ -40,6 +40,18 @@ class AppRouter extends React.Component {
         ProjectStore.subscribe(() => {
             this.setState({project: ProjectStore.getState()});
         });
+        User.subscribe(() => {
+            if(User.getState() === true){
+                this.user();
+            }
+        });
+    }
+    
+    user(){
+        axios.get('/user').then((user) => {
+            logger(user);
+            this.setState({user});
+        }).catch(()=>{});
     }
     
     passwordUpdate(){
@@ -133,9 +145,7 @@ class AppRouter extends React.Component {
     }
     
     componentDidMount() {
-        axios.get('/user').then((user) => {
-            this.setState({user});
-        }).catch(()=>{});
+        this.user();
     }
 }
 export default AppRouter;

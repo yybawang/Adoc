@@ -22,6 +22,7 @@ Route::namespace('Api')->group(function(){
     Route::get('/post/{id}', 'IndexController@post');
     Route::post('/upload_md', 'IndexController@upload_md');
     Route::get('/menu', 'IndexController@menu');
+    Route::get('/user', 'UserController@user');
     Route::post('/login', 'UserController@login');
     Route::post('/register', 'UserController@register');
     
@@ -51,7 +52,6 @@ Route::namespace('Api')->group(function(){
         Route::post('/comment/{post_id}', 'PostController@comment');
         Route::post('/comment/{comment_id}/like', 'PostController@comment_like');
     
-        Route::get('/user', 'UserController@user');
         Route::post('/user/password', 'UserController@password_update');
     });
     Route::resource('project', 'ProjectController');

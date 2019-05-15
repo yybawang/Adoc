@@ -23,15 +23,8 @@ class Post extends React.Component {
     }
     
     post(id){
-        axios.get('/post/'+id+'/edit').then((post) => {
+        axios.get('/post/'+id+'/edit?project_id='+this.props.match.params.project_id).then((post) => {
             this.setState({post});
-            // 查找父级，填充 select
-            for(let i in post.parents){
-                axios.get('/post/'+post.parents[i]+'/parent').then((parent) => {
-                    let parents = [...this.state.parents].push(parent);
-                    this.setState({parents});
-                }).catch(()=>{})
-            }
         }).catch(()=>{});
     }
     

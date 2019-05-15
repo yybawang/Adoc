@@ -37,6 +37,24 @@ function login_modal(state, action){
 }
 
 /**
+ * 重新加载用户数据
+ * @param state
+ * @param action
+ * @returns {boolean}
+ */
+function user(state, action){
+    switch (action.type) {
+        case 'show':
+            state = true;
+            break;
+        case 'hide':
+            state = false;
+            break;
+    }
+    return state;
+}
+
+/**
  * 右上角提示
  * @param state
  * @param action
@@ -95,7 +113,8 @@ const LoginModal = createStore(login_modal);
 const Tips = createStore(tips);
 const PasswordModal = createStore(passwor_modal);
 const Project = createStore(project);
+const User = createStore(user);
 // Loading.subscribe(() => {console.log(Loading.getState())});
 // Logined.subscribe(() => {console.log(Logined.getState())});
 
-export {Loading, LoginModal, Tips, PasswordModal, Project};
+export {Loading, LoginModal, Tips, PasswordModal, Project, User};

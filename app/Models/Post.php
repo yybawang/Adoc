@@ -48,12 +48,12 @@ class Post extends Model
     }
     private function _parentsEach($pid){
         $res = collect();
-        $Parent = Post::where(['id' => $pid])->active()->first();
+        $Parent = Post::select('id', 'pid', 'name')->where(['id' => $pid])->active()->first();
         if($Parent){
-            $Parent->siblings = Post::where(['pid' => $Parent->pid])->active()->get();
-//            if($Parent->siblings){
-//                $Parent->siblings = collect([['id' => 0, 'name' => '-- 选择 --']])->merge($Parent->siblings);
-//            }
+            $Parent->siblings = Post::select('id', 'pid', 'name')->where(['pid' => $Parent->pid])->active()->get();
+            if($Parent->siblings){
+                $Parent->siblings = collect([['id' => 0, 'pid' => 0, 'name' => '-- 选择 --']])->merge($Parent->siblings);
+            }
             $parent = $this->_parentsEach($Parent->pid);
             $res->push($Parent);
             $res = $res->merge($parent);

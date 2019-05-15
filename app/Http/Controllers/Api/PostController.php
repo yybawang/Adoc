@@ -21,7 +21,8 @@ class PostController extends BaseController
      * @param int $id
      * @return mixed
      */
-    public function detail(int $id){
+    public function detail(Request $request, int $id){
+        $project_id = $request->input('project_id');
         $Post = Post::active()->with(['comment', 'comment.likeEmojis'])->firstOrNew(['id' => $id], [
             'pid'       => 0,
             'project_id'=> 0,
@@ -38,27 +39,16 @@ class PostController extends BaseController
             $Post->parents = [[
                 'id'    => 0,
                 'pid'   => 0,
-                'siblings'=> [
-                    [
-                        'id'    => 0,
-                        'pid'    => 0,
-                        'name'  => '顶级',
-                    ]
-                ],
+                'name'  => '-- 选择 --',
+                'siblings' => collect([[
+                    'id'    => 0,
+                    'pid'    => 0,
+                    'name'  => '-- 选择 --',
+                ]])->merge(Post::where(['project_id' => $project_id, 'pid' => 0])->active()->get()),
             ]];
         }
         
         return $this->success($Post);
-    }
-    
-    /**
-     * 查找 $pid 下所有
-     * @param int $pid
-     * @return mixed
-     */
-    public function parent(int $pid){
-        $Parent = Post::where('pid', $pid)->get();
-        return $this->success($Parent);
     }
     
     public function children(int $id){
@@ -66,6 +56,7 @@ class PostController extends BaseController
         $Children = Post::active()->where('id', $id)->firstOrFail();
         $Children->siblings = Post::active()->where('pid', $Children->id)->get();
         if($Children->siblings->isNotEmpty()){
+            $Children->siblings = collect([['id' => 0, 'pid' => 0, 'name' => '-- 选择 --']])->merge($Children->siblings);
             array_push($res, $Children);
         }
         return $this->success($res);

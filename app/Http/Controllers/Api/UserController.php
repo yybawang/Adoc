@@ -50,7 +50,7 @@ class UserController extends BaseController
      * @return mixed
      */
     public function user(Request $request){
-        return $this->success($request->user());
+        return $this->success($request->user() ?? []);
     }
     
     /**

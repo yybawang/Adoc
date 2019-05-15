@@ -38,7 +38,7 @@ axios.interceptors.response.use(function (response){
     Loading.dispatch({type: 'hide'});
     if(errors.response.status === 401){
         LoginModal.dispatch({type: 'show'});
-        return;
+        return Promise.reject(errors.response.data.message);
     }
     if(errors.response.status === 422){
         let messages = [];
@@ -49,7 +49,7 @@ axios.interceptors.response.use(function (response){
             type: 'show',
             messages : messages,
         });
-        return;
+        return Promise.reject(message);
     }
     let message = "Network Error";
     if (errors.response) {
