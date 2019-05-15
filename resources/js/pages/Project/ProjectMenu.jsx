@@ -20,7 +20,7 @@ class ProjectMenu extends React.Component{
     
     toggle(post){
         post.toggle = !post.toggle;
-        this.props.toggle(this.props.posts);
+        this.props.onChange(this.props.posts);
     }
     
     subMenu(posts, padding = 1){

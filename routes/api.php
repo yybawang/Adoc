@@ -43,6 +43,7 @@ Route::namespace('Api')->group(function(){
         
         Route::get('/post/{id}/edit', 'PostController@detail');
         Route::get('/post/{id}/children', 'PostController@children');
+        Route::get('/post/{pid}/parent', 'PostController@parent');
         Route::post('/post/{id}', 'PostController@store');
         Route::get('/post/{post_id}/history', 'PostController@history');
         

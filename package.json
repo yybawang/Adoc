@@ -33,6 +33,7 @@
         "react-bootstrap": "^1.0.0-beta.8",
         "react-editor-md": "^1.0.10",
         "react-markdown": "^4.0.8",
+        "react-select": "^2.4.3",
         "redux": "^4.0.1"
     }
 }

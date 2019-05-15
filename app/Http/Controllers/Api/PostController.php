@@ -18,10 +18,11 @@ use Illuminate\Support\Facades\Cache;
 class PostController extends BaseController
 {
     /**
+     * @param int $project_id
      * @param int $id
      * @return mixed
      */
-    public function detail(int $id){
+    public function detail(int $project_id, int $id){
         $Post = Post::active()->with(['comment', 'comment.likeEmojis'])->firstOrNew(['id' => $id], [
             'pid'       => 0,
             'project_id'=> 0,
@@ -32,17 +33,33 @@ class PostController extends BaseController
         ]);
         $Post->comment->each->parent;
         $Parents = $Post->parentsEach();
-//        $ParentsRoot = collect([
-//            [
-//                'id'        => 0,
-//                'siblings'  => [
-//                    ['id' => 0, 'name' => '顶级菜单'],
-//                ],
-//            ]
-//        ]);
-//        $Post->parents = $ParentsRoot->merge($Parents);
-        $Post->parents = $Parents;
+        if($Parents->isNotEmpty()){
+            $Post->parents = $Parents;
+        }else{
+            $Post->parents = [[
+                'id'    => 0,
+                'pid'   => 0,
+                'siblings'=> [
+                    [
+                        'id'    => 0,
+                        'pid'    => 0,
+                        'name'  => '顶级',
+                    ]
+                ],
+            ]];
+        }
+        
         return $this->success($Post);
+    }
+    
+    /**
+     * 查找 $pid 下所有
+     * @param int $pid
+     * @return mixed
+     */
+    public function parent(int $pid){
+        $Parent = Post::where('pid', $pid)->get();
+        return $this->success($Parent);
     }
     
     public function children(int $id){

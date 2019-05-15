@@ -20,7 +20,7 @@ class ProjectPost extends React.Component {
                         <h4>{this.state.post.name}</h4>
                     </Col>
                     <Col xs={2} className={'text-right'}>
-                        <Button href={'#/post/'+this.props.match.params.post_id+'/edit'} variant={'outline-dark'}>编辑</Button>
+                        <Button href={'#/post/'+this.props.match.params.id+'/'+this.props.match.params.post_id} variant={'outline-dark'}>编辑</Button>
                     </Col>
                 </Row>
                 <div className={'py-3 px-5 post-center'}>

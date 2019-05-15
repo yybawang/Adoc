@@ -40,14 +40,14 @@ class Project extends React.Component {
                 <div className={'float-left position-sticky overflow-auto border-right project-left'}>
                     <ListGroup>
                         <ListGroup.Item variant={'light'} className={'text-dark'}>
-                            <ButtonGroup className={'h4 mb-0 text-truncate'} style={{width: '169px'}} title={this.state.project.name}>{this.state.project.name}</ButtonGroup>
+                            <ButtonGroup className={'h4 mb-0 d-inline-block text-truncate'} style={{width: '169px'}} title={this.state.project.name}>{this.state.project.name}</ButtonGroup>
                             <ButtonGroup>
                                 <Button variant={'link'} href={'#/project_manager/'+this.state.id+'/basic'}>管理</Button>
-                                <Button variant={'link'} href={'/post/0/edit'}>+</Button>
+                                <Button variant={'link'} href={'#/post/'+this.props.match.params.id+'/0'}>+</Button>
                             </ButtonGroup>
                         </ListGroup.Item>
                     </ListGroup>
-                    <ProjectMenu project_id={this.state.id} posts={this.state.posts} toggle={(posts) => this.setState({posts})} />
+                    <ProjectMenu project_id={this.state.id} posts={this.state.posts} onChange={(posts) => this.setState({posts})} />
                 </div>
                 <div className={'float-left project-right'}>
                     <Switch>

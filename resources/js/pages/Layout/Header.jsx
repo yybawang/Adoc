@@ -5,13 +5,14 @@ import axios from '../../configs/axios'
 
 // 异步加载其他组件
 // const Index = React.lazy(() => import('./index/index'));
-import Index from '../Index/Index.jsx';
-import Login from '../Layout/Login.jsx';
-import Tip from '../Layout/Tip.jsx';
-import PasswordUpdate from '../Layout/PasswordUpdate.jsx';
-import Project from '../Project/Project.jsx';
+import Index from '../Index/Index';
+import Login from '../Layout/Login';
+import Tip from '../Layout/Tip';
+import PasswordUpdate from '../Layout/PasswordUpdate';
+import Project from '../Project/Project';
+import ProjectAdd from '../Project/ProjectAdd';
 import ProjectManager from '../ProjectManager/ProjectManager';
-import Post from '../Post/Post.jsx';
+import Post from '../Post/Post';
 import {Loading, LoginModal, PasswordModal, Project as ProjectStore} from './store';
 
 function About() {
@@ -41,7 +42,7 @@ class AppRouter extends React.Component {
         });
     }
     
-    password_update(){
+    passwordUpdate(){
         PasswordModal.dispatch({type: 'show'});
     }
     
@@ -75,13 +76,13 @@ class AppRouter extends React.Component {
                                     <NavDropdown.Header>用户ID：{this.state.user.id}</NavDropdown.Header>
                                     <NavDropdown.Header>{this.state.user.email}</NavDropdown.Header>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item onClick={() => {this.password_update()}}>修改密码</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => this.passwordUpdate()}>修改密码</NavDropdown.Item>
                                 </NavDropdown>
                             ) : (
                                 <Nav.Link onClick={() => LoginModal.dispatch({type: 'show'})}>登录</Nav.Link>
                             )}
                         </Nav>
-                        {this.state.project.id > 0 &&
+                        {this.state.project.id > 0 ? (
                             <div className={'position-relative'}>
                             <Form inline onSubmit={(event) => {event.preventDefault()}}>
                                 <FormControl type="text" placeholder="搜索文档" className="mr-sm-2" value={this.state.keyword} onChange={(event) => {
@@ -100,7 +101,10 @@ class AppRouter extends React.Component {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
+                            </div>)
+                            : (
+                                <Button variant={'outline-dark'} href={'#/project_add'}>新建项目</Button>
+                            )
                         }
                         <div className={'loading'}>
                             <Spinner animation="border" size={'sm'} className={{'ml-2' : true, 'd-none': this.state.loading}} />
@@ -112,8 +116,9 @@ class AppRouter extends React.Component {
                         <React.Suspense fallback={<div>Loading</div>}>
                             <Route path="/" exact component={Index}/>
                             <Route path="/project/:id" component={Project}/>
+                            <Route path="/project_add" component={ProjectAdd}/>
                             <Route path="/project_manager/:id" component={ProjectManager}/>
-                            <Route path="/post/:id/edit" component={Post}/>
+                            <Route path="/post/:project_id/:id" component={Post}/>
                             <Route path="/about" component={About} />
                             <Route path="/users" component={Users} />
                         </React.Suspense>

@@ -3,7 +3,7 @@ import Editor from 'react-editor-md'
 import axios from '../../configs/axios'
 import Template from './Template'
 import {Container, Row, Col, Form, Button, Alert, Modal} from "react-bootstrap"
-import {Project} from "../Layout/store"
+import Select from 'react-select';
 
 class Post extends React.Component {
     constructor(props){
@@ -11,9 +11,11 @@ class Post extends React.Component {
         this.state = {
             editor: '',
             post: {
+                id: 0,
                 name: '',
                 parents: [],
             },
+            parents: [],
             templateModal: false,
             templates: [],
             templateChecked: 0,
@@ -23,12 +25,19 @@ class Post extends React.Component {
     post(id){
         axios.get('/post/'+id+'/edit').then((post) => {
             this.setState({post});
+            // 查找父级，填充 select
+            for(let i in post.parents){
+                axios.get('/post/'+post.parents[i]+'/parent').then((parent) => {
+                    let parents = [...this.state.parents].push(parent);
+                    this.setState({parents});
+                }).catch(()=>{})
+            }
         }).catch(()=>{});
     }
     
-    selectParents(event, index){
+    selectParents(value, index){
         let post = Object.assign({}, this.state.post);
-        post.parents[index].id = event.target.value;
+        post.parents[index].id = value;
         this.setState({post});
         
         // 每次都要重新请求服务器，得到新的父级数据并渲染
@@ -41,12 +50,13 @@ class Post extends React.Component {
     }
     
     submit(){
-        let last = Array.from(this.state.post.parents).pop();
+        let last = [...this.state.post.parents].pop();
         let pid = last.id || 0;
-        let post = Object.assign({}, this.state.post, {content: this.state.editor.getMarkdown(), pid: pid});
-        this.setState({post});
-        axios.post('/post/'+this.props.match.params.id, post).then((post) => {
-            this.setState({id: post.id});
+        let post = Object.assign({}, this.state.post, {content: this.state.editor.getMarkdown(), pid: pid, project_id: this.props.match.params.project_id});
+        axios.post('/post/'+this.state.post.id, post).then((data) => {
+            // 更新一遍内部post数据，新增的时候避免一直认为是添加
+            let post = Object.assign({}, this.state.post, {id: data.id});
+            this.setState({post});
         }).catch(()=>{})
     }
     
@@ -70,7 +80,7 @@ class Post extends React.Component {
     
     templateProject(){
         this.setState({templateModal: true});
-        axios.get('/project/'+this.state.post.project_id+'/template').then((data) => {
+        axios.get('/project/'+this.props.match.params.project_id+'/template').then((data) => {
             this.setState({templates: data});
         }).catch(()=>{})
     }
@@ -90,23 +100,23 @@ class Post extends React.Component {
                                     }} style={{width: '180px'}} />
                                     <span className={'ml-3'}>上级目录：</span>
                                     {this.state.post.parents.length > 0 && this.state.post.parents.map((parent, index) => (
-                                            <Form.Control
-                                                key={index}
-                                                as={'select'}
-                                                className={'d-inline mr-2'}
-                                                style={{width: '180px'}}
-                                                value={parent.id}
-                                                onChange={(event) => this.selectParents(event, index)}>
-                                                {parent.siblings.map((option) => (
-                                                    <option key={option.id} value={option.id}>{option.name}</option>
-                                                ))}
-                                            </Form.Control>
+                                        <Form.Control
+                                            key={index}
+                                            as={'select'}
+                                            className={'d-inline mr-2'}
+                                            style={{width: '180px'}}
+                                            value={parent.id}
+                                            onChange={(event) => this.selectParents(event.target.value, index)}>
+                                            {parent.siblings.map((option) => (
+                                                <option key={option.id} value={option.id}>{option.name}</option>
+                                            ))}
+                                        </Form.Control>
                                     ))}
                                 </Form.Group>
                             </Col>
                             <Col xs={2} className={'text-right'}>
                                 <Button type={'submit'} onClick={() => this.submit()}>保存</Button>
-                                <Button href={'#/project/'+this.state.post.project_id+'/post/'+this.props.match.params.id} className={'ml-4'} variant={'outline-primary'}>返回</Button>
+                                <Button href={'#/project/'+this.props.match.params.project_id+'/post/'+this.state.post.id} className={'ml-4'} variant={'outline-primary'}>返回</Button>
                             </Col>
                         </Row>
                         <Row noGutters>
@@ -119,20 +129,18 @@ class Post extends React.Component {
                             </Col>
                         </Row>
                         <div className={'py-2'}>
-                            {this.state.post.content &&
-                                <Editor config={{
-                                    width: '100%',
-                                    height: 1000,
-                                    path: '/editor.md/lib/',
-                                    emoji: false,
-                                    imageUploadURL: '/api/upload_md',
-                                    onload: (editor, func) => {
-                                        this.setState({editor});
-                                        editor.setMarkdown(this.state.post.content);
-                                    },
-                                    // markdown: this.state.post.content
-                                }} />
-                            }
+                            <Editor config={{
+                                width: '100%',
+                                height: 1000,
+                                path: '/editor.md/lib/',
+                                emoji: false,
+                                imageUploadURL: '/api/upload_md',
+                                onload: (editor, func) => {
+                                    this.setState({editor});
+                                    this.state.post.content && editor.setMarkdown(this.state.post.content);
+                                },
+                                markdown: '\n'
+                            }} />
                         </div>
                     </Container>
                 </Form>
@@ -141,7 +149,6 @@ class Post extends React.Component {
                         <Modal.Title>选择一个模版</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form>
                         <ul style={{listStyle:'decimal'}}>
                             {this.state.templates.map((template, index) => (
                                 <li key={template.id} className={'pl-3 my-1'}>
@@ -152,7 +159,6 @@ class Post extends React.Component {
                             ))}
                             
                         </ul>
-                        </Form>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => this.setState({templateModal: false})}>
