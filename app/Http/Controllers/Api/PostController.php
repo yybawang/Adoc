@@ -18,11 +18,10 @@ use Illuminate\Support\Facades\Cache;
 class PostController extends BaseController
 {
     /**
-     * @param int $project_id
      * @param int $id
      * @return mixed
      */
-    public function detail(int $project_id, int $id){
+    public function detail(int $id){
         $Post = Post::active()->with(['comment', 'comment.likeEmojis'])->firstOrNew(['id' => $id], [
             'pid'       => 0,
             'project_id'=> 0,
