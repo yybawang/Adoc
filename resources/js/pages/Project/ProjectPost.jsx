@@ -36,17 +36,9 @@ class ProjectPost extends React.Component {
                         <Link className={'btn btn-outline-dark'} to={'/post/'+this.props.match.params.id+'/'+this.props.match.params.post_id}>编辑</Link>
                     </Col>
                 </Row>
-                <div className={'py-3 px-5 post-center'}>
-                    {/*{this.state.post.id !== 0 && (*/}
-                    {/*    <Editor.EditorShow config={{*/}
-                    {/*        width: '100%',*/}
-                    {/*        path: '/editor.md/lib/',*/}
-                    {/*        emoji: false,*/}
-                    {/*        markdown: this.state.post.content,*/}
-                    {/*    }} />*/}
-                    {/*)}*/}
-                    
-                    <ReactMarkdown source={this.state.post.content} escapeHtml={false} className={'markdown-body'} />
+                <div className={'py-3 px-5 post-center markdown-body'}>
+                    {/*<ReactMarkdown source={this.state.post.content} escapeHtml={false} className={'markdown-body'} />*/}
+                    <div dangerouslySetInnerHTML={{__html: this.state.post.html}} />
                 </div>
             </Container>
         );

@@ -73,6 +73,7 @@ class PostController extends BaseController
             'project_id'=> 'required|integer|min:1',
             'name'      => 'required',
             'content'   => '',
+            'html'      => '',
             'status'    => 'required|integer|min:0',
         ]);
         $post['user_id'] = Auth::id();

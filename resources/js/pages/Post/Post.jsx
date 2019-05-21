@@ -47,7 +47,12 @@ class Post extends React.Component {
     submit(){
         let last = [...this.state.post.parents].pop();
         let pid = last.id || 0;
-        let post = Object.assign({}, this.state.post, {content: this.state.editor.getMarkdown(), pid: pid, project_id: this.props.match.params.project_id});
+        let post = Object.assign({}, this.state.post, {
+            content: this.state.editor.getMarkdown(),
+            html: this.state.editor.getHTML(),
+            pid: pid,
+            project_id: this.props.match.params.project_id
+        });
         axios.post('/post/'+this.state.post.id, post).then((data) => {
             // 更新一遍内部post数据，新增的时候避免一直认为是添加
             let post = Object.assign({}, this.state.post, {id: data.id});
@@ -184,11 +189,11 @@ class Post extends React.Component {
             // ctrl + s
             let ctrlKey = e.ctrlKey || e.metaKey;
             if( ctrlKey && e.keyCode === 83 ){
-                e.preventDefault();
                 t.submit();
                 if(e.shiftKey){
                     history.goBack();
                 }
+                e.preventDefault();
             }
         });
     }
