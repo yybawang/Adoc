@@ -4,13 +4,25 @@ import {Link} from "react-router-dom";
 import ReactMarkdown from "react-markdown/with-html";
 import axios from '../../configs/axios'
 import {postId} from './store'
+import Editor from "react-editor-md";
 
 class ProjectPost extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            post: {},
+            post: {
+                id: 0,
+                content: '',
+            },
         };
+    }
+    
+    getPost(id){
+        postId.dispatch({type: 'set', id: id});
+        
+        axios.get('/post/'+id).then((post)=>{
+            this.setState({post});
+        }).catch(()=>{});
     }
     
     render(){
@@ -25,18 +37,19 @@ class ProjectPost extends React.Component {
                     </Col>
                 </Row>
                 <div className={'py-3 px-5 post-center'}>
-                    <ReactMarkdown source={this.state.post.content} escapeHtml={false} />
+                    {/*{this.state.post.id !== 0 && (*/}
+                    {/*    <Editor.EditorShow config={{*/}
+                    {/*        width: '100%',*/}
+                    {/*        path: '/editor.md/lib/',*/}
+                    {/*        emoji: false,*/}
+                    {/*        markdown: this.state.post.content,*/}
+                    {/*    }} />*/}
+                    {/*)}*/}
+                    
+                    <ReactMarkdown source={this.state.post.content} escapeHtml={false} className={'markdown-body'} />
                 </div>
             </Container>
         );
-    }
-    
-    getPost(id){
-        postId.dispatch({type: 'set', id: id});
-        
-        axios.get('/post/'+id).then((post)=>{
-            this.setState({post});
-        }).catch(()=>{});
     }
     
     componentDidMount () {

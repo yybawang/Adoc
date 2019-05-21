@@ -9,6 +9,7 @@
 @import "~bootswatch/dist/Pulse/variables";
 @import '~bootstrap/scss/bootstrap';
 @import "~bootswatch/dist/Pulse/bootswatch";
+@import "~github-markdown-css";
 
 .navbar-laravel {
     background-color: #fff;
@@ -118,3 +119,4 @@
         }
     }
 }
+

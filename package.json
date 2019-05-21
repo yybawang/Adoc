@@ -30,6 +30,7 @@
         "@babel/plugin-syntax-dynamic-import": "^7.2.0",
         "bootswatch": "^4.3.1",
         "collect.js": "^4.6.5",
+        "github-markdown-css": "^3.0.1",
         "history": "^4.9.0",
         "react-bootstrap": "^1.0.0-beta.8",
         "react-editor-md": "^1.0.10",

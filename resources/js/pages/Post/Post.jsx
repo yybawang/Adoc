@@ -90,7 +90,7 @@ class Post extends React.Component {
     
     render() {
         return (
-            <div className={'px-5 py-3'}>
+            <div className={'px-5 pt-3 b-5'}>
                 <Form onSubmit={(event) => {event.preventDefault()}}>
                     <Container fluid className={'p-0'}>
                         <Row noGutters>
