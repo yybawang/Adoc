@@ -113,12 +113,11 @@ class ProjectController extends BaseController
     /**
      * 项目权限列表
      * 未分页
-     * @param Request $request
-     * @param int $project_id
+     * @param int $id
      * @return mixed
      */
-    public function permission(int $project_id){
-        $Permissions = ProjectPermission::where(['project_id' => $project_id])->with(['user'])->get();
+    public function permission(int $id){
+        $Permissions = ProjectPermission::where(['project_id' => $id])->with(['user'])->get();
         return $this->success($Permissions);
     }
     
@@ -140,10 +139,10 @@ class ProjectController extends BaseController
     /**
      * 权限编辑
      * @param Request $request
-     * @param int $project_id
+     * @param int $id$id
      * @return mixed
      */
-    public function permission_store(Request $request, int $project_id){
+    public function permission_store(Request $request, int $id){
         $post = $request->validate([
             'user_id'   => 'required|integer|min:1',
             'write'     => 'required|boolean',
@@ -151,7 +150,7 @@ class ProjectController extends BaseController
         ]);
         // 操作人
         $post['admin_id'] = Auth::id();
-        $Permission = ProjectPermission::updateOrCreate(['project_id' => $project_id, 'user_id' => $post['user_id']], $post);
+        $Permission = ProjectPermission::updateOrCreate(['project_id' => $id, 'user_id' => $post['user_id']], $post);
         return $this->success($Permission);
     }
     
@@ -167,26 +166,26 @@ class ProjectController extends BaseController
     }
     
     /**
-     * @param int $project_id
+     * @param int $id
      * @return mixed
      */
-    public function template(int $project_id){
-        $Templates = PostTemplate::where(['project_id' => $project_id])->get();
+    public function template(int $id){
+        $Templates = PostTemplate::where(['project_id' => $id])->get();
         return $this->success($Templates);
     }
     
     /**
      * @param Request $request
-     * @param int $project_id
+     * @param int $id
      * @return mixed
      */
-    public function template_store(Request $request, int $project_id){
+    public function template_store(Request $request, int $id){
         $post = $request->validate([
             'name'      => 'required',
             'content'   => 'required',
         ]);
         $post['user_id'] = Auth::id();
-        $Template = PostTemplate::updateOrCreate(['project_id' => $project_id, 'name' => $post['name']]);
+        $Template = PostTemplate::updateOrCreate(['project_id' => $id, 'name' => $post['name']]);
         return $this->success($Template);
     }
 }

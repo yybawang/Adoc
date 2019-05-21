@@ -1,7 +1,6 @@
 import React from 'react'
 import {Button, ButtonGroup, Card, Form, FormControl, FormGroup, FormLabel, Media} from "react-bootstrap";
 import axios from '../../../configs/axios'
-import history from '../../../configs/history'
 import {Active} from "../store";
 
 class Advanced extends React.Component {
@@ -12,12 +11,13 @@ class Advanced extends React.Component {
             password: '',
             password2: '',
         };
+        logger(this.props);
     }
     
     transfer(){
         axios.post('/password_check', {password: this.state.password}).then(() => {
             axios.patch('/project/'+this.props.match.params.id, {email: this.state.email}).then(()=> {
-                history.push('/');
+                this.props.history.push('/');
             }).catch(()=>{})
         });
         
@@ -26,7 +26,7 @@ class Advanced extends React.Component {
     delete(){
         axios.post('/password_check', {password: this.state.password2}).then(() => {
             axios.delete('/project/'+this.props.match.params.id).then(()=>{
-                history.push('/');
+                this.props.history.push('/');
             }).catch(()=>{})
         }).catch(()=>{});
         

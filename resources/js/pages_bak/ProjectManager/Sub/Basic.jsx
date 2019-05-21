@@ -37,7 +37,7 @@ class Basic extends React.Component {
                         }} />
                     </Form.Group>
                     <Form.Group>
-                        <Button type={'submit'} onClick={() => this.submit()}>修改</Button>
+                        <Button type={'submit'} onClick={() => this.submit()}>提交</Button>
                     </Form.Group>
                 </Form>
             </div>

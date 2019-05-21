@@ -1,6 +1,5 @@
 import React from 'react'
 import {Button, ButtonGroup, Card, Form} from "react-bootstrap";
-import history from '../../configs/history'
 import axios from '../../configs/axios'
 
 class ProjectAdd extends React.Component {
@@ -15,7 +14,7 @@ class ProjectAdd extends React.Component {
     
     submit(){
         axios.post('/project/0', this.state).then((project) => {
-           history.push('/project/'+project.id);
+            this.props.history.push('/project/'+project.id);
         }).catch(() => {});
     }
     

@@ -35,24 +35,23 @@ Route::namespace('Api')->group(function(){
         Route::post('/project/{id}', 'ProjectController@store');
         Route::patch('/project/{id}', 'ProjectController@transfer');
         Route::delete('/project/{id}', 'ProjectController@destroy');
-        Route::get('/project/{project_id}/permission', 'ProjectController@permission');
+        Route::get('/project/{id}/permission', 'ProjectController@permission');
         Route::get('/project/permission/user/{keyword}', 'ProjectController@permission_user');
-        Route::post('/project/{project_id}/permission', 'ProjectController@permission_store');
-        Route::delete('/project/{project_id}/permission', 'ProjectController@permission_destroy');
-        Route::get('/project/{project_id}/template', 'ProjectController@template');
-        Route::post('/project/{project_id}/template', 'ProjectController@template_store');
+        Route::post('/project/{id}/permission', 'ProjectController@permission_store');
+        Route::delete('/project/{id}/permission', 'ProjectController@permission_destroy');
+        Route::get('/project/{id}/template', 'ProjectController@template');
+        Route::post('/project/{id}/template', 'ProjectController@template_store');
         
         Route::get('/post/{id}/edit', 'PostController@detail');
         Route::get('/post/{id}/children', 'PostController@children');
         Route::get('/post/{pid}/parent', 'PostController@parent');
         Route::post('/post/{id}', 'PostController@store');
-        Route::get('/post/{post_id}/history', 'PostController@history');
+        Route::get('/post/{id}/history', 'PostController@history');
         
-        Route::post('/like/{post_id}', 'PostController@like');
-        Route::post('/comment/{post_id}', 'PostController@comment');
+        Route::post('/like/{id}', 'PostController@like');
+        Route::post('/comment/{id}', 'PostController@comment');
         Route::post('/comment/{comment_id}/like', 'PostController@comment_like');
     
         Route::post('/user/password', 'UserController@password_update');
     });
-    Route::resource('project', 'ProjectController');
 });

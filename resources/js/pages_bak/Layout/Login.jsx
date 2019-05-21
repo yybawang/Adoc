@@ -1,7 +1,6 @@
 import React from 'react'
 import {LoginModal, User} from './store';
 import {Modal, Button, Form} from 'react-bootstrap'
-import {Link} from "react-router-dom";
 import axios from '../../configs/axios'
 
 class Login extends React.Component {
@@ -42,7 +41,7 @@ class Login extends React.Component {
                 onEntered={() => {this.refs.email_input.focus()}}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>登录</Modal.Title>
+                    <Modal.Title>Login</Modal.Title>
                 </Modal.Header>
                 {/*Form 放外面，可以使用回车提交*/}
                 <Form onSubmit={(event) => {event.preventDefault()}}>
@@ -63,9 +62,8 @@ class Login extends React.Component {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Link to={'/register'} className={'btn btn-link'}>没有账号？注册一个</Link>
-                        <Button variant={'secondary'} onClick={() => LoginModal.dispatch({type: 'hide'})}>关闭</Button>
-                        <Button type={'submit'} variant={'primary'} onClick={() => this.login()}>登录</Button>
+                        <Button variant={'secondary'} onClick={() => LoginModal.dispatch({type: 'hide'})}>Close</Button>
+                        <Button type={'submit'} variant={'primary'} onClick={() => this.login()}>Login</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>

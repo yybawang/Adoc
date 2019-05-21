@@ -95,27 +95,27 @@ class PostController extends BaseController
     
     /**
      * 修改历史
-     * @param int $post_id
+     * @param int $id
      * @return mixed
      */
-    public function history(int $post_id){
-        $Histories = PostHistory::where(['post_id' => $post_id])->latest()->paginate();
+    public function history(int $id){
+        $Histories = PostHistory::where(['post_id' => $id])->latest()->paginate();
         return $this->success($Histories);
     }
     
     /**
      * 文档点赞
      * @param Request $request
-     * @param int $post_id
+     * @param int $id
      * @return mixed
      */
-    public function like(Request $request, int $post_id){
+    public function like(Request $request, int $id){
         $post = $request->validate([
             'emoji' => 'required',
         ]);
         $PostLike = PostLike::create([
             'user_id'   => Auth::id(),
-            'post_id'   => $post_id,
+            'post_id'   => $id,
             'emoji'     => $post['emoji'],
         ]);
         
@@ -127,10 +127,10 @@ class PostController extends BaseController
     /**
      * 提交评论
      * @param Request $request
-     * @param $post_id
+     * @param $id
      * @return mixed
      */
-    public function comment(Request $request, $post_id){
+    public function comment(Request $request, $id){
         if (Cache::has('PostController@comment')) {
             return $this->failed('请求频繁');
         }
@@ -139,7 +139,7 @@ class PostController extends BaseController
             'pid'       => 'required|integer|min:0',
             'content'   => 'required',
         ]);
-        $post['post_id'] = $post_id;
+        $post['post_id'] = $id;
         $post['user_id'] = Auth::id();
         $PostComment = PostComment::create($post);
     

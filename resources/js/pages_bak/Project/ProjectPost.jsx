@@ -1,6 +1,5 @@
 import React from 'react'
 import {Button, Col, Container, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
 import ReactMarkdown from "react-markdown/with-html";
 import axios from '../../configs/axios'
 import {postId} from './store'
@@ -21,7 +20,7 @@ class ProjectPost extends React.Component {
                         <h4>{this.state.post.name}</h4>
                     </Col>
                     <Col xs={2} className={'text-right'}>
-                        <Link className={'btn btn-outline-dark'} to={'/post/'+this.props.match.params.id+'/'+this.props.match.params.post_id}>编辑</Link>
+                        <Button href={'/post/'+this.props.match.params.id+'/'+this.props.match.params.post_id} variant={'outline-dark'}>编辑</Button>
                     </Col>
                 </Row>
                 <div className={'py-3 px-5 post-center'}>

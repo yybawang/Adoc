@@ -1,12 +1,10 @@
 import React from 'react';
 import axios from '../../configs/axios'
-import {Route, Switch, Link} from "react-router-dom";
-import {Button, ButtonGroup, Image, ListGroup} from "react-bootstrap";
+import {Route, Switch} from "react-router-dom";
+import {Button, ButtonGroup, ListGroup} from "react-bootstrap";
 import ProjectPost from './ProjectPost';
 import ProjectMenu from './ProjectMenu';
 import {Project as ProjectStore} from "../Layout/store";
-import manager from '../../../images/manager.png'
-import add from '../../../images/add.png'
 
 
 function events({match}){
@@ -42,14 +40,10 @@ class Project extends React.Component {
                 <div className={'float-left position-sticky overflow-auto border-right project-left'}>
                     <ListGroup>
                         <ListGroup.Item variant={'light'} className={'text-dark'}>
-                            <ButtonGroup className={'h4 mb-0 d-inline-block text-truncate'} style={{width: '174px'}} title={this.state.project.name}>{this.state.project.name}</ButtonGroup>
+                            <ButtonGroup className={'h4 mb-0 d-inline-block text-truncate'} style={{width: '169px'}} title={this.state.project.name}>{this.state.project.name}</ButtonGroup>
                             <ButtonGroup>
-                                <Link className={'btn btn-link'} to={'/project_manager/'+this.state.id+'/basic'} title={'项目设置add.png'}>
-                                    <Image src={manager} style={{width: '15px'}} />
-                                </Link>
-                                <Link className={'btn btn-link'} to={'/post/'+this.props.match.params.id+'/0'} title={'添加新文档'}>
-                                    <Image src={add} style={{width: '17px'}} />
-                                </Link>
+                                <Button variant={'link'} href={'/project_manager/'+this.state.id+'/basic'}>管理</Button>
+                                <Button variant={'link'} href={'/post/'+this.props.match.params.id+'/0'}>+</Button>
                             </ButtonGroup>
                         </ListGroup.Item>
                     </ListGroup>
@@ -77,6 +71,7 @@ class Project extends React.Component {
     }
     
     componentDidMount() {
+        logger(this.props);
         axios.get('/project/'+this.state.id).then((project) => {
             this.setState({project});
             // 设置全局项目信息

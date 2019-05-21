@@ -11,8 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/js/auth.js', 'js')
-    .react('resources/js/app.js', 'js')
+mix.react('resources/js/app.js', 'js')
     .sass('resources/sass/app.scss', 'css')
     .extract(['collect.js', 'axios'])
 ;

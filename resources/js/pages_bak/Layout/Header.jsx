@@ -1,7 +1,6 @@
 import React from "react";
-import {Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {Navbar, Nav, NavDropdown, Form, FormControl, Button, Spinner} from 'react-bootstrap';
-import history from '../../configs/history'
 import axios from '../../configs/axios'
 
 // 异步加载其他组件
@@ -14,7 +13,6 @@ import Project from '../Project/Project';
 import ProjectAdd from '../Project/ProjectAdd';
 import ProjectManager from '../ProjectManager/ProjectManager';
 import Post from '../Post/Post';
-import Register from './Register'
 import {Loading, LoginModal, PasswordModal, Project as ProjectStore, User} from './store';
 
 function About() {
@@ -77,13 +75,13 @@ class AppRouter extends React.Component {
     render () {
         return (
             <div>
-            <Router history={history}>
+            <Router>
                 <Navbar bg="light" expand="md">
-                    <Link className={'navbar-brand'} to="/">Adoc</Link>
+                    <Navbar.Brand href="#/">Adoc</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Link className={'nav-link'} to="/">项目列表</Link>
+                            <Nav.Link href="#/">项目列表</Nav.Link>
                             {this.state.user.id > 0 ? (
                                 <NavDropdown title={this.state.user.name}>
                                     <NavDropdown.Header>用户ID：{this.state.user.id}</NavDropdown.Header>
@@ -116,7 +114,7 @@ class AppRouter extends React.Component {
                                 </div>
                             </div>)
                             : (
-                                <Link className={'btn btn-outline-dark'} to={'/project_add'}>新建项目</Link>
+                                <Button variant={'outline-dark'} href={'#/project_add'}>新建项目</Button>
                             )
                         }
                         <div className={'loading'}>
@@ -128,11 +126,10 @@ class AppRouter extends React.Component {
                     {/*<React.StrictMode>*/}
                         <React.Suspense fallback={<div>Loading</div>}>
                             <Route path="/" exact component={Index}/>
-                            <Route path="/project/:id" component={Project}/>
+                            <Route path="/project/view" component={Project}/>
                             <Route path="/project_add" component={ProjectAdd}/>
                             <Route path="/project_manager/:id" component={ProjectManager}/>
                             <Route path="/post/:project_id/:id" component={Post}/>
-                            <Route path="/register" component={Register} />
                             <Route path="/about" component={About} />
                             <Route path="/users" component={Users} />
                         </React.Suspense>

@@ -28,7 +28,12 @@ class UserController extends BaseController
         $token = Str::random(60);
         $User->api_token = $token;
         $User->save();
-        return $this->success($User);
+        return $this->success([
+            'id'    => $User->id,
+            'email' => $User->email,
+            'name'  => $User->name,
+            'api_token' => $token,
+        ]);
     }
     
     public function register(Request $request){
@@ -41,7 +46,12 @@ class UserController extends BaseController
         $post['password'] = Hash::make($post['password']);
         $post['api_token'] = $token;
         $User = User::create($post);
-        return $this->success($User);
+        return $this->success([
+            'id'    => $User->id,
+            'email' => $User->email,
+            'name'  => $User->name,
+            'api_token' => $token,
+        ]);
     }
     
     /**

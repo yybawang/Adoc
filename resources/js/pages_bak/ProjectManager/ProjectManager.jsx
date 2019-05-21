@@ -1,6 +1,6 @@
 import React from 'react'
 import {Button, Card, Nav} from "react-bootstrap";
-import {Route, Link} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import Basic from './Sub/Basic'
 import Permission from './Sub/Permission'
 import Advanced from './Sub/Advanced'
@@ -25,14 +25,14 @@ class ProjectManager extends React.Component {
             <div className="m-3">
                 <Card className={'project-manager'}>
                     <Card.Header>
-                        <Link className={'btn btn-link'} to={'/project/'+this.props.match.params.id}>&lt; {this.state.project.name}</Link>
+                        <Button href={'#/project/'+this.props.match.params.id} variant={'link'}>&lt; {this.state.project.name}</Button>
                     </Card.Header>
                     <Card.Body>
                     <div className={'float-left manager-left'}>
                         <Nav className="flex-column">
-                            <Link to={''+this.props.match.url+'/basic'} className={'nav-link ' + (this.state.page === 'basic' && 'active')}>基本信息</Link>
-                            <Link to={''+this.props.match.url+'/permission'} className={'nav-link ' + (this.state.page === 'permission' && 'active')}>权限配置</Link>
-                            <Link to={''+this.props.match.url+'/advanced'} className={'nav-link ' + (this.state.page === 'advanced' && 'active')}>高级</Link>
+                            <Nav.Link href={''+this.props.match.url+'/basic'} className={{active: this.state.page === 'basic'}}>基本信息</Nav.Link>
+                            <Nav.Link href={''+this.props.match.url+'/permission'} className={{active: this.state.page === 'permission'}}>权限配置</Nav.Link>
+                            <Nav.Link href={''+this.props.match.url+'/advanced'} className={{active: this.state.page === 'advanced'}}>高级</Nav.Link>
                         </Nav>
                     </div>
                     <div className={'float-left manager-right'}>

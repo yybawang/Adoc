@@ -1,10 +1,8 @@
 import React from 'react'
 import Editor from 'react-editor-md'
 import axios from '../../configs/axios'
-import history from '../../configs/history'
 import Template from './Template'
 import {Container, Row, Col, Form, Button, Alert, Modal} from "react-bootstrap"
-import {Link} from "react-router-dom";
 import Select from 'react-select';
 
 class Post extends React.Component {
@@ -80,14 +78,6 @@ class Post extends React.Component {
         }).catch(()=>{})
     }
     
-    back(){
-        return '/project/'+this.props.match.params.project_id + (this.state.post.id > 0 ? '/post/'+this.state.post.id : '');
-    }
-    
-    unbind(){
-        $(window).unbind('keydown');
-    }
-    
     render() {
         return (
             <div className={'px-5 py-3'}>
@@ -119,7 +109,7 @@ class Post extends React.Component {
                             </Col>
                             <Col xs={2} className={'text-right'}>
                                 <Button type={'submit'} onClick={() => this.submit()}>保存</Button>
-                                <Link to={this.back()} className={'ml-4 btn btn-outline-dark'}>返回</Link>
+                                <Button href={'/project/'+this.props.match.params.project_id+'/post/'+this.state.post.id} className={'ml-4'} variant={'outline-primary'}>返回</Button>
                             </Col>
                         </Row>
                         <Row noGutters>
@@ -184,18 +174,14 @@ class Post extends React.Component {
             // ctrl + s
             let ctrlKey = e.ctrlKey || e.metaKey;
             if( ctrlKey && e.keyCode === 83 ){
-                e.preventDefault();
                 t.submit();
-                if(e.shiftKey){
-                    history.goBack();
-                }
+                e.preventDefault();
             }
         });
     }
     
     componentWillUnmount() {
-        this.setState = () => {};
-        this.unbind();
+        $(window).unbind('keydown');
     }
 }
 
