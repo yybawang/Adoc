@@ -10,7 +10,6 @@ use App\Models\PostComment;
 use App\Models\PostCommentLike;
 use App\Models\PostHistory;
 use App\Models\PostLike;
-use App\Models\PostTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -18,6 +17,7 @@ use Illuminate\Support\Facades\Cache;
 class PostController extends BaseController
 {
     /**
+     * @param Request $request
      * @param int $id
      * @return mixed
      */

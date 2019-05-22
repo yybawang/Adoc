@@ -10,6 +10,7 @@ class ProjectAdd extends React.Component {
             name: '',
             description: '',
             type: 0,
+            tags: [],
         };
     }
     

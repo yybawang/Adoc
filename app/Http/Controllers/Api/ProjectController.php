@@ -15,37 +15,68 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends BaseController
 {
-    public function detail(int $id){
-        $Project = Project::firstOrNew(['id' => $id], [
-            'name'  => '',
-            'type'  => 0,
-            'description' => '',
-            'tags'  => [],
-        ]);
-        return $this->success($Project);
+    /**
+     * 项目详情
+     * @param Project $project
+     * @return mixed
+     */
+    public function detail(Project $project){
+        return $this->success($project);
     }
     
-    public function store(Request $request, int $id){
+    /**
+     * 项目新增
+     * @param Request $request
+     * @return mixed
+     */
+    public function store(Request $request){
         $post = $request->validate([
-            'name'  => 'required',
-            'type'  => 'required|integer|min:0',
-            'description' => '',
+            'name'      => 'required',
+            'type'      => 'required|integer|min:0',
+            'description'=> '',
+            'tags'      => 'array'
         ]);
         $post['user_id'] = Auth::id();
-        $tags = $request->input('tags') ?? [];
-        if(empty($id) && Project::where(['user_id' => $post['user_id'], 'name' => $post['name']])->exists()){
+        if(Project::where(['user_id' => $post['user_id'], 'name' => $post['name']])->exists()){
             exception(__('该项目名已存在'));
         }
-        $Project = Project::updateOrCreate(['id' => $id], $post);
+        $Project = Project::create($post);
+        
         // 本来数据中有，而新传递没有的就是要删除的
-        ProjectTag::where('project_id', $Project->id)->whereNotIn('name', $tags)->delete();
-        foreach($tags as $tag){
-            ProjectTag::updateOrCreate([
+        foreach($post['tags'] as $tag){
+            ProjectTag::create([
                 'project_id'=> $Project->id,
                 'name'      => $tag,
             ]);
         }
         return $this->success($Project);
+    }
+    
+    /**
+     * 项目修改
+     * @param Request $request
+     * @param Project $project
+     * @return mixed
+     */
+    public function update(Request $request, Project $project){
+        $post = $request->validate([
+            'name'      => 'required',
+            'type'      => 'required|integer|min:0',
+            'description'=> '',
+            'tags'      => 'array',
+        ]);
+        $post['user_id'] = Auth::id();
+        $project->update($post);
+        
+        // 本来数据中有，而新传递没有的就是要删除的
+        ProjectTag::where('project_id', $project->id)->whereNotIn('name', $post['tags'])->delete();
+        foreach($post['tags'] as $tag){
+            ProjectTag::updateOrCreate([
+                'project_id'=> $project->id,
+                'name'      => $tag,
+            ]);
+        }
+        return $this->success($project);
     }
     
     /**
@@ -65,23 +96,19 @@ class ProjectController extends BaseController
     /**
      * 项目所有权转让
      * @param Request $request
-     * @param int $id
+     * @param Project $project
      * @return mixed
      */
-    public function transfer(Request $request, int $id){
+    public function transfer(Request $request, Project $project){
         $post = $request->validate([
             'email'   => 'required|email',        //  要转让的用户邮箱
         ]);
         // 自己不用转让，没有权限不能转让
         $User = User::where('email', $post['email'])->firstOrFail();
-        $project_user_id = Project::where('id', $id)->value('user_id');
-        if($User->id == $project_user_id){
+        if($User->id == $project->user_id){
             exception(__('该项目所有者已经是所填接收者'));
         }
-        if($project_user_id != Auth::id() && !ProjectPermission::where(['project_id' => $id, 'user_id' => Auth::id(), 'admin' => 1])->exists()){
-            exception(__('无操作权限'));
-        }
-        Project::where(['id' => $id])->update(['user_id' => $User->id]);
+        $project->update(['user_id' => $User->id]);
         return $this->success();
     }
     
@@ -91,33 +118,32 @@ class ProjectController extends BaseController
      * 2、删除文章相关数据
      * 3、删除操作相关日志
      * 3、删除项目
-     * @param $id
+     * @param Project $project
      * @return mixed
      */
-    public function destroy($id){
-        $Project = Project::find($id);
-        $Project->tags->each->delete();                                     // 删除tag
-        $Project->permissions->each->delete();                              // 删除权限配置
-        $Project->posts->each->attachments->each->delete();                 // 删除文档附件
-        $Project->posts->each->history->each->delete();                     // 删除文档历史
-        $Project->posts->each->likes->each->delete();                       // 删除文档点赞
-        $Project->posts->each->comment->each->likes->each->delete();        // 删除文档留言点赞
-        $Project->posts->each->comment->each->delete();                     // 删除文档留言
-        $Project->events->each->delete();                                   // 删除操作日志
-        $Project->templates->each->delete();                                // 删除文档模版
-        $Project->tops->each->delete();                                     // 删除项目置顶
-        $Project->delete();
+    public function destroy(Project $project){
+        $project->tags->each->delete();                                     // 删除tag
+        $project->permissions->each->delete();                              // 删除权限配置
+        $project->posts->each->attachments->each->delete();                 // 删除文档附件
+        $project->posts->each->history->each->delete();                     // 删除文档历史
+        $project->posts->each->likes->each->delete();                       // 删除文档点赞
+        $project->posts->each->comment->each->likes->each->delete();        // 删除文档留言点赞
+        $project->posts->each->comment->each->delete();                     // 删除文档留言
+        $project->events->each->delete();                                   // 删除操作日志
+        $project->templates->each->delete();                                // 删除文档模版
+        $project->tops->each->delete();                                     // 删除项目置顶
+        $project->delete();
         return $this->success();
     }
     
     /**
      * 项目权限列表
      * 未分页
-     * @param int $id
+     * @param Project $project
      * @return mixed
      */
-    public function permission(int $id){
-        $Permissions = ProjectPermission::where(['project_id' => $id])->with(['user'])->get();
+    public function permission(Project $project){
+        $Permissions = ProjectPermission::where(['project_id' => $project->id])->with(['user'])->get();
         return $this->success($Permissions);
     }
     
@@ -139,10 +165,10 @@ class ProjectController extends BaseController
     /**
      * 权限编辑
      * @param Request $request
-     * @param int $id$id
+     * @param Project $project
      * @return mixed
      */
-    public function permission_store(Request $request, int $id){
+    public function permission_store(Request $request, Project $project){
         $post = $request->validate([
             'user_id'   => 'required|integer|min:1',
             'write'     => 'required|boolean',
@@ -150,42 +176,52 @@ class ProjectController extends BaseController
         ]);
         // 操作人
         $post['admin_id'] = Auth::id();
-        $Permission = ProjectPermission::updateOrCreate(['project_id' => $id, 'user_id' => $post['user_id']], $post);
+        $Permission = ProjectPermission::updateOrCreate(['project_id' => $project->id, 'user_id' => $post['user_id']], $post);
         return $this->success($Permission);
     }
     
     /**
      * 删除某一用户权限
      * @param Request $request
-     * @param int $id
+     * @param ProjectPermission $projectPermission
      * @return mixed
      */
-    public function permission_destroy(Request $request, int $id){
-        ProjectPermission::destroy($id);
+    public function permission_delete(Request $request, ProjectPermission $projectPermission){
+        $projectPermission->delete();
         return $this->success();
     }
     
     /**
-     * @param int $id
+     * @param Project $project
      * @return mixed
      */
-    public function template(int $id){
-        $Templates = PostTemplate::where(['project_id' => $id])->get();
+    public function template(Project $project){
+        $Templates = PostTemplate::where(['project_id' => $project->id])->get();
         return $this->success($Templates);
     }
     
     /**
      * @param Request $request
-     * @param int $id
+     * @param Project $project
      * @return mixed
      */
-    public function template_store(Request $request, int $id){
+    public function template_store(Request $request, Project $project){
         $post = $request->validate([
             'name'      => 'required',
             'content'   => 'required',
         ]);
         $post['user_id'] = Auth::id();
-        $Template = PostTemplate::updateOrCreate(['project_id' => $id, 'name' => $post['name']]);
+        $Template = PostTemplate::updateOrCreate(['project_id' => $project->id, 'name' => $post['name']]);
         return $this->success($Template);
+    }
+    
+    /**
+     * @param Request $request
+     * @param PostTemplate $postTemplate
+     * @return mixed
+     */
+    public function template_delete(Request $request, PostTemplate $postTemplate){
+        $postTemplate->delete();
+        return $this->success();
     }
 }

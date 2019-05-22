@@ -86,7 +86,7 @@ class Post extends React.Component {
     }
     
     back(){
-        return '/project/'+this.props.match.params.project_id + (this.state.post.id > 0 ? '/post/'+this.state.post.id : '');
+        return '/project/'+this.props.match.params.project_id + (this.state.post.id > 0 || this.props.match.params.id > 0 ? '/post/'+ (this.state.post.id ? this.state.post.id : this.props.match.params.id) : '');
     }
     
     unbind(){

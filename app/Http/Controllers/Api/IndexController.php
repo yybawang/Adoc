@@ -11,6 +11,7 @@ use App\Models\ProjectPermission;
 use App\Models\ProjectTop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class IndexController extends BaseController
 {
