@@ -1,5 +1,6 @@
-import {Loading, LoginModal, Tips} from "../pages/Layout/store";
+import {Loading, Tips} from "./function";
 import axios from 'axios';
+import history from './history'
 
 axios.defaults.baseURL = '/api';
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -31,13 +32,16 @@ axios.interceptors.response.use(function (response){
         return Promise.resolve(response.data.data);
     } else {
         // api 不会返回非 200 状态，所以肯定中间环节哪里有问题
-        Tips.dispatch({type: 'show', messages: ['oHo~ something was wrong']});
+        Tips.dispatch({type: 'error', messages: ['oHo~ something was wrong']});
         return Promise.reject('oHo~ something was wrong');
     }
 }, function (errors){
     Loading.dispatch({type: 'hide'});
     if(errors.response.status === 401){
-        LoginModal.dispatch({type: 'show'});
+        // 存入验证前的网页，登录/注册后再跳回来
+        localStorage.setItem('auth_jump', location.href);
+    
+        history.push('/login');
         return Promise.reject(errors.response.data.message);
     }
     if(errors.response.status === 422){
@@ -46,19 +50,19 @@ axios.interceptors.response.use(function (response){
             messages.push(errors.response.data.errors[i].shift());
         }
         Tips.dispatch({
-            type: 'show',
+            type: 'warn',
             messages : messages,
         });
-        return Promise.reject(message);
+        return Promise.reject('数据验证失败');
     }
-    let message = "Network Error";
+    let message = "网络错误，请稍后重试";
     if (errors.response) {
         message = errors.response.data.message;
     }else if (errors.request){
-        message = "Request Failed";
+        message = "发起请求失败";
     }
     Tips.dispatch({
-        type: 'show',
+        type: 'warn',
         messages : [message],
     });
     return Promise.reject(message);

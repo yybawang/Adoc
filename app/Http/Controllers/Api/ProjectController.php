@@ -196,7 +196,7 @@ class ProjectController extends BaseController
      * @return mixed
      */
     public function template(Project $project){
-        $Templates = PostTemplate::where(['project_id' => $project->id])->get();
+        $Templates = PostTemplate::where(['project_id' => $project->id])->latest()->get();
         return $this->success($Templates);
     }
     
@@ -211,7 +211,11 @@ class ProjectController extends BaseController
             'content'   => 'required',
         ]);
         $post['user_id'] = Auth::id();
-        $Template = PostTemplate::updateOrCreate(['project_id' => $project->id, 'name' => $post['name']]);
+        $Template = PostTemplate::create([
+            'project_id'    => $project->id,
+            'name'          => $post['name'],
+            'content'       => $post['content'],
+            ]);
         return $this->success($Template);
     }
     

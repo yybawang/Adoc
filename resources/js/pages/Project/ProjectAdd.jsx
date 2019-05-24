@@ -15,7 +15,7 @@ class ProjectAdd extends React.Component {
     }
     
     submit(){
-        axios.post('/project/0', this.state).then((project) => {
+        axios.post('/project', this.state).then((project) => {
            history.push('/project/'+project.id);
         }).catch(() => {});
     }

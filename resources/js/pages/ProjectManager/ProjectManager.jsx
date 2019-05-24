@@ -1,9 +1,9 @@
 import React from 'react'
 import {Button, Card, Nav} from "react-bootstrap";
 import {Route, Link} from 'react-router-dom'
-import Basic from './Sub/Basic'
-import Permission from './Sub/Permission'
-import Advanced from './Sub/Advanced'
+import Basic from './Manager/Basic'
+import Permission from './Manager/Permission'
+import Advanced from './Manager/Advanced'
 import axios from '../../configs/axios'
 import {Active} from "./store";
 
@@ -30,13 +30,13 @@ class ProjectManager extends React.Component {
                     <Card.Body>
                     <div className={'float-left manager-left'}>
                         <Nav className="flex-column">
-                            <Link to={''+this.props.match.url+'/basic'} className={'nav-link ' + (this.state.page === 'basic' && 'active')}>基本信息</Link>
+                            <Link to={''+this.props.match.url} className={'nav-link ' + (this.state.page === 'basic' && 'active')}>基本信息</Link>
                             <Link to={''+this.props.match.url+'/permission'} className={'nav-link ' + (this.state.page === 'permission' && 'active')}>权限配置</Link>
                             <Link to={''+this.props.match.url+'/advanced'} className={'nav-link ' + (this.state.page === 'advanced' && 'active')}>高级</Link>
                         </Nav>
                     </div>
                     <div className={'float-left manager-right'}>
-                        <Route path={this.props.match.path+'/basic'} component={Basic} />
+                        <Route path={this.props.match.path} exact component={Basic} />
                         <Route path={this.props.match.path+'/permission'} component={Permission} />
                         <Route path={this.props.match.path+'/advanced'} component={Advanced} />
                     </div>

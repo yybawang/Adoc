@@ -11,14 +11,12 @@ import {createStore} from "redux";
 //     }
 // };
 
-function user(state, action){
+function template_modal_show(state, action){
     switch (action.type) {
-        case 'login':
-        case 'register':
+        case 'show':
             state = true;
             break;
-        case 'password':
-        case 'logout':
+        case 'hide':
         default:
             state = false;
             break;
@@ -26,6 +24,6 @@ function user(state, action){
     return state;
 }
 
-const User = createStore(user);
+const TemplateModalShow = createStore(template_modal_show);
 
-export {User}
+export {TemplateModalShow}

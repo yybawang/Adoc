@@ -9,7 +9,7 @@ use App\Events\PostStoreEvent;
 use App\Listeners\PostCommentListener;
 use App\Listeners\PostDeleteListener;
 use App\Listeners\PostLikeListener;
-use App\Listeners\PostListener;
+use App\Listeners\PostUpdateListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -27,7 +27,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         PostStoreEvent::class => [
-            PostListener::class
+            PostUpdateListener::class
         ],
         PostLikeEvent::class => [
             PostLikeListener::class

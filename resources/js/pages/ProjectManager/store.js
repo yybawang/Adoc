@@ -3,7 +3,7 @@ import {createStore} from "redux";
 function active(state, action){
     switch (action.type) {
         default: state = action.page;
-        break;
+            break;
     }
     return state;
 }

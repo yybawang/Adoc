@@ -7,7 +7,7 @@ function post_id(state, action){
             break;
     }
     return state;
-};
+}
 
 const postId = createStore(post_id);
 

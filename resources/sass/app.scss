@@ -9,14 +9,31 @@
 @import "~bootswatch/dist/Pulse/variables";
 @import '~bootstrap/scss/bootstrap';
 @import "~bootswatch/dist/Pulse/bootswatch";
+@import "./nprogress.css";
 
 .navbar-laravel {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
-.loading {
-    width: 22px;
+
+.login, .register {
+    max-width:500px;
+    margin:0 auto;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .project-add {
     max-width: 800px;
     margin:0 auto;
@@ -65,8 +82,12 @@
         width:150px;
     }
 }
+.project {
+
+}
 .project-left {
-    height:calc(100vh - 75.38px);
+    top:0;
+    height:calc(100vh);
     width:300px;
     .project-left-posts {
         a {

@@ -80,8 +80,8 @@ class IndexController extends BaseController
      * @return Post
      */
     public function post(int $id){
-        $Post = Post::active()->with(['comment', 'comment.likeEmojis', 'likes'])->where('id', $id)->firstOrFail();
-        $Post->comment->each->parent;
+        $Post = Post::active()->with(['comments', 'comments.likeEmojis', 'likes'])->where('id', $id)->firstOrFail();
+        $Post->comments->each->parent;
         $Post->views += 1;
         $Post->save();
         return $this->success($Post);

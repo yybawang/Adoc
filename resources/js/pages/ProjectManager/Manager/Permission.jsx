@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from '../../../configs/axios'
 import {Button, ButtonGroup, Col, Form, OverlayTrigger, ListGroup, ListGroupItem, Popover, Row, Table} from "react-bootstrap";
-import {Tips} from "../../Layout/store";
+import {Tips} from "../../../configs/function";
 import {Active} from "../store";
 
 class Permission extends React.Component {
@@ -19,7 +19,7 @@ class Permission extends React.Component {
     
     add(){
         if(!this.state.user_id){
-            Tips.dispatch({type: 'show', messages: ['未选择用户']});
+            Tips.dispatch({type: 'warn', messages: ['未选择用户']});
         }
         axios.post('/project/'+this.props.match.params.id+'/permission', {user_id: this.state.user_id, write: this.state.write, admin: this.state.admin}).then(()=>{
             this.permissions();

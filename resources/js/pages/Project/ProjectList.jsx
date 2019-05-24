@@ -4,10 +4,8 @@
  */
 import React from 'react';
 import {Link} from "react-router-dom";
-import store from './store';
 import axios from '../../configs/axios'
 import {Container, Row, Col, Card} from 'react-bootstrap';
-import {Project} from "../Layout/store";
 
 export default class Index extends React.Component {
     constructor(props){
@@ -15,8 +13,16 @@ export default class Index extends React.Component {
         this.state = {
             projects: []
         };
-        Project.dispatch({type: 'default'});
     }
+    
+    componentDidMount() {
+        axios.get('/').then((data) => {
+            this.setState({
+                projects: data
+            });
+        }).catch(() => {});
+    }
+    
     render() {
         let t = this;
         return (
@@ -36,14 +42,5 @@ export default class Index extends React.Component {
                 </Row>
             </Container>
         )
-    }
-    
-    componentDidMount() {
-        let t = this;
-        axios.get('/').then((data) => {
-            t.setState({
-                projects: data
-            });
-        }).catch(() => {});
     }
 }

@@ -60,7 +60,8 @@ class UserController extends BaseController
      * @return mixed
      */
     public function user(Request $request){
-        return $this->success($request->user() ?? []);
+        $user = Auth::guard('api')->user() ?? [];
+        return $this->success($user);
     }
     
     /**

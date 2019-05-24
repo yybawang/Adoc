@@ -23,14 +23,14 @@ Route::namespace('Api')->group(function(){
     Route::post('/project/{id}/search', 'ProjectController@search');
     Route::get('/post/{id}', 'IndexController@post');
     Route::post('/upload_md', 'IndexController@upload_md');
-    Route::get('/menu', 'IndexController@menu');
     Route::get('/user', 'UserController@user');
     Route::post('/login', 'UserController@login');
     Route::post('/register', 'UserController@register');
     
     Route::middleware(['auth:api'])->group(function(){
         // 公用的
-        Route::post('/password_check', 'UserController@password_check');
+        Route::post('/password_check', 'UserController@password_check')->name('password_check');
+        Route::patch('/password', 'UserController@password_update')->name('password_update');
         
         Route::get('/project/{project}/edit', 'ProjectController@detail')->middleware('can:view,project');
         Route::post('/project', 'ProjectController@store')->middleware('can:create,App\Models\Project');
@@ -48,17 +48,17 @@ Route::namespace('Api')->group(function(){
         Route::delete('/project/{postTemplate}/template', 'ProjectController@template_delete')->middleware('can:delete,postTemplate');
         
         Route::get('/post/{post}/edit', 'PostController@detail')->middleware('can:view,post');
-        Route::get('/post/{post}/children', 'PostController@children')->middleware('can:view,post');
+        Route::get('/post/{project}/{id}/children', 'PostController@children')->middleware('can:update,project');
+        Route::get('/post/{project}/{id}/parent', 'PostController@parent')->middleware('can:update,project');
         Route::get('/post/{post}/parent', 'PostController@parent')->middleware('can:view,post');
-        Route::post('/post/', 'PostController@store')->middleware('can:create,App\Models\Post');
+        Route::post('/post', 'PostController@store')->middleware('can:create,App\Models\Post');
         Route::patch('/post/{post}', 'PostController@update')->middleware('can:update,post');
+        Route::delete('/post/{post}', 'PostController@delete')->middleware('can:delete,post');
         
-        Route::get('/post/{postHistory}/history', 'PostController@history')->middleware('can:view,postHistory');
+        Route::get('/post/{post}/history', 'PostController@history')->middleware('can:view,post');
         
-        Route::post('/like/{id}', 'PostController@like')->middleware('can:view,App\Models\Post');
-        Route::post('/comment/{id}', 'PostController@comment')->middleware('can:view,App\Models\Post');
-        Route::post('/comment/{comment_id}/like', 'PostController@comment_like')->middleware('can:view,App\Models\Post');
-    
-        Route::post('/user/password', 'UserController@password_update')->name('password_update');
+        Route::post('/like/{post}', 'PostController@like');
+        Route::post('/comment/{post}', 'PostController@comment');
+        Route::post('/comment/{postComment}/like', 'PostController@comment_like');
     });
 });

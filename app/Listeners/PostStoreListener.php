@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class PostListener
+class PostStoreListener
 {
     /**
      * Create the event listener.
@@ -29,7 +29,7 @@ class PostListener
     public function handle(PostStoreEvent $event)
     {
         $Post = $event->Post;
-        $description = '<abbr title="{$user_email}">{$user_name}</abbr> 编辑了文档 「{$post_name}」<span class="text-muted float-right">{$updated_at}</span>';
+        $description = '<abbr title="{$user_email}">{$user_name}</abbr> 创建了文档 「{$post_name}」<span class="text-muted float-right">{$updated_at}</span>';
         
         PostEvent::create([
             'project_id'    => $Post->project_id,

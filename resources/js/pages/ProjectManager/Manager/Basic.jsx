@@ -12,7 +12,7 @@ class Basic extends React.Component {
     }
     
     submit() {
-        axios.post('/project/' + this.props.match.params.id, this.state.project).then((project) => {
+        axios.patch('/project/' + this.props.match.params.id, this.state.project).then((project) => {
             this.setState({project})
         }).catch(()=>{})
     }
@@ -37,7 +37,7 @@ class Basic extends React.Component {
                         }} />
                     </Form.Group>
                     <Form.Group>
-                        <Button type={'submit'} onClick={() => this.submit()}>提交</Button>
+                        <Button type={'submit'} onClick={() => this.submit()}>修改</Button>
                     </Form.Group>
                 </Form>
             </div>

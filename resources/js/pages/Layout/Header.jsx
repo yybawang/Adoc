@@ -1,153 +1,97 @@
-import React from "react";
-import {Router, Route, Link } from "react-router-dom";
-import {Navbar, Nav, NavDropdown, Form, FormControl, Button, Spinner} from 'react-bootstrap';
+import React from 'react'
+import {Router, Route, Redirect, Link} from "react-router-dom"
+import {Navbar, Nav, Button, Form, FormControl, NavDropdown} from "react-bootstrap";
 import history from '../../configs/history'
+import Index from '../Index/Index'
+import Project from '../Project/Project'
+import Register from "../User/Register";
+import Login from "../User/Login";
+import ProjectList from "../Project/ProjectList";
+import {User} from "./store";
 import axios from '../../configs/axios'
+import Password from "../User/Password";
+import ProjectManager from "../ProjectManager/ProjectManager";
+import ProjectAdd from "../Project/ProjectAdd";
+import PostEdit from "../Post/PostEdit";
+import PostAdd from "../Post/PostAdd";
 
-// 异步加载其他组件
-// const Index = React.lazy(() => import('./index/index'));
-import Index from '../Index/Index';
-import Login from '../Layout/Login';
-import Tip from '../Layout/Tip';
-import PasswordUpdate from '../Layout/PasswordUpdate';
-import Project from '../Project/Project';
-import ProjectAdd from '../Project/ProjectAdd';
-import ProjectManager from '../ProjectManager/ProjectManager';
-import Post from '../Post/Post';
-import Register from './Register'
-import {Loading, LoginModal, PasswordModal, Project as ProjectStore, User} from './store';
-
-function About() {
-    return <h2>About</h2>;
-}
-
-function Users() {
-    return <h2>Users</h2>;
-}
-
-class AppRouter extends React.Component {
+class Header extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            project: {id: 0, name: 'Adoc'},     // 设置默认左上角显示名称，内页为项目名
-            loading: true,
             user: {},
-            search_timer: false,
-            keyword: '',
-            keyword_results: [],
         };
-        Loading.subscribe(() => {
-            this.setState({loading: Loading.getState()});
-        });
-        ProjectStore.subscribe(() => {
-            this.setState({project: ProjectStore.getState()});
-        });
+        
         User.subscribe(() => {
-            if(User.getState() === true){
-                this.user();
+            if(User.getState()){
+                this.getUser();
+            }else{
+                this.setState({user: {}});
             }
         });
     }
     
-    user(){
+    getUser(){
         axios.get('/user').then((user) => {
             this.setState({user});
-        }).catch(()=>{});
+        }).catch(() => {});
     }
     
-    passwordUpdate(){
-        PasswordModal.dispatch({type: 'show'});
-    }
-    
-    search(keyword){
-        if(this.state.search_timer){
-            return;
-        }
-        if(keyword.length < 2){
-            return;
-        }
-        this.setState({keyword_results: [], search_timer: true});
-        axios.post('/project/'+this.state.project.id+'/search', {keyword: keyword}).then((keyword_results) => {
-            this.setState({keyword_results: keyword_results, search_timer: false});
-        }).catch(()=>{
-            this.setState({keyword_results: [], search_timer: false});
-        })
-    }
-    
-    render () {
+    render() {
         return (
             <div>
-            <Router history={history}>
-                <Navbar bg="light" expand="md">
-                    <Link className={'navbar-brand'} to="/">Adoc</Link>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Link className={'nav-link'} to="/">项目列表</Link>
-                            {this.state.user.id > 0 ? (
-                                <NavDropdown title={this.state.user.name}>
-                                    <NavDropdown.Header>用户ID：{this.state.user.id}</NavDropdown.Header>
-                                    <NavDropdown.Header>{this.state.user.email}</NavDropdown.Header>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item onClick={() => this.passwordUpdate()}>修改密码</NavDropdown.Item>
-                                </NavDropdown>
-                            ) : (
-                                <Nav.Link onClick={() => LoginModal.dispatch({type: 'show'})}>登录</Nav.Link>
-                            )}
-                        </Nav>
-                        {this.state.project.id > 0 ? (
-                            <div className={'position-relative'}>
-                            <Form inline onSubmit={(event) => {event.preventDefault()}}>
-                                <FormControl type="text" placeholder="搜索文档" className="mr-sm-2" value={this.state.keyword} onChange={(event) => {
-                                    this.setState({keyword: event.target.value})
-                                    this.search(event.target.value);
-                                }} />
+                <Router history={history}>
+                    <Navbar bg={'light'} expand="md">
+                        <Navbar.Brand>
+                            <Link to={'/'} className={'navbar-brand'}>Adoc</Link>
+                        </Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="mr-auto">
+                                <Link to={'/project'} className={'nav-link'}>项目列表</Link>
+                                {this.state.user.id > 0 ? (
+                                    <NavDropdown title={this.state.user.name}>
+                                        <NavDropdown.Header>用户ID：{this.state.user.id}</NavDropdown.Header>
+                                        <NavDropdown.Header>{this.state.user.email}</NavDropdown.Header>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item onClick={() => history.push('password')}>修改密码</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={() => {localStorage.clear();history.replace('login');}}>注销</NavDropdown.Item>
+                                    </NavDropdown>
+                                   
+                                ): (
+                                    <>
+                                        <Link to={'/register'} className={'nav-link'}>注册</Link>
+                                        <Link to={'/login'} className={'nav-link'}>登录</Link>
+                                    </>
+                                )}
                                 
+                            </Nav>
+                            <Form inline>
+                                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                                <Button variant="outline-primary">Search</Button>
                             </Form>
-                                <div className={'position-absolute shadow search-results'}>
-                                    {this.state.keyword_results.map((result) => (
-                                        <div key={result.id} className={'border-bottom p-2 items'}>
-                                            <span className={'text-muted'}>文档：</span>
-                                            <Link to={'/project/'+this.state.project.id+'/post/'+result.id} onClick={() => {
-                                                this.setState({keyword: '', keyword_results: []})
-                                            }}>{result.name}</Link>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>)
-                            : (
-                                <Link className={'btn btn-outline-dark'} to={'/project_add'}>新建项目</Link>
-                            )
-                        }
-                        <div className={'loading'}>
-                            <Spinner animation="border" size={'sm'} className={{'ml-2' : true, 'd-none': this.state.loading}} />
-                        </div>
-                    </Navbar.Collapse>
-                </Navbar>
-                <div>
-                    {/*<React.StrictMode>*/}
-                        <React.Suspense fallback={<div>Loading</div>}>
-                            <Route path="/" exact component={Index}/>
-                            <Route path="/project/:id" component={Project}/>
-                            <Route path="/project_add" component={ProjectAdd}/>
-                            <Route path="/project_manager/:id" component={ProjectManager}/>
-                            <Route path="/post/:project_id/:id" component={Post}/>
-                            <Route path="/register" component={Register} />
-                            <Route path="/about" component={About} />
-                            <Route path="/users" component={Users} />
-                        </React.Suspense>
-                    {/*</React.StrictMode>*/}
-                </div>
-                <Login />
-                {/*<Tip />*/}
-                <PasswordUpdate />
-            </Router>
+                        </Navbar.Collapse>
+                    </Navbar>
+                    <React.Suspense fallback={<div>Loading</div>}>
+                        <Route path={'/'} exact component={Index} />
+                        <Route path={'/project'} exact component={ProjectList} />
+                        <Route path={'/project/:id'} component={Project} />
+                        <Route path={'/project_add'} component={ProjectAdd} />
+                        <Route path={'/project_manager/:id'} component={ProjectManager} />
+                        <Route path={'/register'} component={Register} />
+                        <Route path={'/login'} component={Login} />
+                        <Route path={'/password'} component={Password} />
+                        <Route path={'/post/:project_id/add'} component={PostAdd} />
+                        <Route path={'/post/:id/edit'} component={PostEdit} />
+                    </React.Suspense>
+                </Router>
             </div>
         );
     }
     
     componentDidMount() {
-        this.user();
+        this.getUser();
     }
 }
-export default AppRouter;
+
+export default Header

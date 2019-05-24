@@ -23,7 +23,7 @@ class Post extends Model
      * 保存历史记录
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function history(){
+    public function histories(){
         return $this->hasMany(PostHistory::class);
     }
     
@@ -31,7 +31,7 @@ class Post extends Model
      * 留言列表
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function comment(){
+    public function comments(){
         return $this->hasMany(PostComment::class)->where('pid', 0)->latest()->limit(10);
     }
     
@@ -50,12 +50,16 @@ class Post extends Model
         $res = collect();
         $Parent = Post::select('id', 'pid', 'name')->where(['id' => $pid])->active()->first();
         if($Parent){
-            $Parent->siblings = Post::select('id', 'pid', 'name')->where(['pid' => $Parent->pid])->active()->get();
-            if($Parent->siblings){
-                $Parent->siblings = collect([['id' => 0, 'pid' => 0, 'name' => '-- 选择 --']])->merge($Parent->siblings);
-            }
+//            $Parents = Post::select('id', 'pid', 'name')->where(['pid' => $Parent->pid])->active()->get();
+//            if($Parents->isNotEmpty()){
+//                $Parents = collect([['id' => '', 'pid' => 0, 'name' => '-- 选择 --']])->merge($Parents);
+//            }
+//            $Parent->children = $Parents;
+//            if($Parent->siblings){
+//                $Parent->siblings = collect([['id' => 0, 'pid' => 0, 'name' => '-- 选择 --']])->merge($Parent->siblings);
+//            }
             $parent = $this->_parentsEach($Parent->pid);
-            $res->push($Parent);
+            $res->push($Parent->id);
             $res = $res->merge($parent);
         }
         return $res;
