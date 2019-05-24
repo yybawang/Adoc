@@ -6,6 +6,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import axios from '../../configs/axios'
 import {Container, Row, Col, Card} from 'react-bootstrap';
+import {HeaderRight} from "../../configs/function";
 
 export default class Index extends React.Component {
     constructor(props){
@@ -13,6 +14,8 @@ export default class Index extends React.Component {
         this.state = {
             projects: []
         };
+        
+        HeaderRight.dispatch({type: 'add'});
     }
     
     componentDidMount() {

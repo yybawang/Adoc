@@ -1,6 +1,7 @@
 import React from 'react'
 import {BrowserRouter, Route, Link} from "react-router-dom";
 import axios from '../../configs/axios'
+import {HeaderRight} from "../../configs/function";
 
 class Index extends React.Component {
     constructor(props) {
@@ -8,6 +9,7 @@ class Index extends React.Component {
         this.state = {
         
         };
+        HeaderRight.dispatch({type: 'add'});
     }
     
     componentDidMount() {

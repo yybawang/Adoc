@@ -6,6 +6,7 @@ import add from '../../../images/add.png'
 import ProjectMenu from "./ProjectMenu";
 import ProjectPost from "./ProjectPost";
 import axios from '../../configs/axios'
+import {HeaderRight} from "../../configs/function";
 
 class Project extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class Project extends React.Component {
             events: [],
             posts: [],
         };
+        HeaderRight.dispatch({type: 'search', project_id: this.props.match.params.id});
     }
     
     render() {

@@ -63,7 +63,20 @@ function tips(state, action){
     return state;
 }
 
+function header_right(state, action){
+    switch (action.type) {
+        case 'add':
+            state = {header_right: 'add', project_id: 0};
+            break;
+        case 'search':
+            state = {header_right: 'search', project_id: action.project_id};
+            break;
+    }
+    return state;
+}
+
 
 const Tips = createStore(tips);
 const Loading = createStore(loading);
-export {Tips, Loading};
+const HeaderRight = createStore(header_right);
+export {Tips, Loading, HeaderRight};

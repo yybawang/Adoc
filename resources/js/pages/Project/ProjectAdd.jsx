@@ -47,6 +47,7 @@ class ProjectAdd extends React.Component {
                     <Card.Footer>
                         <ButtonGroup>
                             <Button onClick={() => this.submit()}>新建</Button>
+                            <Button variant={'secondary'} className={'ml-3'} onClick={() => history.goBack()}>返回</Button>
                         </ButtonGroup>
                     </Card.Footer>
                 </Card>
