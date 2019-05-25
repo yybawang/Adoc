@@ -70,7 +70,7 @@ class IndexController extends BaseController
      * @return mixed
      */
     public function events(int $id){
-        $events = PostEvent::where(['project_id' => $id])->with(['user', 'post'])->latest()->limit(20)->get()->each->parse();
+        $events = PostEvent::where(['project_id' => $id])->with(['user', 'post'])->latest()->limit(30)->get()->each->parse();
         return $this->success($events);
     }
     

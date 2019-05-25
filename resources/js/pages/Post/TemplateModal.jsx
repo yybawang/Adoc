@@ -88,7 +88,7 @@ class TemplateModal extends React.Component {
     
     componentWillUnmount() {
         this.setState = () => {};
-        this.historyModal();
+        this.templateModal();
     }
 }
 

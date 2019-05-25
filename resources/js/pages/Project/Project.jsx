@@ -12,6 +12,9 @@ class Project extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user: {
+                id: 0,
+            },
             project: {},
             events: [],
             posts: [],
@@ -25,15 +28,17 @@ class Project extends React.Component {
                 <div className={'position-sticky overflow-auto border-right project-left'}>
                     <ListGroup>
                         <ListGroup.Item variant={'light'} className={'text-dark'}>
-                            <ButtonGroup className={'h4 mb-0 d-inline-block text-truncate'} style={{width: '174px'}} title={this.state.project.name}>{this.state.project.name}</ButtonGroup>
+                            <ButtonGroup className={'h4 mb-0 d-inline-block text-truncate'} style={{width: (this.state.user.id > 0 ? 174 : 254) + 'px'}} title={this.state.project.name}>{this.state.project.name}</ButtonGroup>
+                            {this.state.user.id > 0 &&
                             <ButtonGroup>
-                                <Link className={'btn btn-link'} to={'/project_manager/'+this.props.match.params.id} title={'项目设置'}>
-                                    <Image src={manager} style={{width: '15px'}} />
+                                <Link className={'btn btn-link'} to={'/project_manager/' + this.props.match.params.id} title={'项目设置'}>
+                                    <Image src={manager} style={{width: '15px'}}/>
                                 </Link>
-                                <Link className={'btn btn-link'} to={'/post/'+this.props.match.params.id+'/add'} title={'添加新文档'}>
-                                    <Image src={add} style={{width: '17px'}} />
+                                <Link className={'btn btn-link'} to={'/post/' + this.props.match.params.id + '/add'} title={'添加新文档'}>
+                                    <Image src={add} style={{width: '17px'}}/>
                                 </Link>
                             </ButtonGroup>
+                            }
                         </ListGroup.Item>
                     </ListGroup>
                     <ProjectMenu project_id={this.props.match.params.id} posts={this.state.posts} onChange={(posts) => this.setState({posts})} />
@@ -70,6 +75,10 @@ class Project extends React.Component {
         
         axios.get('/project/'+id+'/posts').then((posts) => {
             this.setState({posts});
+        }).catch(()=>{})
+    
+        axios.get('/user').then((user) => {
+            this.setState({user});
         }).catch(()=>{})
     }
     

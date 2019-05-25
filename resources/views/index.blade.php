@@ -51,9 +51,9 @@
         <section class="panel spotlight medium right" id="first">
             <div class="content span-7">
                 <h2 class="major">Write</h2>
-                <p>我们只采用了 Markdown 做为<strong>唯一</strong>的文档编辑格式，这样会更好的统一风格，它易于排版，易于学习</p>
+                <p>只采用了 Markdown 做为<strong>唯一</strong>的文档编辑格式，这样会更好的统一风格，它易于排版，易于学习</p>
                 <p>更重要的是它应该是你必备的<strong>专业技能</strong></p>
-                <p>可以在这里<a target="_blank" href="//'">查看</a> Markdown 语法教程</p>
+                <p>可以在<a target="_blank" href="//github.com/riku/Markdown-Syntax-CN/blob/master/syntax.md'">这里</a>查看 Markdown 语法教程</p>
                 <p>💛 Enjoy Writing ;)</p>
             </div>
             <div class="image filtered tinted" data-position="top left">
@@ -65,7 +65,7 @@
         <section class="panel color1">
             <div class="intro joined">
                 <h2 class="major">About</h2>
-                <p>为了提升开发与使用的愉悦感，选择了 Laravel + React + Mysql，它们都经得起考验，我希望 Adoc 也是</p>
+                <p>为了提升开发与使用的愉悦感，选择了 Laravel + React + Mysql，它们都经得起考验 <small>--像做人做事一样</small></p>
                 <div>Laravel 5.8</div>
                 <div>React 16.8.6</div>
                 <div>Mysql 5.7</div>

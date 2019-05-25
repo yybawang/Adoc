@@ -51,6 +51,12 @@ class Header extends React.Component {
         }).catch(() => {});
     }
     
+    logout(){
+        localStorage.clear();
+        history.replace('/login');
+        User.dispatch({type: 'logout'});
+    }
+    
     search(keyword){
         if(this.state.search_timer){
             return;
@@ -72,7 +78,7 @@ class Header extends React.Component {
                 <Router history={history}>
                     <Navbar bg={'light'} expand="md">
                         <Navbar.Brand>
-                            <a className={'text-dark'} href={'/'}>Adoc</a>
+                            <a className={'text-dark text-decoration-none'} href={'/'}>Adoc</a>
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
@@ -84,7 +90,7 @@ class Header extends React.Component {
                                         <NavDropdown.Header>{this.state.user.email}</NavDropdown.Header>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item onClick={() => history.push('password')}>修改密码</NavDropdown.Item>
-                                        <NavDropdown.Item onClick={() => {localStorage.clear();history.replace('/login');}}>注销</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={() => this.logout()}>注销</NavDropdown.Item>
                                     </NavDropdown>
                                    
                                 ): (

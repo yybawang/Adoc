@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\PostStoreEvent;
+use App\Events\PostUpdateEvent;
 use App\Models\PostEvent;
 use App\Models\User;
 use Illuminate\Queue\InteractsWithQueue;
@@ -23,10 +24,10 @@ class PostUpdateListener
     /**
      * Handle the event.
      *
-     * @param  PostStoreEvent  $event
+     * @param  PostUpdateEvent  $event
      * @return void
      */
-    public function handle(PostStoreEvent $event)
+    public function handle(PostUpdateEvent $event)
     {
         $Post = $event->Post;
         $description = '<abbr title="{$user_email}">{$user_name}</abbr> 编辑了文档 「{$post_name}」<span class="text-muted float-right">{$updated_at}</span>';
