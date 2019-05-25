@@ -15,7 +15,7 @@ use \App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'Controller@app');
+Route::get('/', 'Controller@index');
 
 //Auth::routes();
 

@@ -7,6 +7,7 @@ import history from '../../configs/history'
 import axios from '../../configs/axios'
 import TemplateModal from "./TemplateModal";
 import {TemplateModalShow} from "./store";
+import {HeaderRight} from "../../configs/function";
 
 /**
  * 添加文档
@@ -32,6 +33,7 @@ class PostEdit extends React.Component {
                 status: 1,
             },
         };
+        HeaderRight.dispatch({type: 'none'});
     }
     
     template(temp){

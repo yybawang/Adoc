@@ -2,6 +2,7 @@ import React from 'react'
 import {Button, ButtonGroup, Card, Form} from "react-bootstrap";
 import history from '../../configs/history'
 import axios from '../../configs/axios'
+import {HeaderRight} from "../../configs/function";
 
 class ProjectAdd extends React.Component {
     constructor(props) {
@@ -12,6 +13,8 @@ class ProjectAdd extends React.Component {
             type: 0,
             tags: [],
         };
+        
+        HeaderRight.dispatch({type: 'none'});
     }
     
     submit(){

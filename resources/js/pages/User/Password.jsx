@@ -1,7 +1,7 @@
 import React from 'react'
 import {Button, Card, Form} from "react-bootstrap";
 import axios from '../../configs/axios'
-import {Tips} from "../../configs/function";
+import {HeaderRight, Tips} from "../../configs/function";
 import {User} from "../Layout/store";
 
 class Password extends React.Component {
@@ -12,6 +12,7 @@ class Password extends React.Component {
             password: '',
             password_confirmation: '',
         };
+        HeaderRight.dispatch({type: 'none'});
     }
     
     submit(){

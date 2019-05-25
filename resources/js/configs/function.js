@@ -65,6 +65,9 @@ function tips(state, action){
 
 function header_right(state, action){
     switch (action.type) {
+        case 'none':
+            state = {header_right: 'none', project_id: 0};
+            break;
         case 'add':
             state = {header_right: 'add', project_id: 0};
             break;

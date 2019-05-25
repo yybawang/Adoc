@@ -7,6 +7,7 @@ import history from '../../configs/history'
 import axios from '../../configs/axios'
 import {TemplateModalShow} from "./store";
 import TemplateModal from "./TemplateModal";
+import {HeaderRight} from "../../configs/function";
 
 /**
  * 添加文档
@@ -34,6 +35,7 @@ class PostAdd extends React.Component {
                 status: 1,
             },
         };
+        HeaderRight.dispatch({type: 'none'});
     }
     
     template(temp){

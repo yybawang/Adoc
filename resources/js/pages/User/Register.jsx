@@ -1,6 +1,7 @@
 import React from 'react'
 import {Button, Card, Form} from "react-bootstrap";
 import axios from '../../configs/axios'
+import {HeaderRight} from "../../configs/function";
 
 class Register extends React.Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class Register extends React.Component {
             password: '',
             password_confirmation: '',
         };
+        HeaderRight.dispatch({type: 'none'});
     }
     
     submit(){

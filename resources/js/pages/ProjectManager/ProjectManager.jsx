@@ -6,6 +6,7 @@ import Permission from './Manager/Permission'
 import Advanced from './Manager/Advanced'
 import axios from '../../configs/axios'
 import {Active} from "./store";
+import {HeaderRight} from "../../configs/function";
 
 class ProjectManager extends React.Component {
     constructor(props) {
@@ -18,6 +19,8 @@ class ProjectManager extends React.Component {
         this.active = Active.subscribe(() => {
             this.setState({page: Active.getState()});
         });
+    
+        HeaderRight.dispatch({type: 'search', project_id: this.props.match.params.id});
     }
     
     render() {

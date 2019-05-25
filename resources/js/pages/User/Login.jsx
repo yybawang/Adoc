@@ -2,6 +2,7 @@ import React from 'react'
 import {Button, Card, Form} from "react-bootstrap";
 import axios from '../../configs/axios'
 import {User} from "../Layout/store";
+import {HeaderRight} from "../../configs/function";
 
 class Login extends React.Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class Login extends React.Component {
             email: '',
             password: '',
         };
+        HeaderRight.dispatch({type: 'none'});
     }
     
     submit(){
