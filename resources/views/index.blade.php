@@ -29,7 +29,7 @@
                 <h1 class="major">Hello</h1>
                 <p>一个<strong>轻松</strong>的 Markdown 文档编辑器</p>
                 <p><strong>设计完整</strong>的 API 文档工作流</p>
-                <p title="简单清晰 right?">💚️ Nice to meet you ...again :)</p>
+                <p title="我们又见面了啊">💚️ Nice to meet you ...again :)</p>
                 <ul class="actions">
                     <li><a href="#first" class="button primary color1 circle icon fa-angle-right">Next</a></li>
 {{--                    <li><a href="/project">项目列表</a></li>--}}
