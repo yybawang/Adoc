@@ -2,7 +2,6 @@ import React from 'react'
 import Editor from 'react-editor-md'
 import PostTemplate from './PostTemplate'
 import {Container, Row, Col, Form, Button, Alert, Modal} from "react-bootstrap"
-import {BrowserRouter, Route, Link} from "react-router-dom";
 import history from '../../configs/history'
 import axios from '../../configs/axios'
 import {TemplateModalShow} from "./store";
@@ -56,8 +55,7 @@ class PostAdd extends React.Component {
     }
     
     content(){
-        let post = Object.assign({}, this.state.post, {content: this.editor.getMarkdown()});
-        this.setState({post});
+        return this.editor.getMarkdown();
     }
     
     children(id, index = 0){
@@ -150,6 +148,7 @@ class PostAdd extends React.Component {
                                     <Button variant={'outline-dark'} onClick={() => this.template('api')}>插入API接口模版</Button>
                                     <Button variant={'outline-dark'} className={'ml-3'} onClick={() => this.template('table')}>插入数据字典模版</Button>
                                     <Button variant={'outline-dark'} className={'ml-3'} onClick={() => TemplateModalShow.dispatch({type: 'show'})}>已保存模版</Button>
+                                    
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -169,7 +168,7 @@ class PostAdd extends React.Component {
                         </div>
                     </Container>
                 </Form>
-                <TemplateModal project_id={this.props.match.params.project_id} name={this.state.post.name} content={this.state.post.content} onContent={() => this.content()} onSubmit={(template) => {
+                <TemplateModal project_id={this.props.match.params.project_id} name={this.state.post.name} onContent={() => this.content()} onSubmit={(template) => {
                     this.setState({template});
                     setTimeout(()=>{
                         this.template('project');

@@ -13,7 +13,7 @@ class TemplateModal extends React.Component {
             templateChecked: 0,
         };
         
-        TemplateModalShow.subscribe(() => {
+        this.templateModal = TemplateModalShow.subscribe(() => {
             this.setState({templateModal: TemplateModalShow.getState()});
         });
     }
@@ -25,15 +25,15 @@ class TemplateModal extends React.Component {
     }
     
     delete(id){
-        axios.delete('/project/'+id+'/template ').then(() => {
+        axios.delete('/project/'+id+'/template').then(() => {
             Tips.dispatch({type: 'success', messages: ['已删除模版']});
             this.templateProject();
         }).catch(()=>{})
     }
     
     add(){
-        this.props.onContent();
-        axios.post('/project/'+this.props.project_id+'/template', {name: this.props.name, content: this.props.content}).then(() => {
+        let content = this.props.onContent();
+        axios.post('/project/'+this.props.project_id+'/template', {name: this.props.name, content: content}).then(() => {
             this.templateProject();
         }).catch(()=>{})
     }
@@ -50,7 +50,7 @@ class TemplateModal extends React.Component {
                         <ul style={{listStyle:'decimal'}}>
                             {this.state.templates.map((template, index) => (
                                 <li key={template.id} className={'pl-3 pr-5 my-2 position-relative'}>
-                                    <Form.Check type={'radio'} id={'template_project'+template.id} label={template.name+'（'+template.created_at+'）'} name={'template_project'} value={index} checked={this.state.templateChecked === index} onChange={(event) => {
+                                    <Form.Check type={'radio'} id={'template_project'+template.id} label={template.name+' ['+template.created_at+'] '} name={'template_project'} value={index} checked={this.state.templateChecked === index} onChange={(event) => {
                                         this.setState({templateChecked: parseInt(event.target.value)});
                                     }} />
                                     <Button className={'p-0 position-absolute'} style={{right:0, top:0}} size={'sm'} variant={'link'} onClick={() => this.delete(template.id)}>删除</Button>
@@ -84,6 +84,11 @@ class TemplateModal extends React.Component {
     
     componentDidMount() {
         this.templateProject();
+    }
+    
+    componentWillUnmount() {
+        this.setState = () => {};
+        this.historyModal();
     }
 }
 

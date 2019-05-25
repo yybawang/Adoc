@@ -2,12 +2,12 @@ import React from 'react'
 import Editor from 'react-editor-md'
 import PostTemplate from './PostTemplate'
 import {Container, Row, Col, Form, Button, Alert, Modal} from "react-bootstrap"
-import {BrowserRouter, Route, Link} from "react-router-dom";
 import history from '../../configs/history'
 import axios from '../../configs/axios'
 import TemplateModal from "./TemplateModal";
-import {TemplateModalShow} from "./store";
+import {HistoryModalShow, TemplateModalShow} from "./store";
 import {HeaderRight} from "../../configs/function";
+import HistoryModal from "./HistoryModal";
 
 /**
  * 添加文档
@@ -19,6 +19,7 @@ class PostEdit extends React.Component {
     constructor(props) {
         super(props);
         this.editor = '';
+        this.markdown = '';
         this.state = {
             template: '',
             templateModal: false,
@@ -54,8 +55,7 @@ class PostEdit extends React.Component {
     }
     
     content(){
-        let post = Object.assign({}, this.state.post, {content: this.editor.getMarkdown()});
-        this.setState({post});
+        return this.editor.getMarkdown();
     }
     
     post(id){
@@ -113,7 +113,6 @@ class PostEdit extends React.Component {
     
     submit(){
         let parents = [...this.state.post.parents];
-        logger(parents);
         let post = {
             pid: parents.pop() || parents.pop() || 0,
             project_id: this.state.post.project_id,
@@ -121,12 +120,11 @@ class PostEdit extends React.Component {
             content: this.editor.getMarkdown(),
             status: this.state.post.status,
         };
-    
         axios.patch('/post/'+this.state.post.id, post).then((res) => {
-            let post = {
+            let post = Object.assign({}, this.state.post, {
                 id: res.id,
                 project_id: res.project_id,
-            };
+            });
             this.setState({post});
         }).catch(()=>{});
     }
@@ -185,6 +183,7 @@ class PostEdit extends React.Component {
                                     <Button variant={'outline-dark'} onClick={() => this.template('api')}>插入API接口模版</Button>
                                     <Button variant={'outline-dark'} className={'ml-3'} onClick={() => this.template('table')}>插入数据字典模版</Button>
                                     <Button variant={'outline-dark'} className={'ml-3'} onClick={() => TemplateModalShow.dispatch({type: 'show'})}>已保存模版</Button>
+                                    <Button variant={'outline-dark'} className={'ml-3'} onClick={() => HistoryModalShow.dispatch({type: 'show'})}>历史</Button>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -205,7 +204,7 @@ class PostEdit extends React.Component {
                     </Container>
                 </Form>
                 {this.state.post.project_id &&
-                    <TemplateModal project_id={this.state.post.project_id} name={this.state.post.name} content={this.state.post.content} onContent={() => this.content()} onSubmit={(template) => {
+                    <TemplateModal project_id={this.state.post.project_id} name={this.state.post.name} onContent={() => this.content()} onSubmit={(template) => {
                         this.setState({template});
                         setTimeout(()=>{
                             this.template('project');
@@ -213,6 +212,7 @@ class PostEdit extends React.Component {
                         
                     }} />
                 }
+                <HistoryModal post_id={this.props.match.params.id} onContent={() => this.content()} />
                 <p className={'text-muted'}> Ctrl/Cmd + S 保存</p>
                 <p className={'text-muted'}> Ctrl/Cmd + Shift + S 保存并返回列表</p>
             </div>

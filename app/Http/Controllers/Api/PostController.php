@@ -145,8 +145,18 @@ class PostController extends BaseController
      * @return mixed
      */
     public function history(Post $post){
-        $Histories = PostHistory::where(['post_id' => $post->id])->latest()->paginate();
+        $Histories = PostHistory::select('id', 'created_at', 'post_id', 'user_id', 'content')->with(['user'])->where(['post_id' => $post->id])->latest()->get();
         return $this->success($Histories);
+    }
+    
+    /**
+     * 删除历史
+     * @param PostHistory $postHistory
+     * @return mixed
+     */
+    public function history_delete(PostHistory $postHistory){
+        $postHistory->delete();
+        return $this->success();
     }
     
     /**

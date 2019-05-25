@@ -24,6 +24,20 @@ function template_modal_show(state, action){
     return state;
 }
 
-const TemplateModalShow = createStore(template_modal_show);
+function history_modal_show(state, action){
+    switch (action.type) {
+        case 'show':
+            state = true;
+            break;
+        case 'hide':
+        default:
+            state = false;
+            break;
+    }
+    return state;
+}
 
-export {TemplateModalShow}
+const TemplateModalShow = createStore(template_modal_show);
+const HistoryModalShow = createStore(history_modal_show);
+
+export {TemplateModalShow, HistoryModalShow}
