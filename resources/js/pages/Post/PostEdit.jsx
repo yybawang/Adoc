@@ -1,12 +1,12 @@
 import React from 'react'
 import Editor from 'react-editor-md'
 import PostTemplate from './PostTemplate'
-import {Container, Row, Col, Form, Button, Alert, Modal} from "react-bootstrap"
+import {Container, Row, Col, Form, Button, Alert, Modal, Popover, ButtonGroup, OverlayTrigger} from "react-bootstrap"
 import history from '../../configs/history'
 import axios from '../../configs/axios'
 import TemplateModal from "./TemplateModal";
 import {HistoryModalShow, TemplateModalShow} from "./store";
-import {HeaderRight} from "../../configs/function";
+import {HeaderRight, Tips} from "../../configs/function";
 import HistoryModal from "./HistoryModal";
 
 /**
@@ -129,6 +129,13 @@ class PostEdit extends React.Component {
         }).catch(()=>{});
     }
     
+    delete(id){
+        axios.delete('/post/'+id).then(() => {
+            Tips.dispatch({type: 'success', messages: ['删除完成']});
+            history.replace('/project/'+this.state.post.project_id);
+        }).catch(()=>{});
+    }
+    
     back(){
         history.push('/project/' + this.state.post.project_id+ '/post/'+this.state.post.id);
     }
@@ -172,9 +179,19 @@ class PostEdit extends React.Component {
                                     ))}
                                 </Form.Group>
                             </Col>
-                            <Col xs={2} className={'text-right'}>
+                            <Col xs={3} className={'text-right'}>
+                                <OverlayTrigger trigger="focus" placement="left" overlay={
+                                    <Popover id="popover-basic" title="确认删除？此操作不可恢复">
+                                        <div className={'py-2'}>删除文档 <strong>{this.state.post.name}</strong></div>
+                                        <ButtonGroup>
+                                            <Button variant={'danger'} size={'sm'} onClick={() => this.delete(this.state.post.id)}>删除</Button>
+                                        </ButtonGroup>
+                                    </Popover>
+                                }>
+                                    <Button variant={'link'} className={'mr-3'}>删除</Button>
+                                </OverlayTrigger>
                                 <Button type={'submit'} onClick={() => this.submit()}>保存</Button>
-                                <Button variant={'outline-dark'} onClick={() => this.back()} className={'ml-4'}>返回</Button>
+                                <Button variant={'outline-dark'} onClick={() => this.back()} className={'ml-3'}>返回</Button>
                             </Col>
                         </Row>
                         <Row noGutters>

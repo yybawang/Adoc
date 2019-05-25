@@ -110,21 +110,20 @@ class PostController extends BaseController
             'html'      => '',
             'status'    => 'required|integer|min:0',
         ]);
-    
-        $post->update($param);
         
         // 存入修改记录
-        if($param['content']){
+        // 分发日志记录
+        if($param['content'] && $param['content'] != $post->content){
             PostHistory::create([
                 'user_id'   => Auth::id(),
                 'post_id'   => $post->id,
-                'content'   => $post['content'],
+                'content'   => $param['content'],
             ]);
+            event(new PostUpdateEvent($post));
         }
     
+        $post->update($param);
     
-        // 分发日志记录
-        event(new PostUpdateEvent($post));
         return $this->success($post);
     }
     
@@ -135,6 +134,12 @@ class PostController extends BaseController
      * @throws \Exception
      */
     public function delete(Post $post){
+        $post->histories->each->delete();
+        $post->attachments->each->delete();
+        $post->comments->each->likes->each->delete();
+        $post->comments->each->delete();
+        $post->likes->each->delete();
+        $post->events->each->delete();
         $post->delete();
         return $this->success();
     }

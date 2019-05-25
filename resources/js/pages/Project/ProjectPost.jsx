@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Col, Container, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Container, Row, OverlayTrigger, Popover} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import axios from '../../configs/axios'
 import {postId} from './store'
@@ -34,11 +34,6 @@ class ProjectPost extends React.Component {
         }
     }
     
-    
-    user(){
-    
-    }
-    
     editorConfig(){
         return {
             width: '100%',
@@ -56,7 +51,12 @@ class ProjectPost extends React.Component {
                         <h4>{this.state.post.name}</h4>
                     </Col>
                     <Col xs={2} className={'text-right'}>
-                        {this.state.user.id > 0 && <Link className={'btn btn-outline-dark'} to={'/post/'+this.props.match.params.post_id+'/edit'}>编辑</Link>}
+                        {this.state.user.id > 0 && (
+                            <ButtonGroup>
+                                
+                                <Link className={'btn btn-outline-dark'} to={'/post/'+this.props.match.params.post_id+'/edit'}>编辑</Link>
+                            </ButtonGroup>
+                        )}
                     </Col>
                 </Row>
                 <div className={'py-3 px-5 post-center markdown-body'}>

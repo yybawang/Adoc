@@ -27,6 +27,10 @@ class Post extends Model
         return $this->hasMany(PostHistory::class);
     }
     
+    public function events(){
+        return $this->hasMany(PostEvent::class);
+    }
+    
     /**
      * 留言列表
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
