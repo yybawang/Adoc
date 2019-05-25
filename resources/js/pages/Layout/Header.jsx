@@ -72,7 +72,7 @@ class Header extends React.Component {
                 <Router history={history}>
                     <Navbar bg={'light'} expand="md">
                         <Navbar.Brand>
-                            <Link to={'/'} className={'navbar-brand'}>Adoc</Link>
+                            <a className={'text-dark'} href={'/'}>Adoc</a>
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
