@@ -2,7 +2,7 @@
 
 > Just another markdown doc editor
 
-PHP + Laravel5.8 + React + bootstrap
+PHP 7.1.3 + Laravel 5.8 + React + bootstrap v4
 
 #### 安装
 
