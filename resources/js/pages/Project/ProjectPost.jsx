@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, ButtonGroup, Col, Container, Row, OverlayTrigger, Popover} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Container, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import axios from '../../configs/axios'
 import {postId} from './store'
@@ -53,7 +53,6 @@ class ProjectPost extends React.Component {
                     <Col xs={2} className={'text-right'}>
                         {this.state.user.id > 0 && (
                             <ButtonGroup>
-                                
                                 <Link className={'btn btn-outline-dark'} to={'/post/'+this.props.match.params.post_id+'/edit'}>编辑</Link>
                             </ButtonGroup>
                         )}
