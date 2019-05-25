@@ -86,7 +86,7 @@
         <section class="panel spotlight large left">
             <div class="content span-5">
                 <h2 class="major">Adoc</h2>
-                <p>就叫它 Adoc 吧，Just another markdown editor</p>
+                <p>就叫它 Adoc 吧，Just another markdown doc editor</p>
                 <p>这是一个免费开源的项目，代码已托管 <a target="_blank" href="//github.com/yybawang/adoc">Github</a>，你可以随时查看它，并且可以 <a target="_blank" href="//github.com/yybawang/adoc">Star</a> 它</p>
                 <p>❤️ I hope Adoc can help you</p>
             </div>

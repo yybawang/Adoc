@@ -39,7 +39,7 @@ axios.interceptors.response.use(function (response){
     Loading.dispatch({type: 'hide'});
     if(errors.response.status === 401){
         // 存入验证前的网页，登录/注册后再跳回来
-        localStorage.setItem('auth_jump', location.href);
+        localStorage.setItem('auth_jump', location.pathname);
     
         history.push('/login');
         return Promise.reject(errors.response.data.message);

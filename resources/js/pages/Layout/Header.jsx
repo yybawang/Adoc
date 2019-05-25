@@ -84,7 +84,7 @@ class Header extends React.Component {
                                         <NavDropdown.Header>{this.state.user.email}</NavDropdown.Header>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item onClick={() => history.push('password')}>修改密码</NavDropdown.Item>
-                                        <NavDropdown.Item onClick={() => {localStorage.clear();history.replace('login');}}>注销</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={() => {localStorage.clear();history.replace('/login');}}>注销</NavDropdown.Item>
                                     </NavDropdown>
                                    
                                 ): (
