@@ -6,8 +6,10 @@
 -->
 <html>
 <head>
-    <title>Ethereal by HTML5 UP</title>
+    <title>Adoc - A Doc editor</title>
     <meta charset="utf-8" />
+    <meta name="description" content="API文档编辑, show me the doc" />
+    <meta name="keywords" content="api doc,doc,api文档,文档编辑,在线文档,markdown文档,adoc" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="{{asset('/assets/css/main.css')}}" />
     <noscript><link rel="stylesheet" href="{{asset('/assets/css/noscript.css')}}" /></noscript>
