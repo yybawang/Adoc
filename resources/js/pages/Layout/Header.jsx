@@ -52,6 +52,10 @@ class Header extends React.Component {
     }
     
     logout(){
+        // 服务器注销，清空数据库 api_token
+        axios.get('/logout').then(() => {
+        
+        }).catch(()=>{});
         localStorage.clear();
         history.replace('/login');
         User.dispatch({type: 'logout'});

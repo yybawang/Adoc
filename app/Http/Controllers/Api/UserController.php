@@ -54,6 +54,11 @@ class UserController extends BaseController
         ]);
     }
     
+    public function logout(){
+        Auth::logout();
+        return $this->success();
+    }
+    
     /**
      * 获取登陆人基本信息
      * @param Request $request

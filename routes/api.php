@@ -29,6 +29,7 @@ Route::namespace('Api')->group(function(){
     
     Route::middleware(['auth:api'])->group(function(){
         // 公用的
+        Route::any('/logout', 'UserController@logout');
         Route::post('/password_check', 'UserController@password_check')->name('password_check');
         Route::patch('/password', 'UserController@password_update')->name('password_update');
         
