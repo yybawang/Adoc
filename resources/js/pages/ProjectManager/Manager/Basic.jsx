@@ -1,55 +1,60 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from '../../../configs/axios'
 import {Button, Form} from "react-bootstrap";
-import {Active} from "../store";
+import {useObject, useString} from "react-hooks-easy";
+import {Tips} from "../../../configs/function";
 
-class Basic extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            project: {name: '', description: ''},
-        };
+export default function Basic(props){
+    const projectManager = useObject('projectManager');
+    const managerPage = useString('projectManager');
+    const [project, setProject] = useState({});
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [type, setType] = useState(0);
+    
+    useEffect(() => {
+        managerPage.set('basic');
+        init();
+    }, []);
+    
+    async function init(){
+        let res = await axios.get('/project/'+props.match.params.id+'/edit');
+        setProject(res);
+        setName(res.name);
+        setDescription(res.description);
+        setType(Number(res.type));
     }
     
-    submit() {
-        axios.patch('/project/' + this.props.match.params.id, this.state.project).then((project) => {
-            this.setState({project})
-        }).catch(()=>{})
+    async function submit(){
+        let res = await axios.patch('/project/' + project.id, {name, description, type});
+        projectManager.reInitial(res);
+        Tips('修改完成', 'success');
     }
     
-    
-    render() {
-        return (
-            <div>
-                <Form onSubmit={(event) => {event.preventDefault()}}>
-                    <Form.Group>
-                        <Form.Label>项目名</Form.Label>
-                        <Form.Control value={this.state.project.name} onChange={(event)=> {
-                            let project = Object.assign({}, this.state.project, {name: event.target.value});
-                            this.setState({project});
-                        }} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>项目描述</Form.Label>
-                        <Form.Control as={'textarea'} value={this.state.project.description} onChange={(event)=> {
-                            let project = Object.assign({}, this.state.project, {description: event.target.value});
-                            this.setState({project});
-                        }} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Button type={'submit'} onClick={() => this.submit()}>修改</Button>
-                    </Form.Group>
-                </Form>
-            </div>
-        )
-    }
-    
-    componentDidMount() {
-        axios.get('/project/'+this.props.match.params.id+'/edit').then((project) => {
-            this.setState({project});
-        }).catch(()=>{})
-        Active.dispatch({type: 'set', page: 'basic'});
-    }
+    return (
+        <div>
+            <Form onSubmit={(event) => {
+                event.preventDefault()
+            }}>
+                <Form.Group>
+                    <Form.Label column={true}>项目名</Form.Label>
+                    <Form.Control value={name} onChange={(event)=> setName(event.target.value)} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label column={true}>项目描述</Form.Label>
+                    <Form.Control value={description} as={'textarea'} onChange={(event)=> setDescription(event.target.value)} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label column={true}>可见性</Form.Label>
+                    <div>
+                        <Form.Check type={'radio'} checked={type === 0} inline custom id={'type0'} name={'type'} onChange={(event) => setType(0)} label={'公共'} />
+                        <Form.Check type={'radio'} checked={type === 1} inline custom id={'type1'} name={'type'} onChange={(event) => setType(1)} label={'私有'} />
+                    </div>
+                </Form.Group>
+                <Form.Group>
+                    <Button type={'submit'} onClick={() => submit()}>修改</Button>
+                </Form.Group>
+            </Form>
+        </div>
+    );
 }
-
-export default Basic

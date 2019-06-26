@@ -1,12 +1,13 @@
 import React from 'react'
 import Editor from 'react-editor-md'
 import PostTemplate from './PostTemplate'
-import {Container, Row, Col, Form, Button, Alert, Modal} from "react-bootstrap"
+import {Container, Row, Col, Form, Button, Alert, Modal, Popover, ButtonGroup, OverlayTrigger} from "react-bootstrap"
 import history from '../../configs/history'
 import axios from '../../configs/axios'
-import {TemplateModalShow} from "./store";
 import TemplateModal from "./TemplateModal";
-import {HeaderRight} from "../../configs/function";
+import {HistoryModalShow, TemplateModalShow} from "./store";
+import {HeaderRight, Tips} from "../../configs/function";
+import HistoryModal from "./HistoryModal";
 
 /**
  * 添加文档
@@ -14,19 +15,18 @@ import {HeaderRight} from "../../configs/function";
  * 2、预定义模版、自定义模版
  * 3、历史对比
  */
-class PostAdd extends React.Component {
+class PostEdit_bak extends React.Component {
     constructor(props) {
         super(props);
         this.editor = '';
+        this.markdown = '';
         this.state = {
             template: '',
-            post_id: 0,
-            templates: [],
             templateModal: false,
-            templateChecked: 0,
             histories: [],
             parents: [],
             post: {
+                id: 0,
                 name: '',
                 content: '',
                 parents: [],
@@ -58,13 +58,51 @@ class PostAdd extends React.Component {
         return this.editor.getMarkdown();
     }
     
+    post(id){
+        axios.get('/post/'+id+'/edit').then((post) => {
+            this.setState({post});
+            let interval = setInterval(() => {
+                if(this.editor){
+                    clearInterval(interval);
+                    this.editor.setMarkdown(post.content);
+                }
+            }, 100);
+            // 继续请求父级
+            let promise = [];
+            if(post.parents.length === 0){
+                post.parents.push(0);
+            }
+            for(let i in post.parents){
+                promise.push(this.parent(post.parents[i], i));
+            }
+            let parents = [];
+            for(let i in promise){
+                promise[i].then((res) => parents[i] = res);
+            }
+            
+            // hack 一下，异步延迟问题
+            let interval2 = setInterval(() => {
+                if(parents.length >= promise.length){
+                    clearInterval(interval2);
+                    this.setState({parents: parents});
+                    
+                }
+            }, 100);
+            
+        }).catch(()=>{})
+    }
+    
+    async parent(id){
+        return await axios.get('/post/'+this.state.post.project_id+'/'+id+'/parent');
+    }
+    
     children(id, index = 0){
         let parents = Array.from(this.state.parents).slice(0, index+1);
         if(id === ''){
             this.setState({parents});
             return;
         }
-        axios.get('/post/'+this.props.match.params.project_id+'/'+id+'/children').then((res) => {
+        axios.get('/post/'+this.state.post.project_id+'/'+id+'/children').then((res) => {
             if(res.length <= 0){
                 return;
             }
@@ -76,26 +114,30 @@ class PostAdd extends React.Component {
     submit(){
         let parents = [...this.state.post.parents];
         let post = {
-            id: this.state.post_id,
             pid: parents.pop() || parents.pop() || 0,
-            project_id: this.props.match.params.project_id,
+            project_id: this.state.post.project_id,
             name: this.state.post.name,
             content: this.editor.getMarkdown(),
             status: this.state.post.status,
         };
-        let ajax;
-        if(this.state.post_id > 0){
-            ajax = axios.patch('/post/'+this.state.post_id, post);
-        }else{
-            ajax = axios.post('/post', post);
-        }
-        ajax.then((post) => {
-            this.setState({post_id: post.id});
+        axios.patch('/post/'+this.state.post.id, post).then((res) => {
+            let post = Object.assign({}, this.state.post, {
+                id: res.id,
+                project_id: res.project_id,
+            });
+            this.setState({post});
+        }).catch(()=>{});
+    }
+    
+    delete(id){
+        axios.delete('/post/'+id).then(() => {
+            Tips.dispatch({type: 'success', messages: ['删除完成']});
+            history.replace('/project/'+this.state.post.project_id);
         }).catch(()=>{});
     }
     
     back(){
-        history.replace('/project/' + this.props.match.params.project_id + (this.state.post_id ? '/post/'+this.state.post_id : ''));
+        history.push('/project/' + this.state.post.project_id+ '/post/'+this.state.post.id);
     }
     
     unbind(){
@@ -137,9 +179,19 @@ class PostAdd extends React.Component {
                                     ))}
                                 </Form.Group>
                             </Col>
-                            <Col xs={2} className={'text-right'}>
+                            <Col xs={3} className={'text-right'}>
+                                <OverlayTrigger trigger="focus" placement="left" overlay={
+                                    <Popover id="popover-basic" title="确认删除？此操作不可恢复">
+                                        <div className={'py-2'}>删除文档 <strong>{this.state.post.name}</strong></div>
+                                        <ButtonGroup>
+                                            <Button variant={'danger'} size={'sm'} onClick={() => this.delete(this.state.post.id)}>删除</Button>
+                                        </ButtonGroup>
+                                    </Popover>
+                                }>
+                                    <Button variant={'link'} className={'mr-3'}>删除</Button>
+                                </OverlayTrigger>
                                 <Button type={'submit'} onClick={() => this.submit()}>保存</Button>
-                                <Button variant={'outline-dark'} onClick={() => this.back()} className={'ml-4'}>返回</Button>
+                                <Button variant={'outline-dark'} onClick={() => this.back()} className={'ml-3'}>返回</Button>
                             </Col>
                         </Row>
                         <Row noGutters>
@@ -148,7 +200,7 @@ class PostAdd extends React.Component {
                                     <Button variant={'outline-dark'} onClick={() => this.template('api')}>插入API接口模版</Button>
                                     <Button variant={'outline-dark'} className={'ml-3'} onClick={() => this.template('table')}>插入数据字典模版</Button>
                                     <Button variant={'outline-dark'} className={'ml-3'} onClick={() => TemplateModalShow.dispatch({type: 'show'})}>已保存模版</Button>
-                                    
+                                    <Button variant={'outline-dark'} className={'ml-3'} onClick={() => HistoryModalShow.dispatch({type: 'show'})}>历史</Button>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -168,12 +220,16 @@ class PostAdd extends React.Component {
                         </div>
                     </Container>
                 </Form>
-                <TemplateModal project_id={this.props.match.params.project_id} name={this.state.post.name} onContent={() => this.content()} onSubmit={(template) => {
-                    this.setState({template});
-                    setTimeout(()=>{
-                        this.template('project');
-                    }, 100);
-                }} />
+                {this.state.post.project_id &&
+                    <TemplateModal project_id={this.state.post.project_id} name={this.state.post.name} onContent={() => this.content()} onSubmit={(template) => {
+                        this.setState({template});
+                        setTimeout(()=>{
+                            this.template('project');
+                        }, 100);
+                        
+                    }} />
+                }
+                <HistoryModal post_id={this.props.match.params.id} onContent={() => this.content()} />
                 <p className={'text-muted'}> Ctrl/Cmd + S 保存</p>
                 <p className={'text-muted'}> Ctrl/Cmd + Shift + S 保存并返回列表</p>
             </div>
@@ -182,7 +238,8 @@ class PostAdd extends React.Component {
     
     componentDidMount() {
         let t = this;
-        this.children(0);
+        this.post(this.props.match.params.id);
+        
         $(window).keydown(function(e){
             // ctrl + s
             let ctrlKey = e.ctrlKey || e.metaKey;
@@ -202,4 +259,4 @@ class PostAdd extends React.Component {
     }
 }
 
-export default PostAdd
+export default PostEdit_bak

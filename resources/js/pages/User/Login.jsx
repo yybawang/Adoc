@@ -1,63 +1,52 @@
-import React from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Button, Card, Form} from "react-bootstrap";
 import axios from '../../configs/axios'
-import {User} from "../Layout/store";
-import {HeaderRight} from "../../configs/function";
+import {useObject} from "react-hooks-easy";
 
-class Login extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-        };
-        HeaderRight.dispatch({type: 'none'});
-    }
+export default function Login(props){
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const focus = useRef(null);
+    const user = useObject('user');
     
-    submit(){
-        if(!this.state.email || !this.state.password){
-            return;
+    useEffect(() => {
+        localStorage.removeItem('api_token');
+        user.reset();
+        focus.current.focus();
+    }, []);
+    
+    async function submit(){
+        let res = await axios.post('/login', {email, password});
+        user.reInitial(res);
+        localStorage.setItem('api_token', res.api_token);
+        let jump = localStorage.getItem('auth_jump');
+        if(!jump || jump === '/login' || jump === '/register'){
+            jump = '/projects';
         }
-        axios.post('/login', {email: this.state.email, password: this.state.password}).then((user) => {
-            localStorage.setItem('user_id', user.id);
-            localStorage.setItem('api_token', user.api_token);
-            User.dispatch({type: 'login'});
-            let jump_url = localStorage.getItem('auth_jump') || '/project';
-            localStorage.removeItem('auth_jump');
-            // 返回之前的页面
-            this.props.history.replace(jump_url);
-        }).catch(()=>{})
+        props.history.replace(jump);
     }
     
-    render() {
-        return (
-            <div className={'mt-3 login'}>
-                <Form onSubmit={(event) => {event.preventDefault()}}>
-                    <Card>
-                        <Card.Header><h5>登录</h5></Card.Header>
-                        <Card.Body>
-                                <Form.Group>
-                                    <Form.Label>邮箱</Form.Label>
-                                    <Form.Control ref={'email'} value={this.state.email} type={'email'} required onChange={(event) => this.setState({email: event.target.value})} placeholder={'Email'} />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>登录密码</Form.Label>
-                                    <Form.Control value={this.state.password} type={'password'} required onChange={(event) => this.setState({password: event.target.value})} placeholder={'Password'} />
-                                </Form.Group>
-                        </Card.Body>
-                        <Card.Footer>
-                            <Button variant={'primary'} type={'submit'} onClick={() => this.submit()}>登录</Button>
-                            <Button variant={'link'} onClick={() => this.props.history.push('/register')}>没有账号？注册一个</Button>
-                        </Card.Footer>
-                    </Card>
-                </Form>
-            </div>
-        )
-    }
-    
-    componentDidMount() {
-        this.refs.email.focus();
-    }
+    return (
+        <div className={'mt-3 login'}>
+            <Form onSubmit={(event) => {event.preventDefault()}}>
+                <Card>
+                    <Card.Header><h5>登录</h5></Card.Header>
+                    <Card.Body>
+                        <Form.Group>
+                            <Form.Label column={true}>邮箱</Form.Label>
+                            <Form.Control ref={focus} value={email} type={'email'} required onChange={(event) => setEmail(event.target.value)} placeholder={'Email'} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label column={true}>密码</Form.Label>
+                            <Form.Control value={password} type={'password'} required onChange={(event) => setPassword(event.target.value)} placeholder={'Password'} />
+                        </Form.Group>
+                    </Card.Body>
+                    <Card.Footer>
+                        <Button variant={'primary'} type={'submit'} onClick={() => submit()}>登录</Button>
+                        <Button variant={'link'} onClick={() => props.history.push('/register')}>没有账号？注册一个</Button>
+                    </Card.Footer>
+                </Card>
+            </Form>
+        </div>
+    )
 }
-
-export default Login

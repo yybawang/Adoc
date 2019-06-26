@@ -25,22 +25,22 @@ Route::namespace('Api')->group(function(){
     Route::post('/upload_md', 'IndexController@upload_md');
     Route::get('/user', 'UserController@user');
     Route::post('/login', 'UserController@login');
+    Route::any('/logout', 'UserController@logout');
     Route::post('/register', 'UserController@register');
     
     Route::middleware(['auth:api'])->group(function(){
         // 公用的
-        Route::any('/logout', 'UserController@logout');
         Route::post('/password_check', 'UserController@password_check')->name('password_check');
         Route::patch('/password', 'UserController@password_update')->name('password_update');
         
-        Route::get('/project/{project}/edit', 'ProjectController@detail')->middleware('can:view,project');
+        Route::get('/project/{project}/edit', 'ProjectController@detail')->middleware('can:update,project');
         Route::post('/project', 'ProjectController@store')->middleware('can:create,App\Models\Project');
         Route::patch('/project/{project}', 'ProjectController@update')->middleware('can:update,project');
         Route::patch('/project/{project}/transfer', 'ProjectController@transfer')->middleware('can:transfer,project');
         Route::delete('/project/{project}', 'ProjectController@delete')->middleware('can:delete,project');
         
         Route::get('/project/{project}/permission', 'ProjectController@permission')->middleware('can:permission,project');
-        Route::get('/project/permission/user/{keyword}', 'ProjectController@permission_user')->middleware('can:permission,App\Models\Project');
+        Route::get('/project/{project}/permission/{keyword}', 'ProjectController@permission_user')->middleware('can:permission,project');
         Route::post('/project/{project}/permission', 'ProjectController@permission_store')->middleware('can:permission,project');
         Route::delete('/project/{projectPermission}/permission', 'ProjectController@permission_delete')->middleware('can:permission,projectPermission');
         

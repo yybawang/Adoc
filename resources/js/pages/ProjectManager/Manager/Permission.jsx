@@ -1,159 +1,154 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from '../../../configs/axios'
 import {Button, ButtonGroup, Col, Form, OverlayTrigger, ListGroup, ListGroupItem, Popover, Row, Table} from "react-bootstrap";
 import {Tips} from "../../../configs/function";
-import {Active} from "../store";
+import {useObject, useString} from "react-hooks-easy";
 
-class Permission extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            keyword: '',
-            keyword_users: [],
-            user_id: 0,
-            write: false,
-            admin: false,
-            permissions: [],
-        };
+export default function Permission(props){
+    const managerPage = useString('projectManager');
+    const project = useObject('projectManager');
+    const [keyword, setKeyword] = useState('');
+    const [keywordUsers, setKeywordUsers] = useState([]);
+    const [userId, setUserId] = useState(0);
+    const [list, setList] = useState([]);
+    const [write, setWrite] = useState(false);
+    const [admin, setAdmin] = useState(false);
+    
+    useEffect(() => {
+        managerPage.set('permission');
+        init();
+    }, []);
+    
+    async function init(){
+        let res = await axios.get('/project/'+props.match.params.id+'/permission');
+        setList(res);
     }
     
-    add(){
-        if(!this.state.user_id){
-            Tips.dispatch({type: 'warn', messages: ['未选择用户']});
+    async function search(keyword){
+        let res = await axios.get('/project/'+props.match.params.id+'/permission/'+keyword);
+        setKeywordUsers(res);
+    }
+    
+    async function add(){
+        if(!userId){
+            Tips('未選擇用戶', 'warn');
+            return false;
         }
-        axios.post('/project/'+this.props.match.params.id+'/permission', {user_id: this.state.user_id, write: this.state.write, admin: this.state.admin}).then(()=>{
-            this.permissions();
-        }).catch(()=>{})
+        await axios.post('/project/'+props.match.params.id+'/permission', {user_id: userId, write, admin});
+        init();
     }
     
-    edit(permission){
-        axios.post('/project/'+this.props.match.params.id+'/permission', {user_id: permission.user_id, write: permission.write, admin: permission.admin}).then((data)=>{
-        
-        }).catch(()=>{})
+    async function edit(permission){
+        await axios.post('/project/'+props.match.params.id+'/permission', {user_id: permission.user_id, write: permission.write, admin: permission.admin});
     }
     
-    delete(id){
-        axios.delete('/project/'+id+'/permission').then(()=>{
-            this.permissions();
-        }).catch(()=>{});
+    async function del(id){
+        await axios.delete('/project/'+id+'/permission');
+        init();
     }
     
-    permissions(){
-        axios.get('/project/'+this.props.match.params.id+'/permission').then((permissions)=>{
-            this.setState({permissions});
-        }).catch(()=>{})
-    }
-    
-    keyword_users(keyword){
-        axios.get('/project/permission/user/'+keyword).then((keyword_users) => {
-            this.setState({keyword_users});
-        }).catch(()=>{})
-    }
-    
-    render() {
-        return (
-            <div>
-                <Form onSubmit={(event) => {event.preventDefault()}}>
-                    <Form.Group>
-                        <Form.Label>用户名/Email 检索</Form.Label>
-                        <Row>
-                            <Col>
-                                <Form.Control value={this.state.keyword} onChange={(event) => {
-                                    this.setState({keyword: event.target.value, user_id: 0});
-                                    if(event.target.value.length >= 3){
-                                        this.keyword_users(event.target.value);
-                                    }
-                                }} />
-                                {this.state.keyword_users.length > 0 && (
-                                    <ListGroup className={'position-absolute permission-search border shadow'}>
-                                        {this.state.keyword_users.map((user) => (
-                                            <ListGroupItem key={user.id} variant={'light'} className={'text-dark border-bottom'} onClick={() => {
-                                                this.setState({keyword: user.name, keyword_users: [], user_id: user.id});
-                                            }}>
-                                                {user.name}
-                                            </ListGroupItem>
-                                        ))}
-                                    </ListGroup>
-                                    )
+    return (
+        <div>
+            <Form onSubmit={(event) => {event.preventDefault()}}>
+                <Form.Group>
+                    <Form.Label column={true}>用户名/Email 检索</Form.Label>
+                    <Row>
+                        <Col>
+                            <Form.Control value={keyword} onChange={(event) => {
+                                setKeyword(event.target.value);
+                                setUserId(0);
+                                if(event.target.value.length >= 3){
+                                    search(event.target.value);
+                                }else{
+                                    setKeywordUsers([]);
                                 }
-                            </Col>
-                            <Col>
-                                <Button type={'submit'} onClick={() => this.add()}>添加</Button>
-                            </Col>
-                        </Row>
-                    </Form.Group>
-                </Form>
-                <Table responsive bordered hover>
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>用户名</th>
-                        <th>Email</th>
-                        <th>写入权限</th>
-                        <th>协助管理者</th>
-                        <th>操作</th>
+                            }} />
+                            {keywordUsers.length > 0 && (
+                                <ListGroup className={'position-absolute permission-search border shadow'}>
+                                    {keywordUsers.map((user, index) => (
+                                        <div key={user.id} className={index+1 < keywordUsers.length ? 'border-bottom' : ''}>
+                                        <ListGroupItem variant={'light'} className={'text-dark'} onClick={() => {
+                                            setKeyword(user.name);
+                                            setKeywordUsers([]);
+                                            setUserId(user.id);
+                                        }}>
+                                            {user.name}
+                                        </ListGroupItem>
+                                        </div>
+                                    ))}
+                                </ListGroup>
+                            )
+                            }
+                        </Col>
+                        <Col>
+                            <Button type={'submit'} onClick={() => add()}>添加</Button>
+                        </Col>
+                    </Row>
+                </Form.Group>
+            </Form>
+            <Table responsive bordered hover>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>用户名</th>
+                    <th>Email</th>
+                    <th>写入权限</th>
+                    <th>协助管理者</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {list.map((permission, index) => (
+                    <tr key={permission.id}>
+                        <td>{index+1}</td>
+                        <td>{permission.user.name}</td>
+                        <td>{permission.user.email}</td>
+                        <td>
+                            <Form.Check
+                                custom
+                                type={'checkbox'}
+                                checked={permission.write}
+                                onChange={(event) => {
+                                    let permissions = [...list];
+                                    permissions[index].write = event.target.checked;
+                                    setList(permissions);
+                                    edit(permissions[index]);
+                                }}
+                                id={'permission_write_'+permission.id}
+                                label={'可写'}
+                            />
+                        </td>
+                        <td>
+                            <Form.Check
+                                custom
+                                type={'checkbox'}
+                                checked={permission.admin}
+                                onChange={(event) => {
+                                    let permissions = [...list];
+                                    permissions[index].admin = event.target.checked;
+                                    setList(permissions);
+                                    edit(permissions[index]);
+                                }}
+                                id={'permission_admin_'+permission.id}
+                                label={'管理者'}
+                            />
+                        </td>
+                        <td>
+                            <OverlayTrigger trigger="focus" placement="left" overlay={
+                                <Popover id="popover-basic" title="删除?">
+                                    <div className={'py-2'}>移除用户 <strong>{permission.user.name}</strong> 的权限</div>
+                                    <ButtonGroup>
+                                        <Button variant={'danger'} size={'sm'} onClick={() => del(permission.id)}>删除</Button>
+                                    </ButtonGroup>
+                                </Popover>
+                            }>
+                                <Button size={'sm'} variant={'warning'}>删除</Button>
+                            </OverlayTrigger>
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.permissions.map((permission, index) => (
-                        <tr key={permission.id}>
-                            <td>{index+1}</td>
-                            <td>{permission.user.name}</td>
-                            <td>{permission.user.email}</td>
-                            <td>
-                                <Form.Check
-                                    custom
-                                    type={'checkbox'}
-                                    checked={permission.write}
-                                    onChange={(event) => {
-                                        let permissions = [...this.state.permissions];
-                                        permissions[index].write = event.target.checked;
-                                        this.setState({permissions});
-                                        this.edit(permissions[index]);
-                                    }}
-                                    id={'permission_write_'+permission.id}
-                                    label={'可写'}
-                                />
-                            </td>
-                            <td>
-                                <Form.Check
-                                    custom
-                                    type={'checkbox'}
-                                    checked={permission.admin}
-                                    onChange={(event) => {
-                                        let permissions = [...this.state.permissions];
-                                        permissions[index].admin = event.target.checked;
-                                        this.setState({permissions});
-                                        this.edit(permissions[index]);
-                                    }}
-                                    id={'permission_admin_'+permission.id}
-                                    label={'管理者'}
-                                />
-                            </td>
-                            <td>
-                                <OverlayTrigger trigger="focus" placement="left" overlay={
-                                    <Popover id="popover-basic" title="删除?">
-                                        <div className={'py-2'}>移除用户 <strong>{permission.user.name}</strong> 的权限</div>
-                                        <ButtonGroup>
-                                            <Button variant={'danger'} size={'sm'} onClick={() => this.delete(permission.id)}>删除</Button>
-                                        </ButtonGroup>
-                                    </Popover>
-                                }>
-                                    <Button size={'sm'} variant={'warning'}>删除</Button>
-                                </OverlayTrigger>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </Table>
-            </div>
-        )
-    }
-    
-    componentDidMount() {
-        this.permissions();
-        Active.dispatch({type: 'set', page: 'permission'});
-    }
+                ))}
+                </tbody>
+            </Table>
+        </div>
+    );
 }
-
-export default Permission

@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDom from 'react-dom';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -14,9 +16,7 @@ require('./bootstrap');
  */
 // require('./components/Example');
 
-import React from 'react';
-import ReactDom from 'react-dom';
 
-import Header from './pages/Layout/Header';
+import App from './pages/App/App';
 
-ReactDom.render(<Header />, document.getElementById('app'));
+ReactDom.render(<App />, document.getElementById('app'));

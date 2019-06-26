@@ -36,8 +36,6 @@ class HistoryModal extends React.Component {
         }
         
         let content = this.props.onContent();
-        logger(content);
-        logger(this.state.histories[index].content);
         this.setState({now_content: content, history_content: this.state.histories[index].content, show_history: true});
     }
     

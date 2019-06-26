@@ -9,18 +9,18 @@ window.collect = require('collect.js');
  */
 
 try {
-    window.Popper = require('popper.js').default;
+    // window.Popper = require('popper.js').default;
     // window.$ = window.jQuery = require('jquery');
     
-    require('bootstrap');
+    // require('bootstrap');
 } catch (e) {}
 
 window.logger = function(...args){
     for(let i in args){
-        console.log('-----------------------------------  start');
+        console.log(i+'-----------------------------------  start');
         console.info(typeof args[i]);
         console.log(args[i]);
-        console.log('-----------------------------------  end');
+        console.log(i+'-----------------------------------  end');
     }
 };
 

@@ -1,4 +1,3 @@
-import {createStore} from 'redux';
 import cogoToast from 'cogo-toast';
 import NProgress from 'nprogress';
 NProgress.configure({
@@ -7,79 +6,52 @@ NProgress.configure({
 
 /**
  * 全局顶部等待提示
- * @param state
- * @param action
+ * @param close
  * @returns {boolean}
  */
-function loading(state, action){
-    switch (action.type) {
-        case 'show':
-            state = true;
-            NProgress.start();
-            break;
-        case 'hide':
-        default:
-            state = false;
-            NProgress.done();
-            break;
+function Loading(close = false){
+    if(!close){
+        NProgress.start();
+    }else{
+        NProgress.done();
     }
-    return state;
+    return true;
 }
 
 /**
  * 右上角提示
- * @param state
- * @param action
- * @returns {{show: boolean, messages: (*|Array|string[]|*[])}}
+ * @param message
+ * @param type
+ * @returns boolean
  */
-function tips(state, action){
+function Tips(message, type = 'info'){
     let options = {
         position: 'top-right',
     };
-    let parse = function(messages){
-        return [...messages].shift();
-    };
-    switch (action.type) {
-        case 'success':
-            // state = {show:true, messages: action.messages};
-            cogoToast.success(parse(action.messages), options);
-            break;
+    switch (type) {
         case 'info':
-            cogoToast.info(parse(action.messages), options);
+            cogoToast.info(message, options);
+            break;
+        case 'succ':
+        case 'success':
+            cogoToast.success(message, options);
             break;
         case 'loading':
-            cogoToast.loading(parse(action.messages), options);
+            cogoToast.loading(message, options);
             break;
         case 'warn':
-            cogoToast.warn(parse(action.messages), options);
+        case 'warning':
+            cogoToast.warn(message, options);
             break;
         case 'error':
-            cogoToast.error(parse(action.messages), options);
+            cogoToast.error(message, options);
             break;
         default:
             // state = {show:false, messages : []};
             break;
     }
-    return state;
-}
-
-function header_right(state, action){
-    switch (action.type) {
-        case 'none':
-            state = {header_right: 'none', project_id: 0};
-            break;
-        case 'add':
-            state = {header_right: 'add', project_id: 0};
-            break;
-        case 'search':
-            state = {header_right: 'search', project_id: action.project_id};
-            break;
-    }
-    return state;
+    return true;
 }
 
 
-const Tips = createStore(tips);
-const Loading = createStore(loading);
-const HeaderRight = createStore(header_right);
-export {Tips, Loading, HeaderRight};
+export {Tips, Loading};

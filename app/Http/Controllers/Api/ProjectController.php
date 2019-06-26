@@ -42,12 +42,14 @@ class ProjectController extends BaseController
         }
         $Project = Project::create($post);
         
-        // 本来数据中有，而新传递没有的就是要删除的
-        foreach($post['tags'] as $tag){
-            ProjectTag::create([
-                'project_id'=> $Project->id,
-                'name'      => $tag,
-            ]);
+        if(!empty($post['tags'])){
+            // 本来数据中有，而新传递没有的就是要删除的
+            foreach($post['tags'] as $tag){
+                ProjectTag::create([
+                    'project_id'=> $Project->id,
+                    'name'      => $tag,
+                ]);
+            }
         }
         return $this->success($Project);
     }
@@ -69,13 +71,16 @@ class ProjectController extends BaseController
         $project->update($post);
         
         // 本来数据中有，而新传递没有的就是要删除的
-        ProjectTag::where('project_id', $project->id)->whereNotIn('name', $post['tags'])->delete();
-        foreach($post['tags'] as $tag){
-            ProjectTag::updateOrCreate([
-                'project_id'=> $project->id,
-                'name'      => $tag,
-            ]);
+        if(!empty($post['tags'])){
+            ProjectTag::where('project_id', $project->id)->whereNotIn('name', $post['tags'])->delete();
+            foreach($post['tags'] as $tag){
+                ProjectTag::updateOrCreate([
+                    'project_id'=> $project->id,
+                    'name'      => $tag,
+                ]);
+            }
         }
+        
         return $this->success($project);
     }
     
@@ -152,7 +157,7 @@ class ProjectController extends BaseController
      * @param string $keyword
      * @return mixed
      */
-    public function permission_user(Request $request, string $keyword){
+    public function permission_user(Request $request, Project $project, string $keyword){
         if(strlen($keyword) < 3){
             exception('关键字最少为 3 个字符');
         }
@@ -176,7 +181,11 @@ class ProjectController extends BaseController
         ]);
         // 操作人
         $post['admin_id'] = Auth::id();
-        $Permission = ProjectPermission::updateOrCreate(['project_id' => $project->id, 'user_id' => $post['user_id']], $post);
+        
+        if(ProjectPermission::where(['project_id' => $project->id, 'user_id' => $post['user_id']])->exists()){
+            exception('该用戶已在权限列表中');
+        }
+        $Permission = ProjectPermission::create($post);
         return $this->success($Permission);
     }
     

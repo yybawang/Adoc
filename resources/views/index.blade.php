@@ -39,7 +39,7 @@
                 <img src="{{asset('/images/pic01.jpg')}}" alt="" />
                 <div style="position:absolute;top:5rem;left:3rem;">
                     <h2 class="major">Go</h2>
-                    <h4><a target="_self" href="/project">项目列表</a></h4>
+                    <h4><a target="_self" href="/projects">项目列表</a></h4>
                     <h4><a target="_self" href="/project_add">新建项目</a></h4>
                     <h4><a target="_self" href="/login">登录</a></h4>
                     <h4><a target="_self" href="/register">注册</a></h4>

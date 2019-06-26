@@ -43,6 +43,10 @@ class Post extends Model
         return $this->hasMany(PostLike::class);
     }
     
+    public function getToggleAttribute(){
+        return $this->attributes['open'] = true;
+    }
+    
     /**
      * 递归上级文章
      * @return mixed
@@ -81,6 +85,7 @@ class Post extends Model
     }
     private function _children($project_id, $pid, $field){
         $res = Post::selectRaw($field)->where(['project_id' => $project_id, 'pid' => $pid])->active()->get()->each(function($v) use ($project_id, $field){
+            $v->append('toggle');
            $v->children = $this->_children($project_id, $v->id, $field);
         });
         return $res;
