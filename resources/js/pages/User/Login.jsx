@@ -11,7 +11,7 @@ export default function Login(props){
     
     useEffect(() => {
         localStorage.removeItem('api_token');
-        user.reset();
+        user.reInitial({});
         focus.current.focus();
     }, []);
     
@@ -34,11 +34,11 @@ export default function Login(props){
                     <Card.Body>
                         <Form.Group>
                             <Form.Label column={true}>邮箱</Form.Label>
-                            <Form.Control ref={focus} value={email} type={'email'} required onChange={(event) => setEmail(event.target.value)} placeholder={'Email'} />
+                            <Form.Control ref={focus} value={email} type={'email'} required onChange={(event) => setEmail(event.target.value)} placeholder={'邮箱'} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label column={true}>密码</Form.Label>
-                            <Form.Control value={password} type={'password'} required onChange={(event) => setPassword(event.target.value)} placeholder={'Password'} />
+                            <Form.Control value={password} type={'password'} required onChange={(event) => setPassword(event.target.value)} placeholder={'密码'} />
                         </Form.Group>
                     </Card.Body>
                     <Card.Footer>

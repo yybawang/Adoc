@@ -27,15 +27,15 @@ export default function Password(props){
                     <Card.Body>
                         <Form.Group>
                             <Form.Label>原密码</Form.Label>
-                            <Form.Control ref={focus} value={passwordOld} type={'password'} required onChange={(event) => setPasswordOld(event.target.value)} placeholder={'Password'} />
+                            <Form.Control ref={focus} value={passwordOld} type={'password'} required onChange={(event) => setPasswordOld(event.target.value)} placeholder={'原密码'} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>新密码</Form.Label>
-                            <Form.Control value={password} type={'password'} required onChange={(event) => setPassword(event.target.value)} placeholder={'Password'} />
+                            <Form.Control value={password} type={'password'} required onChange={(event) => setPassword(event.target.value)} placeholder={'新密码'} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>确认新密码</Form.Label>
-                            <Form.Control value={passwordConfirmation} type={'password'} required onChange={(event) => setPasswordConfirmation(event.target.value)} placeholder={'Password confirmation'} />
+                            <Form.Control value={passwordConfirmation} type={'password'} required onChange={(event) => setPasswordConfirmation(event.target.value)} placeholder={'确认新密码'} />
                         </Form.Group>
                     </Card.Body>
                     <Card.Footer>
