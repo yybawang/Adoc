@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\PostTemplate;
+use App\Models\Project;
 use App\Models\ProjectPermission;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -35,6 +36,11 @@ class PostTemplatePolicy
      * @return bool
      */
     private function authWrite($user_id, $project_id){
+        // 是否是所属人
+        $Project = Project::find($project_id);
+        if($Project->user_id == $user_id){
+            return true;
+        }
         $permission = ProjectPermission::where(['project_id' => $project_id, 'user_id' => $user_id, 'write' => 1])->first();
         return $permission ? true : false;
     }

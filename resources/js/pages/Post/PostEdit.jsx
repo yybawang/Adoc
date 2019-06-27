@@ -126,6 +126,7 @@ export default function PostEdit(props){
                             path: '/editor.md/lib/',
                             emoji: false,
                             imageUploadURL: '/api/upload_md',
+                            editorTheme: 'default',
                             onload: (edit, func) => {
                                 // this.setState({editor});
                                 edit.removeKeyMap({'Shift-Ctrl-S'(){}});
