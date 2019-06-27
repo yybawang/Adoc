@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Container, Form, OverlayTrigger, Popover, Row} from "react-bootstrap";
 import Editor from "react-editor-md";
 import axios from '../../configs/axios'
 import {Tips} from "../../configs/function";
@@ -62,52 +62,49 @@ export default function PostEdit(props){
         props.history.push(url);
     }
     
+    async function del(){
+        await axios.delete('/post/'+postId);
+        Tips('删除完成');
+        props.history.replace('/project/'+project_id);
+    }
+    
     return (
         <div className={'px-5 pt-3 b-5'}>
-            <Form onSubmit={(event) => {event.preventDefault()}} onKeyDown={async (e) => {
-                let ctrlKey = e.ctrlKey || e.metaKey;
-                if( ctrlKey && e.keyCode === 83 ){
-                    e.preventDefault();
-                    let goBack = false;
-                    if(e.shiftKey){
-                        goBack = true;
-                    }
-                    await submit();
-                    if(goBack){
-                        back();
-                    }
-                }
-            }}>
+            <Form onSubmit={(event) => {event.preventDefault()}}>
                 <Container fluid className={'p-0'}>
-                    <Row noGutters>
+                    <Row noGutters onKeyDown={async (e) => {
+                        let ctrlKey = e.ctrlKey || e.metaKey;
+                        if( ctrlKey && e.keyCode === 83 ){
+                            e.preventDefault();
+                            let goBack = false;
+                            if(e.shiftKey){
+                                goBack = true;
+                            }
+                            await submit();
+                            if(goBack){
+                                back();
+                            }
+                        }
+                    }}>
                         <Col>
                             <Form.Group>
                                 文档名：
                                 <Form.Control className={'d-inline'} value={name} onChange={(event) => setName(event.target.value)} style={{width: '180px'}} />
                                 <span className={'ml-3'}>上级目录：</span>
                                 <PostCascader project_id={project_id} post_id={postId} parents={parents} onChange={(val) => setParentId(val)} />
-                                {/*{this.state.parents.map((parent, index) => (
-                                    <Form.Control
-                                        key={index}
-                                        as={'select'}
-                                        className={'d-inline mr-2'}
-                                        style={{width: '180px'}}
-                                        value={this.state.post.parents[index]}
-                                        onChange={(event) => {
-                                            let parents = [...this.state.post.parents];
-                                            parents.splice(index, 1, event.target.value);
-                                            let post = Object.assign({}, this.state.post, {parents});
-                                            this.setState({post});
-                                            this.children(event.target.value, index)
-                                        }}>
-                                        {parent.map((option) => (
-                                            <option key={option.id} value={option.id}>{option.name}</option>
-                                        ))}
-                                    </Form.Control>
-                                ))}*/}
                             </Form.Group>
                         </Col>
-                        <Col xs={2} className={'text-right'}>
+                        <Col xs={3} className={'text-right'}>
+                            <OverlayTrigger trigger="focus" placement="left" overlay={
+                                <Popover id="popover-basic" title="确认删除？此操作不可恢复">
+                                    <div className={'py-2'}>删除文档<strong>「{name}」</strong></div>
+                                    <ButtonGroup>
+                                        <Button variant={'danger'} size={'sm'} onClick={() => del()}>删除</Button>
+                                    </ButtonGroup>
+                                </Popover>
+                            }>
+                                <Button variant={'link'} className={'mr-3'}>删除</Button>
+                            </OverlayTrigger>
                             <Button type={'submit'} onClick={() => submit()}>保存</Button>
                             <Button variant={'outline-dark'} onClick={() => back()} className={'ml-4'}>返回</Button>
                         </Col>
@@ -155,8 +152,9 @@ export default function PostEdit(props){
                     </div>
                 </Container>
             </Form>
-            <p className={'text-muted'}> Ctrl/Cmd + S 保存</p>
-            <p className={'text-muted'}> Ctrl/Cmd + Shift + S 保存并返回列表</p>
+            <p className={'text-muted'}>焦点定于任意输入框中可使用快捷键操作</p>
+            <p className={'text-muted'}>Ctrl/Cmd + S 保存</p>
+            <p className={'text-muted'}>Ctrl/Cmd + Shift + S 保存并返回列表</p>
         </div>
     );
 }

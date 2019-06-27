@@ -17,8 +17,11 @@ export default function PostCascader(props){
     }, [props.parents]);
     
     async function init(){
-        let res = await axios.post('/post/'+props.project_id+'/parents/'+props.post_id);
-        setList(res);
+        if(props.post_id >= 0){
+            let res = await axios.post('/post/'+props.project_id+'/parents/'+props.post_id);
+            setList(res);
+        }
+        
     }
     
     return (

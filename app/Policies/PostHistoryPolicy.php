@@ -39,6 +39,6 @@ class PostHistoryPolicy
      */
     private function authWrite($user_id, $project_id){
         $permission = ProjectPermission::where(['project_id' => $project_id, 'user_id' => $user_id, 'write' => 1])->first();
-        return $permission ? false : true;
+        return $permission ? true : false;
     }
 }

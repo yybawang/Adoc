@@ -6,6 +6,7 @@ import Editor from 'react-editor-md'
 import {useNumber, useObject} from "react-hooks-easy";
 
 export default function ProjectPost(props){
+    const project = useObject('project');
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState({});
     const [config, setConfig] = useState({
@@ -38,9 +39,9 @@ export default function ProjectPost(props){
                 </Col>
                 <Col xs={2} className={'text-right'}>
                     {user.value.id > 0 && (
-                        <ButtonGroup>
-                            <Link className={'btn btn-outline-dark'} to={'/post/'+props.match.params.id+'/edit/'+props.match.params.post_id}>编辑</Link>
-                        </ButtonGroup>
+                        <div>
+                            <Link className={'btn btn-outline-dark' + (project.value.write ? '' : 'd-none')} to={'/post/'+props.match.params.id+'/edit/'+props.match.params.post_id}>编辑</Link>
+                        </div>
                     )}
                 </Col>
             </Row>

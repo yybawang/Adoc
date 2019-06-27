@@ -78,7 +78,7 @@ class ProjectPolicy
             return true;
         }
         $permission = ProjectPermission::where(['project_id' => $project_id, 'user_id' => $user_id])->first();
-        return $permission ? false : true;
+        return $permission ? true : false;
     }
     
     /**
@@ -94,7 +94,7 @@ class ProjectPolicy
             return true;
         }
         $permission = ProjectPermission::where(['project_id' => $project_id, 'user_id' => $user_id, 'write' => 1])->first();
-        return $permission ? false : true;
+        return $permission ? true : false;
     }
     
     /**

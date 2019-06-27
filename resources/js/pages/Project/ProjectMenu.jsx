@@ -13,6 +13,9 @@ export default function ProjectMenu(props){
     
     useEffect(() => {
         init();
+        return () => {
+            postMenuActive.set(0);
+        }
     }, [props.project_id]);
     
     async function init(){

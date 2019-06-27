@@ -49,7 +49,24 @@ class IndexController extends BaseController
      * @return array
      */
     public function project(int $id){
+        $uid = Auth::guard('api')->id();
         $project = Project::find($id);
+        if($project){
+            $project->admin = $project->user_id == $uid;
+            $project->read = $project->admin;
+            $project->write = $project->admin;
+            // 权限
+            $permission = ProjectPermission::where(['project_id' => $project->id, 'user_id' => $uid])->first();
+            if($permission){
+                $project->read = true;
+                if($permission->write){
+                    $project->write = true;
+                }
+                if($permission->admin){
+                    $project->admin = true;
+                }
+            }
+        }
         return $this->success($project);
     }
     

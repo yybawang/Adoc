@@ -35,12 +35,12 @@ export default function Project(props) {
                                      title={project.value.name}>{project.value.name}</ButtonGroup>
                         {user.value.id > 0 &&
                         <ButtonGroup>
-                            <Link className={'btn btn-link'} to={'/project_manager/' + props.match.params.id} title={'项目设置'}>
+                            {project.value.admin ? <Link className={'btn btn-link'} to={'/project_manager/' + props.match.params.id} title={'项目设置'}>
                                 <Image src={manager} style={{width: '15px'}}/>
-                            </Link>
-                            <Link className={'btn btn-link'} to={'/post/' + props.match.params.id + '/edit/0'} title={'添加新文档'}>
+                            </Link> : <span style={{width: 41}} />}
+                            {project.value.write && <Link className={'btn btn-link'} to={'/post/' + props.match.params.id + '/edit/0'} title={'添加新文档'}>
                                 <Image src={add} style={{width: '17px'}}/>
-                            </Link>
+                            </Link>}
                         </ButtonGroup>
                         }
                     </ListGroup.Item>
