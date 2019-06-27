@@ -50,10 +50,9 @@ Route::namespace('Api')->group(function(){
         
         Route::get('/post/{post}/edit', 'PostController@detail')->middleware('can:view,post');
         Route::get('/post/{project}/{id}/children', 'PostController@children')->middleware('can:update,project');
-        Route::get('/post/{project}/{id}/parent', 'PostController@parent')->middleware('can:update,project');
+        Route::post('/post/{project}/parents/{id}', 'PostController@parents')->middleware('can:update,project');
         Route::get('/post/{post}/parent', 'PostController@parent')->middleware('can:view,post');
-        Route::post('/post', 'PostController@store')->middleware('can:create,App\Models\Post');
-        Route::patch('/post/{post}', 'PostController@update')->middleware('can:update,post');
+        Route::post('/post/{id}', 'PostController@store')->middleware('can:create,App\Models\Post');
         Route::delete('/post/{post}', 'PostController@delete')->middleware('can:delete,post');
         
         Route::get('/post/{post}/history', 'PostController@history')->middleware('can:view,post');

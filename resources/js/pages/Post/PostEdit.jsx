@@ -1,53 +1,92 @@
 import React, {useEffect, useState} from 'react'
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
-import {TemplateModalShow} from "../Post_bak/store";
 import Editor from "react-editor-md";
+import axios from '../../configs/axios'
+import {Tips} from "../../configs/function";
+import {useObject} from "react-hooks-easy";
+import PostCascader from "./PostCascader";
 
+let postId, setPostId, name, setName, parentId, setParentId, editor = {};
 export default function PostEdit(props){
-    const [name, setName] = useState('');
-    const [parentId, setParentId] = useState(0);
+    const project = useObject('project');
+    [postId, setPostId] = useState(-1);
+    [name, setName] = useState('');
+    [parentId, setParentId] = useState(0);
+    const [parents, setParents] = useState([]);
     const project_id = props.match.params.project_id;
-    const post_id = props.match.params.id;
     
     useEffect(() => {
-        $(window).keydown(async function(e){
-            // ctrl + s
-            let ctrlKey = e.ctrlKey || e.metaKey;
-            if( ctrlKey && e.keyCode === 83 ){
-                await submit();
-                if(e.shiftKey){
-                    t.back();
-                }
-                e.preventDefault();
-            }
-        });
+        init();
         return () => {
-            $(window).unbind('keydown');
+            editor = {};
+            postId = undefined;
+            setPostId = undefined;
+            name = undefined;
+            setName = undefined;
+            parentId = undefined;
+            setParentId = undefined;
         }
     }, []);
     
-    async function submit(){
+    async function init(){
+        if(props.match.params.id > 0){
+            let res = await axios.get('/post/'+props.match.params.id+'/edit');
+            setParents(res.parents);
+            setPostId(res.id);
+            setName(res.name);
+            setParentId(res.pid);
+            let interval = setInterval(() => {
+                if(editor.id){
+                    clearInterval(interval);
+                    editor.setMarkdown(res.content);
+                }
+            }, 100);
+        }else{
+            setPostId(0);
+        }
+    }
     
+    async function submit(){
+        let pid = parentId;
+        let content = editor.getMarkdown();
+        let res = await axios.post('/post/'+postId, {name,content, pid, project_id});
+        setPostId(res.id);
+        Tips('已保存');
     }
     
     function back(){
-    
+        let url = '/project/'+project_id;
+        if(postId){
+            url += '/post/'+postId;
+        }
+        props.history.push(url);
     }
     
     return (
         <div className={'px-5 pt-3 b-5'}>
-            <Form onSubmit={(event) => {event.preventDefault()}}>
+            <Form onSubmit={(event) => {event.preventDefault()}} onKeyDown={async (e) => {
+                let ctrlKey = e.ctrlKey || e.metaKey;
+                if( ctrlKey && e.keyCode === 83 ){
+                    e.preventDefault();
+                    let goBack = false;
+                    if(e.shiftKey){
+                        goBack = true;
+                    }
+                    await submit();
+                    if(goBack){
+                        back();
+                    }
+                }
+            }}>
                 <Container fluid className={'p-0'}>
                     <Row noGutters>
                         <Col>
                             <Form.Group>
                                 文档名：
-                                <Form.Control className={'d-inline'} value={this.state.post.name} onChange={(event) => {
-                                    let post = Object.assign({}, this.state.post, {name: event.target.value});
-                                    this.setState({post});
-                                }} style={{width: '180px'}} />
+                                <Form.Control className={'d-inline'} value={name} onChange={(event) => setName(event.target.value)} style={{width: '180px'}} />
                                 <span className={'ml-3'}>上级目录：</span>
-                                {this.state.parents.map((parent, index) => (
+                                <PostCascader project_id={project_id} post_id={postId} parents={parents} onChange={(val) => setParentId(val)} />
+                                {/*{this.state.parents.map((parent, index) => (
                                     <Form.Control
                                         key={index}
                                         as={'select'}
@@ -65,7 +104,7 @@ export default function PostEdit(props){
                                             <option key={option.id} value={option.id}>{option.name}</option>
                                         ))}
                                     </Form.Control>
-                                ))}
+                                ))}*/}
                             </Form.Group>
                         </Col>
                         <Col xs={2} className={'text-right'}>
@@ -90,9 +129,26 @@ export default function PostEdit(props){
                             path: '/editor.md/lib/',
                             emoji: false,
                             imageUploadURL: '/api/upload_md',
-                            onload: (editor, func) => {
+                            onload: (edit, func) => {
                                 // this.setState({editor});
-                                this.editor = editor;
+                                edit.removeKeyMap({'Shift-Ctrl-S'(){}});
+                                edit.addKeyMap({
+                                    'Cmd-S'(){
+                                        submit();
+                                    },
+                                    'Ctrl-S'(){
+                                        submit();
+                                    },
+                                    async 'Shift-Cmd-S'(){
+                                        await submit();
+                                        back();
+                                    },
+                                    async 'Shift-Ctrl-S'(){
+                                        await submit();
+                                        back();
+                                    },
+                                });
+                                editor = edit;
                             },
                             markdown: '\n'
                         }} />

@@ -10,7 +10,20 @@
 @import '~bootstrap/scss/bootstrap';
 @import "~bootswatch/dist/Pulse/bootswatch";
 @import "./nprogress.css";
+@import "~rc-cascader/assets/index.css";
 
+.rc-cascader-menus {
+    border-radius: 0;
+    z-index:20;
+}
+.rc-cascader-menu-item-active, .rc-cascader-menu-item:hover {
+    background: #432c75;
+    color:#FFFFFF;
+}
+.rc-cascader-menu-item-disabled:hover {
+    background:transparent;
+    color:#CCCCCC;
+}
 .navbar-laravel {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

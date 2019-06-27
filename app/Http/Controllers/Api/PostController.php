@@ -37,15 +37,10 @@ class PostController extends BaseController
      * @param  int $id
      * @return mixed
      */
-    public function parent(Project $project, int $id){
-        $pid = Post::where('id', $id)->value('pid') ?? 0;
-        $Children = Post::active()->where(['project_id' => $project->id, 'pid' => $pid])->get();
-        if($Children->isNotEmpty()){
-            $Children = collect([['id' => '', 'pid' => 0, 'name' => '-- 选择 --']])->merge($Children);
-//            $Parents = $Parents->push($Children);
-        }
-        
-        return $this->success($Children);
+    public function parents(Project $project, int $id){
+        $Post = new Post();
+        $cascader = $Post->childrenEdit($project->id, 0, $id);
+        return $this->success($cascader);
     }
     
     /**
@@ -66,23 +61,23 @@ class PostController extends BaseController
     
     /**
      * @param Request $request
+     * @param int $id
      * @return mixed
      */
-    public function store(Request $request){
+    public function store(Request $request, int $id){
         $post = $request->validate([
             'pid'       => 'required',
             'project_id'=> 'required|integer|min:1',
             'name'      => 'required',
             'content'   => '',
-            'html'      => '',
-            'status'    => 'required|integer|min:0',
         ]);
         $post['user_id'] = Auth::id();
+        $post['status'] = 1;
         
-        $Post = Post::create($post);
+        $Post = Post::updateOrCreate(['id' => $id], $post);
     
         // 存入记录
-        if($post['content']){
+        if($post['content'] && $Post->content != $post['content']){
             PostHistory::create([
                 'user_id'   => Auth::id(),
                 'post_id'   => $Post->id,
@@ -91,42 +86,14 @@ class PostController extends BaseController
         }
         
         // 分发日志记录
-        event(new PostStoreEvent($Post));
+        if($id > 0){
+            event(new PostUpdateEvent($Post));
+        }else{
+            event(new PostStoreEvent($Post));
+        }
+        
         return $this->success($Post);
     }
-    
-    /**
-     * 更新文档
-     * @param Request $request
-     * @param Post    $post
-     * @return mixed
-     */
-    public function update(Request $request, Post $post){
-        $param = $request->validate([
-            'pid'       => 'required',
-            'project_id'=> 'required|integer|min:1',
-            'name'      => 'required',
-            'content'   => '',
-            'html'      => '',
-            'status'    => 'required|integer|min:0',
-        ]);
-        
-        // 存入修改记录
-        // 分发日志记录
-        if($param['content'] && $param['content'] != $post->content){
-            PostHistory::create([
-                'user_id'   => Auth::id(),
-                'post_id'   => $post->id,
-                'content'   => $param['content'],
-            ]);
-            event(new PostUpdateEvent($post));
-        }
-    
-        $post->update($param);
-    
-        return $this->success($post);
-    }
-    
     /**
      * 删除文档
      * @param Post $post

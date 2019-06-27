@@ -35,6 +35,7 @@
         "diff2html": "^2.10.0",
         "history": "^4.9.0",
         "nprogress": "^0.2.0",
+        "rc-cascader": "^0.17.4",
         "react-bootstrap": "^1.0.0-beta.9",
         "react-code-diff": "^1.0.8",
         "react-editor-md": "^1.0.10",

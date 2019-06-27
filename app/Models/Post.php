@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Collection;
-
 class Post extends Model
 {
     
@@ -67,7 +65,7 @@ class Post extends Model
 //                $Parent->siblings = collect([['id' => 0, 'pid' => 0, 'name' => '-- 选择 --']])->merge($Parent->siblings);
 //            }
             $parent = $this->_parentsEach($Parent->pid);
-            $res->push($Parent->id);
+            $res->push(['label' => $Parent->name, 'value' => $Parent->id, 'disabled' => false]);
             $res = $res->merge($parent);
         }
         return $res;
@@ -86,7 +84,18 @@ class Post extends Model
     private function _children($project_id, $pid, $field){
         $res = Post::selectRaw($field)->where(['project_id' => $project_id, 'pid' => $pid])->active()->get()->each(function($v) use ($project_id, $field){
             $v->append('toggle');
-           $v->children = $this->_children($project_id, $v->id, $field);
+            $v->children = $this->_children($project_id, $v->id, $field);
+        });
+        return $res;
+    }
+    
+    public function childrenEdit($project_id, $pid, $id){
+        $res = Post::select('id as value', 'name as label')->where(['project_id' => $project_id, 'pid' => $pid])->active()->get()->each(function($v) use ($project_id, $id){
+            $v->disabled = false;
+            if($v->value == $id){
+                $v->disabled = true;
+            }
+            $v->children = $this->childrenEdit($project_id, $v->value, $id);
         });
         return $res;
     }

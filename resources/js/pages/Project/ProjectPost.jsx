@@ -39,7 +39,7 @@ export default function ProjectPost(props){
                 <Col xs={2} className={'text-right'}>
                     {user.value.id > 0 && (
                         <ButtonGroup>
-                            <Link className={'btn btn-outline-dark'} to={'/post/'+props.match.params.post_id+'/edit'}>编辑</Link>
+                            <Link className={'btn btn-outline-dark'} to={'/post/'+props.match.params.id+'/edit/'+props.match.params.post_id}>编辑</Link>
                         </ButtonGroup>
                     )}
                 </Col>

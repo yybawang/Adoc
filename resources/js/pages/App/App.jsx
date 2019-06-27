@@ -10,7 +10,7 @@ import Register from "../User/Register";
 import Login from "../User/Login";
 import Password from "../User/Password";
 // import PostAdd from "../Post/PostAdd";
-// import PostEdit from "../Post/PostEdit";
+import PostEdit from "../Post/PostEdit";
 import {useObject} from "react-hooks-easy";
 import axios from '../../configs/axios'
 
@@ -110,7 +110,7 @@ export default function App(props){
                     <Route path={'/register'} component={Register} />
                     <Route path={'/login'} component={Login} />
                     <Route path={'/password'} component={Password} />
-                    <Route path={'/post/:project_id/edit/:id'} component={Password} />
+                    <Route path={'/post/:project_id/edit/:id'} component={PostEdit} />
                     {/*<Route path={'/post/:project_id/add'} component={PostAdd} />*/}
                     {/*<Route path={'/post/:id/edit'} component={PostEdit} />*/}
                     </Switch>
