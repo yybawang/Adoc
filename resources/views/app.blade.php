@@ -15,6 +15,9 @@
 <div id="example"></div>
 <script src="/editor.md/lib/jquery-3.4.1.min.js"></script>
 <script src="/editor.md/editormd.min.js"></script>
+<script>
+    editormd.emoji.path = '/editor.md/plugins/emoji-dialog/emoji/';
+</script>
 <script src="{{mix('js/manifest.js', '/dist')}}"></script>
 <script src="{{mix('js/vendor.js', '/dist')}}"></script>
 <script src="{{mix('js/app.js', '/dist')}}"></script>

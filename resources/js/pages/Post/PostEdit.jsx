@@ -1,17 +1,25 @@
 import React, {useEffect, useState} from 'react'
-import {Button, ButtonGroup, Col, Container, Form, OverlayTrigger, Popover, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Container, Dropdown, Form, OverlayTrigger, Popover, Row} from "react-bootstrap";
 import Editor from "react-editor-md";
 import axios from '../../configs/axios'
 import {Tips} from "../../configs/function";
-import {useObject} from "react-hooks-easy";
+import {useBoolean, useObject} from "react-hooks-easy";
 import PostCascader from "./PostCascader";
+import PostTemplate from "./PostTemplate";
+import PostSavedTemplate from "./PostSavedTemplate";
+import PostAddTemplate from "./PostAddTemplate";
 
+window.editormd.defaults.toolbarIconsClass['template'] = 'fa-circle';
+window.editormd.defaults.toolbarHandlers['template'] = () => {alert(1)};
 let postId, setPostId, name, setName, parentId, setParentId, editor = {};
 export default function PostEdit(props){
     const project = useObject('project');
+    const templateShow = useBoolean('postSavedTemplate', false);
+    const postAddTemplate = useBoolean('postAddTemplate', false);
     [postId, setPostId] = useState(-1);
     [name, setName] = useState('');
     [parentId, setParentId] = useState(0);
+    const [template, setTemplate] = useState('');
     const [parents, setParents] = useState([]);
     const project_id = props.match.params.project_id;
     
@@ -68,6 +76,19 @@ export default function PostEdit(props){
         props.history.replace('/project/'+project_id);
     }
     
+    function insertTemplate(type){
+        let temp = '';
+        switch (type) {
+            case 'api':
+                temp = PostTemplate.Api();
+                break;
+            case 'table':
+                temp = PostTemplate.Table();
+                break;
+        }
+        editor.focus().replaceSelection(temp);
+    }
+    
     return (
         <div className={'px-5 pt-3 b-5'}>
             <Form onSubmit={(event) => {event.preventDefault()}}>
@@ -105,17 +126,23 @@ export default function PostEdit(props){
                             }>
                                 <Button variant={'link'} className={'mr-3'}>删除</Button>
                             </OverlayTrigger>
-                            <Button type={'submit'} onClick={() => submit()}>保存</Button>
+                            <Dropdown as={ButtonGroup}>
+                                <Button type={'submit'} onClick={() => submit()}>保存</Button>
+        
+                                <Dropdown.Toggle split variant="primary" />
+                                <Dropdown.Menu>
+                                    <Dropdown.Item onClick={() => postAddTemplate.set(true)}>另存为模版</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                             <Button variant={'outline-dark'} onClick={() => back()} className={'ml-4'}>返回</Button>
                         </Col>
                     </Row>
                     <Row noGutters>
                         <Col>
                             <Form.Group>
-                                {/*<Button variant={'outline-dark'} onClick={() => this.template('api')}>插入API接口模版</Button>*/}
-                                {/*<Button variant={'outline-dark'} className={'ml-3'} onClick={() => this.template('table')}>插入数据字典模版</Button>*/}
-                                {/*<Button variant={'outline-dark'} className={'ml-3'} onClick={() => TemplateModalShow.dispatch({type: 'show'})}>已保存模版</Button>*/}
-                        
+                                <Button variant={'outline-dark'} onClick={() => insertTemplate('api')}>插入API接口模版</Button>
+                                <Button variant={'outline-dark'} className={'ml-3'} onClick={() => insertTemplate('table')}>插入数据字典模版</Button>
+                                <Button variant={'outline-dark'} className={'ml-3'} onClick={() => templateShow.set(true)}>已保存模版</Button>
                             </Form.Group>
                         </Col>
                     </Row>
@@ -124,7 +151,7 @@ export default function PostEdit(props){
                             width: '100%',
                             height: 1000,
                             path: '/editor.md/lib/',
-                            emoji: false,
+                            // emoji: false,
                             imageUploadURL: '/api/upload_md',
                             editorTheme: 'default',
                             onload: (edit, func) => {
@@ -153,6 +180,10 @@ export default function PostEdit(props){
                     </div>
                 </Container>
             </Form>
+            <PostSavedTemplate project_id={project_id} onSubmit={(template) => {
+                editor.focus().replaceSelection(template);
+            }} />
+            <PostAddTemplate project_id={project_id} getContent={() => editor.getMarkdown()} />
             <p className={'text-muted'}>焦点定于任意输入框中可使用快捷键操作</p>
             <p className={'text-muted'}>Ctrl/Cmd + S 保存</p>
             <p className={'text-muted'}>Ctrl/Cmd + Shift + S 保存并返回列表</p>

@@ -7,6 +7,7 @@ import {useObject, useString} from "react-hooks-easy";
 export default function Permission(props){
     const managerPage = useString('projectManager');
     const project = useObject('projectManager');
+    const user = useObject('user');
     const [keyword, setKeyword] = useState('');
     const [keywordUsers, setKeywordUsers] = useState([]);
     const [userId, setUserId] = useState(0);
@@ -107,6 +108,7 @@ export default function Permission(props){
                             <Form.Check
                                 custom
                                 type={'checkbox'}
+                                disabled={Number(user.value.id) === Number(permission.user.id)}
                                 checked={permission.write}
                                 onChange={(event) => {
                                     let permissions = [...list];
@@ -122,6 +124,7 @@ export default function Permission(props){
                             <Form.Check
                                 custom
                                 type={'checkbox'}
+                                disabled={Number(user.value.id) === Number(permission.user.id)}
                                 checked={permission.admin}
                                 onChange={(event) => {
                                     let permissions = [...list];
