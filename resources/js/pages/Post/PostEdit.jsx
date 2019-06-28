@@ -20,7 +20,6 @@ export default function PostEdit(props){
     [name, setName] = useState('');
     [parentId, setParentId] = useState(0);
     [sort, setSort] = useState(100);
-    const [template, setTemplate] = useState('');
     const [parents, setParents] = useState([]);
     const project_id = props.match.params.project_id;
     

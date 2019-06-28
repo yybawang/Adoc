@@ -38,7 +38,7 @@ export default function PostCascader(props){
                     let parents2 = [...parents];
                     parents2.splice(parents2.length - 1, 1);
                     setParents(parents2);
-                    props.onChange([...parents2].pop().value);
+                    props.onChange(parents2.length > 0 ? [...parents2].pop().value : 0);
                 }
             }}
         >
