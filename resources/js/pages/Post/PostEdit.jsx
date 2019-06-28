@@ -51,6 +51,16 @@ export default function PostEdit(props){
             }, 100);
         }else{
             setPostId(0);
+            if(props.location.search){
+                let from = props.location.search.split('=')[1];
+                let res = await axios.get('/post/'+from);
+                let interval = setInterval(() => {
+                    if(editor.id){
+                        clearInterval(interval);
+                        editor.setMarkdown(res.content);
+                    }
+                }, 100);
+            }
         }
     }
     

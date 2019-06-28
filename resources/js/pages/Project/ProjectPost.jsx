@@ -40,6 +40,7 @@ export default function ProjectPost(props){
                 <Col xs={2} className={'text-right'}>
                     {user.value.id > 0 && (
                         <div>
+                            <Link className={'mr-4 ' + (project.value.write ? '' : 'd-none')} to={'/post/'+props.match.params.id+'/edit/0?from='+props.match.params.post_id}>复制</Link>
                             <Link className={'btn btn-outline-dark' + (project.value.write ? '' : 'd-none')} to={'/post/'+props.match.params.id+'/edit/'+props.match.params.post_id}>编辑</Link>
                         </div>
                     )}
