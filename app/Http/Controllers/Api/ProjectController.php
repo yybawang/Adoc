@@ -4,6 +4,7 @@
  */
 namespace App\Http\Controllers\Api;
 
+use App\Libraries\Word;
 use App\Models\Post;
 use App\Models\PostTemplate;
 use App\Models\Project;
@@ -12,6 +13,7 @@ use App\Models\ProjectTag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProjectController extends BaseController
 {
@@ -115,6 +117,27 @@ class ProjectController extends BaseController
         }
         $project->update(['user_id' => $User->id]);
         return $this->success();
+    }
+    
+    public function export(Project $project, int $pid){
+        $Word = new Word();
+        $Post = new Post();
+        $posts = $Post->children($project->id, $pid, 'id, name, html');
+        $this->_export($posts, $Word);
+        $url = $Word->save('exports/'.$project->name.'.doc');
+        return $this->success([
+            'fileurl' => $url,
+        ]);
+    }
+    
+    private function _export($list, Word $Word){
+        foreach ($list as $v){
+            if($v->children->isNotEmpty()){
+                $this->_export($v->children, $Word);
+            }else{
+                $Word->addPost($v);
+            }
+        }
     }
     
     /**

@@ -1,13 +1,15 @@
 import React, {useEffect} from 'react'
 import {Route, Link, Switch} from "react-router-dom";
-import {ListGroup, Image, ButtonGroup} from "react-bootstrap";
+import {ListGroup, Image, ButtonGroup, Dropdown, Button, DropdownButton} from "react-bootstrap";
 import manager from '../../../images/manager.png'
 import add from '../../../images/add.png'
+import ExportSvg from '../../../images/export.svg'
 import ProjectMenu from "./ProjectMenu";
 import ProjectPost from "./ProjectPost";
 import axios from '../../configs/axios'
 import {useNumber, useObject} from "react-hooks-easy";
 import ProjectEvent from "./ProjectEvent";
+import ProjectExport from "./ProjectExport";
 
 export default function Project(props) {
     const project = useObject('project');
@@ -31,17 +33,20 @@ export default function Project(props) {
             <div className={'position-sticky overflow-auto border-right project-left'}>
                 <ListGroup>
                     <ListGroup.Item variant={'light'} className={'text-dark'}>
-                        <ButtonGroup className={'h4 mb-0 d-inline-block text-truncate'} style={{width: (user.value.id > 0 ? 174 : 254) + 'px'}}
+                        <ButtonGroup className={'h4 mb-0 d-inline-block text-truncate'} style={{width: (user.value.id > 0 ? 191 : 254) + 'px'}}
                                      title={project.value.name}>{project.value.name}</ButtonGroup>
                         {user.value.id > 0 &&
-                        <ButtonGroup>
-                            {project.value.admin ? <Link className={'btn btn-link'} to={'/project_manager/' + props.match.params.id} title={'项目设置'}>
-                                <Image src={manager} style={{width: '15px'}}/>
-                            </Link> : <span style={{width: 41}} />}
-                            {project.value.write && <Link className={'btn btn-link'} to={'/post/' + props.match.params.id + '/edit/0'} title={'添加新文档'}>
-                                <Image src={add} style={{width: '17px'}}/>
-                            </Link>}
-                        </ButtonGroup>
+                        <DropdownButton className={'d-inline-block'} variant={'link'} id={'manager'} title={'更多'}>
+                            <Dropdown.Item onClick={() => props.history.push('/post/' + props.match.params.id + '/edit/0')}>
+                                <Image src={add} style={{width: 15, paddingBottom: '4px'}} /> 新文档
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => props.history.push('/project_manager/' + props.match.params.id)}>
+                                <Image src={manager} style={{width: 15, paddingBottom: '4px'}} /> 管理
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => props.history.push(props.match.url + '/export')}>
+                                <Image src={ExportSvg} style={{width: 15, paddingBottom: '4px'}} /> 导出
+                            </Dropdown.Item>
+                        </DropdownButton>
                         }
                     </ListGroup.Item>
                 </ListGroup>
@@ -51,6 +56,7 @@ export default function Project(props) {
                 <Switch>
                 <Route path={props.match.path} exact component={ProjectEvent}/>
                 <Route path={props.match.path + '/post/:post_id'} component={ProjectPost}/>
+                <Route path={props.match.path + '/export'} component={ProjectExport}/>
                 </Switch>
             </div>
         </div>

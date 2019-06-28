@@ -38,6 +38,7 @@ Route::namespace('Api')->group(function(){
         Route::patch('/project/{project}', 'ProjectController@update')->middleware('can:update,project');
         Route::patch('/project/{project}/transfer', 'ProjectController@transfer')->middleware('can:transfer,project');
         Route::delete('/project/{project}', 'ProjectController@delete')->middleware('can:delete,project');
+        Route::post('/project/{project}/export/{pid}', 'ProjectController@export')->middleware('can:view,project');
         
         Route::get('/project/{project}/permission', 'ProjectController@permission')->middleware('can:permission,project');
         Route::get('/project/{project}/permission/{keyword}', 'ProjectController@permission_user')->middleware('can:permission,project');
@@ -53,6 +54,7 @@ Route::namespace('Api')->group(function(){
         Route::post('/post/{project}/parents/{id}', 'PostController@parents')->middleware('can:update,project');
         Route::post('/post/{id}', 'PostController@store')->middleware('can:create,App\Models\Post');
         Route::delete('/post/{post}', 'PostController@delete')->middleware('can:delete,post');
+        Route::post('/post/{post}/export', 'PostController@export')->middleware('can:view,post');
         
         Route::get('/post/{post}/history', 'PostController@history')->middleware('can:view,post');
         Route::delete('/post/{postHistory}/history', 'PostController@history_delete')->middleware('can:delete,postHistory');

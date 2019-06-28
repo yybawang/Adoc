@@ -34,6 +34,11 @@ export default function ProjectPost(props){
         setOpen(true);
     }
     
+    async function exports(){
+        let res = await axios.post('/post/'+props.match.params.post_id+'/export');
+        location.href = res.fileurl;
+    }
+    
     return (
         <Container fluid className={'p-0'}>
             <Row className={'border-bottom py-3 px-5'} noGutters>
@@ -49,6 +54,7 @@ export default function ProjectPost(props){
                                 <Dropdown.Menu>
                                     {project.value.write && <Dropdown.Item onClick={() => history.push('/post/'+props.match.params.id+'/edit/0?from='+props.match.params.post_id)}>复制</Dropdown.Item>}
                                     <Dropdown.Item onClick={() => postHistoryShow.set(true)}>历史</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => exports()}>导出</Dropdown.Item>
                                     {/*<Dropdown.Item onClick={() => {}}>分享</Dropdown.Item>*/}
                                 </Dropdown.Menu>
                             </Dropdown>
@@ -57,7 +63,7 @@ export default function ProjectPost(props){
                     )}
                 </Col>
             </Row>
-            <div className={'py-3 px-5 post-center markdown-body'}>
+            <div className={'py-3 px-5 post-center'}>
                 {open &&
                 <Editor.EditorShow config={config}/>
                 }

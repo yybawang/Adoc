@@ -11,7 +11,7 @@ import PostAddTemplate from "./PostAddTemplate";
 
 window.editormd.defaults.toolbarIconsClass['template'] = 'fa-circle';
 window.editormd.defaults.toolbarHandlers['template'] = () => {alert(1)};
-let postId, setPostId, name, setName, parentId, setParentId, editor = {};
+let postId, setPostId, name, setName, parentId, setParentId, sort, setSort, editor = {};
 export default function PostEdit(props){
     const project = useObject('project');
     const templateShow = useBoolean('postSavedTemplate', false);
@@ -19,6 +19,7 @@ export default function PostEdit(props){
     [postId, setPostId] = useState(-1);
     [name, setName] = useState('');
     [parentId, setParentId] = useState(0);
+    [sort, setSort] = useState(100);
     const [template, setTemplate] = useState('');
     const [parents, setParents] = useState([]);
     const project_id = props.match.params.project_id;
@@ -43,6 +44,7 @@ export default function PostEdit(props){
             setPostId(res.id);
             setName(res.name);
             setParentId(res.pid);
+            setSort(res.sort);
             let interval = setInterval(() => {
                 if(editor.id){
                     clearInterval(interval);
@@ -67,7 +69,8 @@ export default function PostEdit(props){
     async function submit(){
         let pid = parentId;
         let content = editor.getMarkdown();
-        let res = await axios.post('/post/'+postId, {name,content, pid, project_id});
+        let html = editor.getHTML();
+        let res = await axios.post('/post/'+postId, {name,content, html, pid, project_id, sort});
         setPostId(res.id);
         Tips('已保存');
     }
@@ -123,6 +126,8 @@ export default function PostEdit(props){
                                 <Form.Control className={'d-inline'} value={name} onChange={(event) => setName(event.target.value)} style={{width: '180px'}} />
                                 <span className={'ml-3'}>上级目录：</span>
                                 <PostCascader project_id={project_id} post_id={postId} parents={parents} onChange={(val) => setParentId(val)} />
+                                <span className={'ml-3'}>排序：</span>
+                                <Form.Control className={'d-inline'} value={sort} onChange={(event) => setSort(event.target.value)} style={{width: '80px'}} />
                             </Form.Group>
                         </Col>
                         <Col xs={3} className={'text-right'}>

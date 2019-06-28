@@ -6,6 +6,7 @@ use App\Events\PostCommentEvent;
 use App\Events\PostLikeEvent;
 use App\Events\PostStoreEvent;
 use App\Events\PostUpdateEvent;
+use App\Libraries\Word;
 use App\Listeners\PostUpdateListener;
 use App\Models\Post;
 use App\Models\PostComment;
@@ -13,7 +14,9 @@ use App\Models\PostCommentLike;
 use App\Models\PostHistory;
 use App\Models\PostLike;
 use App\Models\Project;
+use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -54,6 +57,8 @@ class PostController extends BaseController
             'project_id'=> 'required|integer|min:1',
             'name'      => 'required',
             'content'   => '',
+            'html'      => '',
+            'sort'      => '',
         ]);
         $post['user_id'] = Auth::id();
         $post['status'] = 1;
@@ -78,6 +83,20 @@ class PostController extends BaseController
         
         return $this->success($Post);
     }
+    
+    /**
+     * 导出单个文档为 Word
+     * @param Post $post
+     * @return array
+     */
+    public function export(Post $post){
+        $Word = new Word();
+        $url = $Word->addPost($post)->save('exports/'.$post->name.'.doc');
+        return $this->success([
+            'fileurl' => $url,
+        ]);
+    }
+    
     /**
      * 删除文档
      * @param Post $post

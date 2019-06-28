@@ -53,7 +53,7 @@ export default function Advanced(props) {
                         </FormGroup>
                     </Card.Body>
                     <Card.Footer>
-                        <ButtonGroup className={'mt-3'}>
+                        <ButtonGroup>
                             <Button type={'submit'} onClick={() => transfer()}>开始转移</Button>
                         </ButtonGroup>
                     </Card.Footer>
@@ -72,7 +72,7 @@ export default function Advanced(props) {
                         </FormGroup>
                     </Card.Body>
                     <Card.Footer>
-                        <ButtonGroup className={'mt-3'}>
+                        <ButtonGroup>
                             <Button type={'submit'} variant={'outline-danger'} onClick={() => del()}>删除此项目</Button>
                         </ButtonGroup>
                     </Card.Footer>
