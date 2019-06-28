@@ -44,22 +44,6 @@ class PostController extends BaseController
     }
     
     /**
-     * 查询下集菜单
-     * @param  Project $project
-     * @param  int $id
-     * @return mixed
-     */
-    public function children(Project $project, int $id){
-        $Children = Post::active()->where(['project_id' => $project->id, 'pid' => $id])->get();
-        if($Children->isNotEmpty()){
-            $Children = collect([['id' => '', 'pid' => 0, 'name' => '-- 选择 --']])->merge($Children);
-//            $Parents = $Parents->push($Children);
-        }
-        
-        return $this->success($Children);
-    }
-    
-    /**
      * @param Request $request
      * @param int $id
      * @return mixed
@@ -117,7 +101,7 @@ class PostController extends BaseController
      * @return mixed
      */
     public function history(Post $post){
-        $Histories = PostHistory::select('id', 'created_at', 'post_id', 'user_id', 'content')->with(['user'])->where(['post_id' => $post->id])->latest()->get();
+        $Histories = PostHistory::select('id', 'created_at', 'post_id', 'user_id', 'content')->with(['user'])->where(['post_id' => $post->id])->latest()->limit(50)->get();
         return $this->success($Histories);
     }
     

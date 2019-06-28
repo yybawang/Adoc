@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react'
-import {Button, ButtonGroup, Col, Container, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Container, Dropdown, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import axios from '../../configs/axios'
 import Editor from 'react-editor-md'
-import {useNumber, useObject} from "react-hooks-easy";
+import {useBoolean, useNumber, useObject} from "react-hooks-easy";
+import history from "../../configs/history";
+import PostHistory from "../Post/PostHistory";
 
 export default function ProjectPost(props){
+    const postHistoryShow = useBoolean('postHistoryShow', false);
     const project = useObject('project');
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState({});
@@ -40,8 +43,16 @@ export default function ProjectPost(props){
                 <Col xs={2} className={'text-right'}>
                     {user.value.id > 0 && (
                         <div>
-                            <Link className={'mr-4 ' + (project.value.write ? '' : 'd-none')} to={'/post/'+props.match.params.id+'/edit/0?from='+props.match.params.post_id}>复制</Link>
-                            <Link className={'btn btn-outline-dark' + (project.value.write ? '' : 'd-none')} to={'/post/'+props.match.params.id+'/edit/'+props.match.params.post_id}>编辑</Link>
+                            <Dropdown as={ButtonGroup}>
+                                <Link className={'btn btn-outline-dark' + (project.value.write ? '' : 'd-none')} to={'/post/'+props.match.params.id+'/edit/'+props.match.params.post_id}>编辑</Link>
+                                <Dropdown.Toggle split variant="outline-dark"/>
+                                <Dropdown.Menu>
+                                    {project.value.write && <Dropdown.Item onClick={() => history.push('/post/'+props.match.params.id+'/edit/0?from='+props.match.params.post_id)}>复制</Dropdown.Item>}
+                                    <Dropdown.Item onClick={() => postHistoryShow.set(true)}>历史</Dropdown.Item>
+                                    {/*<Dropdown.Item onClick={() => {}}>分享</Dropdown.Item>*/}
+                                </Dropdown.Menu>
+                            </Dropdown>
+                            
                         </div>
                     )}
                 </Col>
@@ -51,6 +62,7 @@ export default function ProjectPost(props){
                 <Editor.EditorShow config={config}/>
                 }
             </div>
+            <PostHistory name={post.name} post_id={props.match.params.post_id} content={post.content} />
         </Container>
     );
 }

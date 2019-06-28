@@ -51,7 +51,6 @@ Route::namespace('Api')->group(function(){
         Route::get('/post/{post}/edit', 'PostController@detail')->middleware('can:update,post');
         Route::get('/post/{project}/{id}/children', 'PostController@children')->middleware('can:update,project');
         Route::post('/post/{project}/parents/{id}', 'PostController@parents')->middleware('can:update,project');
-        Route::get('/post/{post}/parent', 'PostController@parent')->middleware('can:view,post');
         Route::post('/post/{id}', 'PostController@store')->middleware('can:create,App\Models\Post');
         Route::delete('/post/{post}', 'PostController@delete')->middleware('can:delete,post');
         

@@ -56,14 +56,6 @@ class Post extends Model
         $res = collect();
         $Parent = Post::select('id', 'pid', 'name')->where(['id' => $pid])->active()->first();
         if($Parent){
-//            $Parents = Post::select('id', 'pid', 'name')->where(['pid' => $Parent->pid])->active()->get();
-//            if($Parents->isNotEmpty()){
-//                $Parents = collect([['id' => '', 'pid' => 0, 'name' => '-- 选择 --']])->merge($Parents);
-//            }
-//            $Parent->children = $Parents;
-//            if($Parent->siblings){
-//                $Parent->siblings = collect([['id' => 0, 'pid' => 0, 'name' => '-- 选择 --']])->merge($Parent->siblings);
-//            }
             $parent = $this->_parentsEach($Parent->pid);
             $res->push(['label' => $Parent->name, 'value' => $Parent->id, 'disabled' => false]);
             $res = $res->merge($parent);

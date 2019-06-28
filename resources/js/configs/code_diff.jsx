@@ -43,7 +43,7 @@ CodeDiff.defaultProps = {
     oldStr: '',
     newStr: '',
     context: 5,
-    outputFormat: 'line-by-line'
+    outputFormat: 'side-by-side'
 }
 
 export default CodeDiff;
