@@ -22,6 +22,7 @@ export default function App(props){
     const [keyword, setKeyword] = useState('');
     const [keywordLoading, setKeywordLoading] = useState(false);
     const [keywordResult, setKeywordResult] = useState([]);
+    const [showResult, setShowResult] = useState(false);
     
     useEffect(() => {
         init();
@@ -38,6 +39,9 @@ export default function App(props){
         }
         setKeywordLoading(true);
         setKeywordResult([]);
+        if(value.length < 3){
+            return false;
+        }
         let res = await axios.post('/project/'+project.value.id+'/search', {keyword: value});
         setKeywordLoading(false);
         setKeywordResult(res);
@@ -75,12 +79,16 @@ export default function App(props){
                                 <div className={'position-relative'}>
                                     <Form inline onSubmit={(event) => {event.preventDefault()}}>
                                         <FormControl type="text" placeholder="搜索文档" className="mr-sm-2" value={keyword} onChange={(event) => {
+                                            setShowResult(true);
                                             setKeyword(event.target.value);
                                             search(event.target.value);
-                                        }} />
+                                        }}
+                                                     onFocus={() => setShowResult(true)}
+                                                    onBlur={() => setShowResult(false)}
+                                        />
                                 
                                     </Form>
-                                    <div className={'position-absolute shadow search-results'}>
+                                    {showResult && <div className={'position-absolute shadow search-results'}>
                                         {keywordResult.map((result) => (
                                             <div key={result.id} className={'border-bottom p-2 items'} onClick={() => {
                                                 history.push('/project/'+project.value.id+'/post/'+result.id);
@@ -93,7 +101,7 @@ export default function App(props){
                                                 </div>
                                             </div>
                                         ))}
-                                    </div>
+                                    </div>}
                                 </div>)
                             : (
                                 <Link className={'btn btn-outline-dark'} to={'/project_add'}>新建项目</Link>
