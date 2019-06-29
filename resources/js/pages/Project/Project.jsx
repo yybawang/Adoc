@@ -32,17 +32,17 @@ export default function Project(props) {
         <div className="project d-flex align-items-start">
             <div className={'position-sticky overflow-auto border-right project-left'}>
                 <ListGroup>
-                    <ListGroup.Item variant={'light'} className={'text-dark'}>
-                        <ButtonGroup className={'h4 mb-0 d-inline-block text-truncate'} style={{width: (user.value.id > 0 ? 191 : 254) + 'px'}}
+                    <ListGroup.Item variant={'light'} className={'d-flex text-dark'}>
+                        <ButtonGroup className={'h4 mr-auto text-truncate'}
                                      title={project.value.name}>{project.value.name}</ButtonGroup>
                         {user.value.id > 0 &&
-                        <DropdownButton className={'d-inline-block'} variant={'link'} id={'manager'} title={'管理'}>
-                            <Dropdown.Item onClick={() => props.history.push('/post/' + props.match.params.id + '/edit/0')}>
+                        <DropdownButton variant={'link'} id={'manager'} title={'管理'}>
+                            {project.value.write &&<Dropdown.Item onClick={() => props.history.push('/post/' + props.match.params.id + '/edit/0')}>
                                 <Image src={add} style={{width: 15, paddingBottom: '4px'}} /> 新文档
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={() => props.history.push('/project_manager/' + props.match.params.id)}>
+                            </Dropdown.Item>}
+                            {project.value.admin && <Dropdown.Item onClick={() => props.history.push('/project_manager/' + props.match.params.id)}>
                                 <Image src={manager} style={{width: 15, paddingBottom: '4px'}} /> 设置
-                            </Dropdown.Item>
+                            </Dropdown.Item>}
                             <Dropdown.Item onClick={() => props.history.push(props.match.url + '/export')}>
                                 <Image src={ExportSvg} style={{width: 15, paddingBottom: '4px'}} /> 导出
                             </Dropdown.Item>

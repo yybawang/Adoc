@@ -42,7 +42,7 @@ CodeDiff.propTypes = {
 CodeDiff.defaultProps = {
     oldStr: '',
     newStr: '',
-    context: 5,
+    context: 99999,
     outputFormat: 'side-by-side'
 }
 

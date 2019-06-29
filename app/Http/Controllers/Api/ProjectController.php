@@ -124,7 +124,7 @@ class ProjectController extends BaseController
         $Post = new Post();
         $posts = $Post->children($project->id, $pid, 'id, name, html');
         $this->_export($posts, $Word);
-        $url = $Word->save('exports/'.$project->name.'.doc');
+        $url = $Word->save('exports/'.($pid ? Post::where('id', $pid)->value('name') : $project->name).'.doc');
         return $this->success([
             'fileurl' => $url,
         ]);
@@ -205,10 +205,7 @@ class ProjectController extends BaseController
         // 操作人
         $post['admin_id'] = Auth::id();
         
-        if(ProjectPermission::where(['project_id' => $project->id, 'user_id' => $post['user_id']])->exists()){
-            exception('该用戶已在权限列表中');
-        }
-        $Permission = ProjectPermission::create($post);
+        $Permission = ProjectPermission::updateOrCreate(['project_id' => $project->id, 'user_id' => $post['user_id']], $post);
         return $this->success($Permission);
     }
     

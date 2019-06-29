@@ -66,7 +66,7 @@ class PostController extends BaseController
         $Post = Post::updateOrCreate(['id' => $id], $post);
     
         // 存入记录
-        if($post['content'] && $Post->content != $post['content']){
+        if($post['content']){
             PostHistory::create([
                 'user_id'   => Auth::id(),
                 'post_id'   => $Post->id,

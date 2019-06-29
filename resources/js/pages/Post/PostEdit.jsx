@@ -82,12 +82,6 @@ export default function PostEdit(props){
         props.history.push(url);
     }
     
-    async function del(){
-        await axios.delete('/post/'+postId);
-        Tips('删除完成');
-        props.history.replace('/project/'+project_id);
-    }
-    
     function insertTemplate(type){
         let temp = '';
         switch (type) {
@@ -130,16 +124,7 @@ export default function PostEdit(props){
                             </Form.Group>
                         </Col>
                         <Col xs={3} className={'text-right'}>
-                            <OverlayTrigger trigger="focus" placement="left" overlay={
-                                <Popover id="popover-basic" title="确认删除？此操作不可恢复">
-                                    <div className={'py-2'}>删除文档<strong>「{name}」</strong></div>
-                                    <ButtonGroup>
-                                        <Button variant={'danger'} size={'sm'} onClick={() => del()}>删除</Button>
-                                    </ButtonGroup>
-                                </Popover>
-                            }>
-                                <Button variant={'link'} className={'mr-3'}>删除</Button>
-                            </OverlayTrigger>
+                            
                             <Dropdown as={ButtonGroup}>
                                 <Button type={'submit'} onClick={() => submit()}>保存</Button>
         

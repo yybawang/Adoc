@@ -121,7 +121,11 @@ export default function Permission(props) {
                                         checked={permission.write}
                                         onChange={(event) => {
                                             let permissions = [...list];
-                                            permissions[index].write = event.target.checked;
+                                            permission.write = event.target.checked;
+                                            // 取消写入，则管理权限也要取消
+                                            if(event.target.checked === false){
+                                                permission.admin = false;
+                                            }
                                             setList(permissions);
                                             edit(permissions[index]);
                                         }}
@@ -137,7 +141,11 @@ export default function Permission(props) {
                                         checked={permission.admin}
                                         onChange={(event) => {
                                             let permissions = [...list];
-                                            permissions[index].admin = event.target.checked;
+                                            permission.admin = event.target.checked;
+                                            // 添加管理，则写入权限也要勾选
+                                            if(event.target.checked === true){
+                                                permission.write = true;
+                                            }
                                             setList(permissions);
                                             edit(permissions[index]);
                                         }}

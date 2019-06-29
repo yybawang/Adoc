@@ -13,7 +13,7 @@ const mix = require('laravel-mix');
 
 mix.react('resources/js/app.js', 'js')
     .sass('resources/sass/app.scss', 'css')
-    .extract(['collect.js', 'axios', 'react', 'react-dom', 'react-bootstrap', 'cogo-toast'])
+    .extract(['collect.js', 'axios', 'react', 'react-dom', 'react-router-dom', 'diff', 'diff2html', 'history', 'rc-cascader', 'react-bootstrap', 'cogo-toast'])
 ;
 
 mix.disableNotifications();

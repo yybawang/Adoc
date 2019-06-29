@@ -84,18 +84,18 @@ export default function App(props){
                                             search(event.target.value);
                                         }}
                                                      onFocus={() => setShowResult(true)}
-                                                    onBlur={() => setShowResult(false)}
+                                                    onBlur={() => setTimeout(() => setShowResult(false), 200)}
                                         />
                                 
                                     </Form>
                                     {showResult && <div className={'position-absolute shadow search-results'}>
                                         {keywordResult.map((result) => (
-                                            <div key={result.id} className={'border-bottom p-2 items'} onClick={() => {
-                                                history.push('/project/'+project.value.id+'/post/'+result.id);
-                                                setKeyword('');
-                                                setKeywordResult([]);
-                                            }}>
-                                                <div style={{cursor: "default"}}>
+                                            <div key={result.id} className={'border-bottom p-2 items'}>
+                                                <div style={{cursor: "default"}} onClick={() => {
+                                                    history.push('/project/'+project.value.id+'/post/'+result.id);
+                                                    setKeyword('');
+                                                    setKeywordResult([]);
+                                                }}>
                                                 <span className={'text-muted'}>文档：</span>
                                                 {result.name}
                                                 </div>

@@ -6,6 +6,7 @@ import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import axios from '../../configs/axios'
 import {Container, Row, Col, Card} from 'react-bootstrap';
+import AddPng from '../../../images/add.png'
 
 export default function ProjectList(props){
     const [list, setList] = useState([]);
@@ -33,6 +34,15 @@ export default function ProjectList(props){
                         </Card>
                     </Col>
                 )}
+                <Col md={3} sm={4} className={{'mt-4': true, 'project-card': true}}>
+                    <Card className={'shadow-sm'}>
+                        <Link to={'/project_add'} title={'新建项目'}>
+                            <Card.Body style={{background: `url(${AddPng}) no-repeat center center transparent`, backgroundSize: '20px 20px'}}>
+                                <div className={'my-3 text-center'}>　</div>
+                            </Card.Body>
+                        </Link>
+                    </Card>
+                </Col>
             </Row>
         </Container>
     )

@@ -67,14 +67,14 @@ export default function PostHistory(props){
         
             <Modal show={show} scrollable={true} onHide={() => setShow(false)} className={'modal-dialog-scrollable'} size={'lg'}>
                 <Modal.Header closeButton>
-                    <Modal.Title>历史记录与当前对比</Modal.Title>
+                    <Modal.Title>历史记录(左)与当前(右)对比</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <CodeDiff oldStr={content} newStr={props.content}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShow(false)}>
-                        Close
+                        关闭
                     </Button>
                 </Modal.Footer>
             </Modal>

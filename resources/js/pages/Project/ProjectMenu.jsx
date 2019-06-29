@@ -5,9 +5,10 @@ import ListPng from '../../../images/list.png'
 import FolderOpenFill from '../../../images/folder open-fill.png'
 import FolderFill from '../../../images/folder-fill.png'
 import axios from "../../configs/axios";
-import {useNumber, useObject} from "react-hooks-easy";
+import {useBoolean, useNumber, useObject} from "react-hooks-easy";
 
 export default function ProjectMenu(props){
+    const refreshProjectMenu = useBoolean('refreshProjectMenu', false);
     const [list, setList] = useState([]);
     const postMenuActive = useNumber('postMenuActive');
     
@@ -17,6 +18,10 @@ export default function ProjectMenu(props){
             postMenuActive.set(0);
         }
     }, [props.project_id]);
+    
+    useEffect(() => {
+        refreshProjectMenu.value && init();
+    }, [refreshProjectMenu.value]);
     
     async function init(){
         let res = await axios.get('/project/'+props.project_id+'/posts');

@@ -49,7 +49,7 @@ export default function PostSavedTemplate(props){
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={() => templateShow.set(false)}>
-                    Close
+                    关闭
                 </Button>
                 <Button variant="primary" onClick={() => {
                     if(!list[checked]){
