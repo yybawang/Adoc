@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useBoolean} from "react-hooks-easy";
 import axios from "../../configs/axios";
 import {Button, Form, Modal} from "react-bootstrap";
-import CodeDiff from "../../configs/code_diff";
+import CodeDiff from "./CodeDiff";
 import {Tips} from "../../configs/function";
 
 export default function PostHistory(props){
@@ -65,7 +65,7 @@ export default function PostHistory(props){
             </Modal>
         
         
-            <Modal show={show} scrollable={true} onHide={() => setShow(false)} className={'modal-dialog-scrollable'} size={'lg'}>
+            <Modal show={show} scrollable={true} onHide={() => setShow(false)} dialogClassName="history-diff-modal" className={'modal-dialog-scrollable'} size={'lg'}>
                 <Modal.Header closeButton>
                     <Modal.Title>历史记录(左)与当前(右)对比</Modal.Title>
                 </Modal.Header>
