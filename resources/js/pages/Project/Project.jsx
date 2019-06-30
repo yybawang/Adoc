@@ -10,6 +10,7 @@ import axios from '../../configs/axios'
 import {useNumber, useObject} from "react-hooks-easy";
 import ProjectEvent from "./ProjectEvent";
 import ProjectExport from "./ProjectExport";
+import PostHistory from "../Post/PostHistory";
 
 export default function Project(props) {
     const project = useObject('project');
@@ -56,6 +57,7 @@ export default function Project(props) {
                 <Switch>
                 <Route path={props.match.path} exact component={ProjectEvent}/>
                 <Route path={props.match.path + '/post/:post_id'} component={ProjectPost}/>
+                <Route path={props.match.path + '/history/:post_id'} component={PostHistory}/>
                 <Route path={props.match.path + '/export'} component={ProjectExport}/>
                 </Switch>
             </div>

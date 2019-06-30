@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Button, ButtonGroup, Col, Container, Dropdown, Modal, OverlayTrigger, Popover, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Container, Dropdown, Modal, DropdownButton, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import axios from '../../configs/axios'
 import Editor from 'react-editor-md'
@@ -9,7 +9,8 @@ import PostHistory from "../Post/PostHistory";
 import {Tips} from "../../configs/function";
 
 export default function ProjectPost(props){
-    const postHistoryShow = useBoolean('postHistoryShow', false);
+    const user = useObject('user');
+    const postMenuActive = useNumber('postMenuActive');
     const refreshProjectMenu = useBoolean('refreshProjectMenu');
     const project = useObject('project');
     const [confirm, setConfirm] = useState(false);
@@ -21,8 +22,6 @@ export default function ProjectPost(props){
         imageUploadURL: '/api/upload_md',
         markdown: '',
     });
-    const user = useObject('user');
-    const postMenuActive = useNumber('postMenuActive');
     
     useEffect(() => {
         postMenuActive.set(props.match.params.post_id);
@@ -58,19 +57,16 @@ export default function ProjectPost(props){
                 <Col xs={2} className={'text-right'}>
                     {user.value.id > 0 && (
                         <div>
-                            <Dropdown as={ButtonGroup}>
-                                <Link className={'btn btn-outline-dark' + (project.value.write ? '' : 'd-none')} to={'/post/'+props.match.params.id+'/edit/'+props.match.params.post_id}>编辑</Link>
-                                <Dropdown.Toggle split variant="outline-dark"/>
-                                <Dropdown.Menu>
-                                    {project.value.write && <Dropdown.Item onClick={() => history.push('/post/'+props.match.params.id+'/edit/0?from='+props.match.params.post_id)}>复制</Dropdown.Item>}
-                                    <Dropdown.Item onClick={() => postHistoryShow.set(true)}>历史</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => exports()}>导出</Dropdown.Item>
-                                    <Dropdown.Divider />
-                                    <Dropdown.Item onClick={() => setConfirm(true)}>删除</Dropdown.Item>
+                            <DropdownButton variant={'link'} id={'manager-post'} title={'操作'}>
+                                {project.value.write && <Dropdown.Item onClick={() => history.push('/post/'+props.match.params.id+'/edit/'+props.match.params.post_id)}>编辑</Dropdown.Item>}
+                                {project.value.write && <Dropdown.Item onClick={() => history.push('/post/'+props.match.params.id+'/edit/0?from='+props.match.params.post_id)}>复制</Dropdown.Item>}
+                                <Dropdown.Item onClick={() => history.push('/project/'+props.match.params.id+'/history/'+props.match.params.post_id)}>历史</Dropdown.Item>
+                                <Dropdown.Item onClick={() => exports()}>导出</Dropdown.Item>
+                                {project.value.write && <Dropdown.Divider />}
+                                {project.value.write && <Dropdown.Item onClick={() => setConfirm(true)}>删除</Dropdown.Item>}
                                     
                                     {/*<Dropdown.Item onClick={() => {}}>分享</Dropdown.Item>*/}
-                                </Dropdown.Menu>
-                            </Dropdown>
+                            </DropdownButton>
                             
                         </div>
                     )}
@@ -81,14 +77,14 @@ export default function ProjectPost(props){
                 <Editor.EditorShow config={config}/>
                 }
                 
-                <div className={'mt-3 py-3 border-top'}>
+                {post.attachments.length > 0 && <div className={'mt-3 py-3 border-top'}>
                     <h5>📎 文档包含附件，点击预览/下载</h5>
                     <ul>
                         {post.attachments.map((attachment) => (
                             <li key={attachment.id}><a href={attachment.path} target={"_black"}>{attachment.path.split('/').pop()}</a></li>
                         ))}
                     </ul>
-                </div>
+                </div>}
             </div>
             <Modal show={confirm} onHide={() => setConfirm(false)}>
                 <Modal.Header closeButton>
@@ -107,7 +103,6 @@ export default function ProjectPost(props){
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <PostHistory name={post.name} post_id={props.match.params.post_id} content={post.content} />
         </Container>
     );
 }
