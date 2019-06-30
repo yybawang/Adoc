@@ -73,10 +73,11 @@ EOT;
             '<table width="100%" class="codebg"><pre><code>',
             '</code></pre></table>',
         ], $html);
-        $var = file_put_contents(storage_path('app/public/'.$path), $html);
+        $save_path = 'exports/'.date('Ymd').'/'.date('Hi').'/'.$path;
+        $var = Storage::put($save_path, $html);
         if(!$var){
             exception('写入文件失败');
         }
-        return Storage::url($path);
+        return Storage::url($save_path);
     }
 }

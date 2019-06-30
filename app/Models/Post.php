@@ -14,7 +14,7 @@ class Post extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function attachments(){
-        return $this->hasMany(PostAttachment::class);
+        return $this->hasMany(PostAttachment::class)->latest();
     }
     
     /**
@@ -22,11 +22,11 @@ class Post extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function histories(){
-        return $this->hasMany(PostHistory::class);
+        return $this->hasMany(PostHistory::class)->latest();
     }
     
     public function events(){
-        return $this->hasMany(PostEvent::class);
+        return $this->hasMany(PostEvent::class)->latest();
     }
     
     /**
@@ -38,7 +38,7 @@ class Post extends Model
     }
     
     public function likes(){
-        return $this->hasMany(PostLike::class);
+        return $this->hasMany(PostLike::class)->latest();
     }
     
     public function getToggleAttribute(){

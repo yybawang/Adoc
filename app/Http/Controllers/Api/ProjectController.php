@@ -69,18 +69,18 @@ class ProjectController extends BaseController
             'description'=> '',
             'tags'      => 'array',
         ]);
+        $tags = $post['tags'] ?? [];
+        unset($post['tags']);
         $post['user_id'] = Auth::id();
         $project->update($post);
         
         // 本来数据中有，而新传递没有的就是要删除的
-        if(!empty($post['tags'])){
-            ProjectTag::where('project_id', $project->id)->whereNotIn('name', $post['tags'])->delete();
-            foreach($post['tags'] as $tag){
-                ProjectTag::updateOrCreate([
-                    'project_id'=> $project->id,
-                    'name'      => $tag,
-                ]);
-            }
+        ProjectTag::where('project_id', $project->id)->whereNotIn('name', $tags)->delete();
+        foreach($tags as $tag){
+            ProjectTag::updateOrCreate([
+                'project_id'=> $project->id,
+                'name'      => $tag,
+            ]);
         }
         
         return $this->success($project);
@@ -124,7 +124,7 @@ class ProjectController extends BaseController
         $Post = new Post();
         $posts = $Post->children($project->id, $pid, 'id, name, html');
         $this->_export($posts, $Word);
-        $url = $Word->save('exports/'.($pid ? Post::where('id', $pid)->value('name') : $project->name).'.doc');
+        $url = $Word->save(($pid ? Post::where('id', $pid)->value('name') : $project->name).'.doc');
         return $this->success([
             'fileurl' => $url,
         ]);

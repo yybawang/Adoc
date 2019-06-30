@@ -9,6 +9,7 @@ use App\Events\PostUpdateEvent;
 use App\Libraries\Word;
 use App\Listeners\PostUpdateListener;
 use App\Models\Post;
+use App\Models\PostAttachment;
 use App\Models\PostComment;
 use App\Models\PostCommentLike;
 use App\Models\PostHistory;
@@ -28,6 +29,7 @@ class PostController extends BaseController
      * @return mixed
      */
     public function detail(Request $request, Post $post){
+        $post->attachments = $post->attachments()->pluck('path');
         $post->comments->each->parent;
         $post->comments->each->likeEmojis;
         $post->parents = $post->parentsEach();
@@ -56,12 +58,15 @@ class PostController extends BaseController
             'pid'       => 'required',
             'project_id'=> 'required|integer|min:1',
             'name'      => 'required',
+            'attachments'=> 'array',
             'content'   => '',
             'html'      => '',
             'sort'      => '',
         ]);
         $post['user_id'] = Auth::id();
         $post['status'] = 1;
+        $attachments = $post['attachments'] ?? [];
+        unset($post['attachments']);
         
         $Post = Post::updateOrCreate(['id' => $id], $post);
     
@@ -72,6 +77,12 @@ class PostController extends BaseController
                 'post_id'   => $Post->id,
                 'content'   => $post['content'],
             ]);
+        }
+        
+        // 不在post里面的，肯定是被点击删除了的
+        PostAttachment::where(['post_id' => $Post->id])->whereNotIn('path', $attachments)->delete();
+        foreach(array_reverse($attachments) as $attachment){
+            PostAttachment::updateOrCreate(['post_id' => $Post->id, 'path' => $attachment]);
         }
         
         // 分发日志记录
@@ -91,7 +102,7 @@ class PostController extends BaseController
      */
     public function export(Post $post){
         $Word = new Word();
-        $url = $Word->addPost($post)->save('exports/'.$post->name.'.doc');
+        $url = $Word->addPost($post)->save($post->name.'.doc');
         return $this->success([
             'fileurl' => $url,
         ]);

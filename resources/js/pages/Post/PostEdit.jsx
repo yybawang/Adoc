@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {Button, ButtonGroup, Col, Container, Dropdown, Form, OverlayTrigger, Popover, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Container, Dropdown, Form, OverlayTrigger, Popover, Row, Tooltip} from "react-bootstrap";
 import Editor from "react-editor-md";
+import Upload from 'rc-upload'
 import axios from '../../configs/axios'
 import {Tips} from "../../configs/function";
 import {useBoolean, useObject} from "react-hooks-easy";
@@ -11,7 +12,7 @@ import PostAddTemplate from "./PostAddTemplate";
 
 window.editormd.defaults.toolbarIconsClass['template'] = 'fa-circle';
 window.editormd.defaults.toolbarHandlers['template'] = () => {alert(1)};
-let postId, setPostId, name, setName, parentId, setParentId, sort, setSort, editor = {};
+let postId, setPostId, name, setName, parentId, setParentId, sort, setSort, attachments, setAttachments, editor = {};
 export default function PostEdit(props){
     const project = useObject('project');
     const templateShow = useBoolean('postSavedTemplate', false);
@@ -20,7 +21,10 @@ export default function PostEdit(props){
     [name, setName] = useState('');
     [parentId, setParentId] = useState(0);
     [sort, setSort] = useState(100);
+    [attachments, setAttachments] = useState([]);
     const [parents, setParents] = useState([]);
+    const [uploading, setUploading] = useState(false);
+    const [uploadingProgress, setUploadingProgress] = useState(false);
     const project_id = props.match.params.project_id;
     
     useEffect(() => {
@@ -44,6 +48,7 @@ export default function PostEdit(props){
             setName(res.name);
             setParentId(res.pid);
             setSort(res.sort);
+            setAttachments(res.attachments);
             let interval = setInterval(() => {
                 if(editor.id){
                     clearInterval(interval);
@@ -69,7 +74,7 @@ export default function PostEdit(props){
         let pid = parentId;
         let content = editor.getMarkdown();
         let html = editor.getHTML();
-        let res = await axios.post('/post/'+postId, {name,content, html, pid, project_id, sort});
+        let res = await axios.post('/post/'+postId, {name,content, html, pid, project_id, sort, attachments});
         setPostId(res.id);
         Tips('已保存');
     }
@@ -93,6 +98,13 @@ export default function PostEdit(props){
                 break;
         }
         editor.focus().replaceSelection(temp);
+    }
+    
+    // 删除附件
+    function delAttachment(index){
+        let attachments2 = [...attachments];
+        attachments2.splice(index, 1);
+        setAttachments(attachments2);
     }
     
     return (
@@ -120,7 +132,15 @@ export default function PostEdit(props){
                                 <span className={'ml-3'}>上级目录：</span>
                                 <PostCascader project_id={project_id} post_id={postId} parents={parents} onChange={(val) => setParentId(val)} />
                                 <span className={'ml-3'}>排序：</span>
-                                <Form.Control className={'d-inline'} value={sort} onChange={(event) => setSort(event.target.value)} style={{width: '80px'}} />
+                                <OverlayTrigger
+                                    placement="bottom"
+                                    delay={{ show: 500, hide: 0 }}
+                                    overlay={<Tooltip id={'tooltip-sort'}>
+                                        从小到大排序
+                                    </Tooltip>}
+                                >
+                                    <Form.Control className={'d-inline'} value={sort} onChange={(event) => setSort(event.target.value)} style={{width: '80px'}} />
+                                </OverlayTrigger>
                             </Form.Group>
                         </Col>
                         <Col xs={3} className={'text-right'}>
@@ -179,6 +199,29 @@ export default function PostEdit(props){
                     </div>
                 </Container>
             </Form>
+            {/*附件*/}
+            <div className={'my-2 d-flex align-items-center'}>
+                <Upload
+                    action={'/api/upload'}
+                    onStart={() => {setUploading(true); setUploadingProgress(0)}}
+                    onProgress={(e) => setUploadingProgress(Math.round(e.percent))}
+                    onError={() => setUploading(false)}
+                    onSuccess={(res, file) => {
+                        setUploading(false);
+                        let attachments2 = [...attachments];
+                        attachments2.unshift(res.data.file);
+                        setAttachments(attachments2);
+                    }}
+                >
+                    <Button variant={"outline-info"}>上传附件</Button>
+                </Upload>
+                <div className={'ml-3'}>{uploading ? '上传中...'+uploadingProgress+'%' : ''}</div>
+            </div>
+            <ul>
+                {attachments.map((attachment, index) => (
+                    <li key={attachment}><a href={attachment} target={'_blank'}>{attachment.split('/').pop()}</a> <a title={'删除此附件'} style={{cursor: "pointer"}} className={'ml-1 text-danger'} onClick={() => delAttachment(index)}>&times;</a></li>
+                ))}
+            </ul>
             <PostSavedTemplate project_id={project_id} onSubmit={(template) => {
                 editor.focus().replaceSelection(template);
             }} />

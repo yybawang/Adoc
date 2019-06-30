@@ -14,7 +14,7 @@ export default function ProjectPost(props){
     const project = useObject('project');
     const [confirm, setConfirm] = useState(false);
     const [open, setOpen] = useState(false);
-    const [post, setPost] = useState({});
+    const [post, setPost] = useState({attachments:[]});
     const [config, setConfig] = useState({
         width: '100%',
         path: '/editor.md/lib/',
@@ -53,7 +53,7 @@ export default function ProjectPost(props){
         <Container fluid className={'p-0'}>
             <Row className={'border-bottom px-5'} style={{paddingTop: '0.77rem', paddingBottom: '0.77rem'}} noGutters>
                 <Col xs={10}>
-                    <h4>{post.name}</h4>
+                    <h4>{post.name} {post.attachments.length > 0 && '📎'}</h4>
                 </Col>
                 <Col xs={2} className={'text-right'}>
                     {user.value.id > 0 && (
@@ -80,6 +80,15 @@ export default function ProjectPost(props){
                 {open &&
                 <Editor.EditorShow config={config}/>
                 }
+                
+                <div className={'mt-3 py-3 border-top'}>
+                    <h5>📎 文档包含附件，点击预览/下载</h5>
+                    <ul>
+                        {post.attachments.map((attachment) => (
+                            <li key={attachment.id}><a href={attachment.path} target={"_black"}>{attachment.path.split('/').pop()}</a></li>
+                        ))}
+                    </ul>
+                </div>
             </div>
             <Modal show={confirm} onHide={() => setConfirm(false)}>
                 <Modal.Header closeButton>

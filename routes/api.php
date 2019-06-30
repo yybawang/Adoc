@@ -22,6 +22,7 @@ Route::namespace('Api')->group(function(){
     Route::get('/project/{id}/events', 'IndexController@events');
     Route::post('/project/{id}/search', 'ProjectController@search');
     Route::get('/post/{id}', 'IndexController@post');
+    Route::post('/upload', 'BaseController@upload');
     Route::post('/upload_md', 'IndexController@upload_md');
     Route::get('/user', 'UserController@user');
     Route::post('/login', 'UserController@login');

@@ -39,9 +39,9 @@ npm run prod
     * [x] markdown 编辑器图片上传，上传到 laravel 配置的 filesystem 配置中，默认 public
     * [x] 编辑器快捷键支持， Ctrl/Cmd + s 保存(停留当前页)， Ctrl/Cmd + Shift + S 保存并返回
     * [ ] 文档编辑时可能已被修改过，提示合并
-    * [ ] 文档搜索，头部右上角，暂只支持搜索当前展示项目下文档
-    * [ ] 文档排序，默认时间先后顺序
-    * [ ] 文档附件
+    * [x] 文档搜索，头部右上角，暂只支持搜索当前展示项目下文档
+    * [x] 文档排序，默认时间先后顺序
+    * [x] 文档附件
 
 
 ![示例](https://raw.githubusercontent.com/yybawang/images/master/adoc/Xnip2019-05-25_12-28-38.png)
