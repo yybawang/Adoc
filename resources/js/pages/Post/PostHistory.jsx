@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {useBoolean, useNumber} from "react-hooks-easy";
+import {useNumber} from "react-hooks-easy";
 import axios from "../../configs/axios";
 import {Button, ButtonGroup, Card, Form, Modal, OverlayTrigger, Popover} from "react-bootstrap";
 import CodeDiff from "./CodeDiff";
@@ -65,7 +65,6 @@ export default function PostHistory(props){
                                         }>
                                             <Button className={'p-0 text-danger'} size={'sm'} variant={'link'}>删除</Button>
                                         </OverlayTrigger>
-                                        
                                     </div>
                                 </li>
                             ))}

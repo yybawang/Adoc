@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import {Button, ButtonGroup, Col, Container, Dropdown, Modal, DropdownButton, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Button, Col, Container, Dropdown, Modal, DropdownButton, Row} from "react-bootstrap";
 import axios from '../../configs/axios'
 import Editor from 'react-editor-md'
 import {useBoolean, useNumber, useObject} from "react-hooks-easy";
 import history from "../../configs/history";
-import PostHistory from "../Post/PostHistory";
 import {Tips} from "../../configs/function";
 
 export default function ProjectPost(props){
