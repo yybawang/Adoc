@@ -29,9 +29,11 @@ class IndexController extends BaseController
             ->leftJoinSub(ProjectTop::select('created_at', 'user_id', 'project_id'), 'pt', function($join) use ($uid){
                 $join->on('pt.project_id', '=', 'p.id')->where('pt.user_id', '=', $uid);
             })
-            // 所属人是自己，或是开放项目，或有权限的
+            // 所属人是自己，或是开放项目
+            ->where(['p.user_id' => $uid])->orWhere(['p.type' => 0])
+            // 或有权限的
             ->where(function($query) use ($uid){
-                $query->where(['p.user_id' => $uid])->orWhere(['p.type' => 0])->orWhereNotNull('pp.id');
+                $query->orWhereNotNull('pp.id');
             })
             ->orderByDesc('pt.created_at')
             ->orderBy('p.id')
