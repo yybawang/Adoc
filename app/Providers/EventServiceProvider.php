@@ -3,16 +3,13 @@
 namespace App\Providers;
 
 use App\Events\PostCommentEvent;
-use App\Events\PostDeleteEvent;
 use App\Events\PostLikeEvent;
 use App\Events\PostStoreEvent;
 use App\Events\PostUpdateEvent;
 use App\Listeners\PostCommentListener;
-use App\Listeners\PostDeleteListener;
 use App\Listeners\PostLikeListener;
 use App\Listeners\PostStoreListener;
 use App\Listeners\PostUpdateListener;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;

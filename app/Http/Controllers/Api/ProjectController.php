@@ -13,7 +13,6 @@ use App\Models\ProjectTag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class ProjectController extends BaseController
 {

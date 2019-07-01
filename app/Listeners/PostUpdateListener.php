@@ -2,12 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\PostStoreEvent;
 use App\Events\PostUpdateEvent;
 use App\Models\PostEvent;
-use App\Models\User;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class PostUpdateListener
 {

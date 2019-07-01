@@ -7,7 +7,6 @@ use App\Events\PostLikeEvent;
 use App\Events\PostStoreEvent;
 use App\Events\PostUpdateEvent;
 use App\Libraries\Word;
-use App\Listeners\PostUpdateListener;
 use App\Models\Post;
 use App\Models\PostAttachment;
 use App\Models\PostComment;
@@ -15,9 +14,7 @@ use App\Models\PostCommentLike;
 use App\Models\PostHistory;
 use App\Models\PostLike;
 use App\Models\Project;
-use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
