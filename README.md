@@ -16,6 +16,9 @@ vi .env
 // 下载包
 composer install
 
+// 运行数据库迁移
+php artisan migrate
+
 // 下载 npm 包，进行前端编译
 npm install
 npm run prod
