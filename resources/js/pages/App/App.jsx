@@ -104,7 +104,7 @@ export default function App(props){
                                     </div>}
                                 </div>)
                             : (
-                                <Link className={'btn btn-outline-dark'} to={'/project_add'}>新建项目</Link>
+                                user.value.id > 0 && <Link className={'btn btn-outline-dark'} to={'/project_add'}>新建项目</Link>
                             )
                         }
                     </Navbar.Collapse>

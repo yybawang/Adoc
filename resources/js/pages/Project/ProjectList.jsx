@@ -5,10 +5,12 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import axios from '../../configs/axios'
-import {Container, Row, Col, Card} from 'react-bootstrap';
+import {Container, Row, Col, Card, Alert} from 'react-bootstrap';
 import AddPng from '../../../images/add.png'
+import {useObject} from "react-hooks-easy";
 
 export default function ProjectList(props){
+    const user = useObject('user');
     const [list, setList] = useState([]);
     
     useEffect(() => {
@@ -22,6 +24,13 @@ export default function ProjectList(props){
     
     return (
         <Container>
+            {user.value.id ? '':  <Row className={'align-items-center mt-3' + (user.value.id ? ' d-none' : '')}>
+                <Col>
+                    <Alert variant={"primary"} className={'text-center'}>
+                        该页面为公共页面，可查看共享的文档，<Link to={'/login'}>登录</Link>后可查看用户所属文档
+                    </Alert>
+                </Col>
+            </Row>}
             <Row className={'align-items-center'}>
                 {list.map((project) =>
                     <Col md={3} sm={4} key={project.id} className={{'mt-4': true, 'project-card': true, 'project-share' : project.share}}>
@@ -34,7 +43,7 @@ export default function ProjectList(props){
                         </Card>
                     </Col>
                 )}
-                <Col md={3} sm={4} className={{'mt-4': true, 'project-card': true}}>
+                {user.value.id > 0 &&<Col md={3} sm={4} className={{'mt-4': true, 'project-card': true}}>
                     <Card className={'shadow-sm'}>
                         <Link to={'/project_add'} title={'新建项目'}>
                             <Card.Body style={{background: `url(${AddPng}) no-repeat center center transparent`, backgroundSize: '20px 20px'}}>
@@ -42,7 +51,7 @@ export default function ProjectList(props){
                             </Card.Body>
                         </Link>
                     </Card>
-                </Col>
+                </Col>}
             </Row>
         </Container>
     )
