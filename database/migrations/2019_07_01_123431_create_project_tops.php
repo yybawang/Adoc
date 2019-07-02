@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
  * @author https://tableplus.com
  * @source https://github.com/TablePlus/tabledump
  */
-class CreateProjectpermissionsTable extends Migration
+class CreateProjectTops extends Migration
 {
     /**
      * Run the migrations.
@@ -18,13 +18,10 @@ class CreateProjectpermissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_permissions', function (Blueprint $table) {
+        Schema::create('project_tops', function (Blueprint $table) {
             $table->integer('id');
-            $table->integer('project_id');
-            $table->integer('admin_id');
             $table->integer('user_id');
-            $table->tinyInteger('write');
-            $table->tinyInteger('admin');
+            $table->integer('project_id');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
@@ -37,6 +34,6 @@ class CreateProjectpermissionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_permissions');
+        Schema::dropIfExists('project_tops');
     }
 }

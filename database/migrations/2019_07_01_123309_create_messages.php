@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
  * @author https://tableplus.com
  * @source https://github.com/TablePlus/tabledump
  */
-class CreatePosttemplatesTable extends Migration
+class CreateMessages extends Migration
 {
     /**
      * Run the migrations.
@@ -18,12 +18,14 @@ class CreatePosttemplatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('post_templates', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->integer('id');
             $table->integer('user_id');
-            $table->integer('project_id');
-            $table->string('name', 200);
-            $table->mediumtext('content');
+            $table->string('title', 255)->nullable();
+            $table->text('content')->nullable();
+            $table->tinyInteger('type');
+            $table->string('url', 255);
+            $table->tinyInteger('read');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
@@ -36,6 +38,6 @@ class CreatePosttemplatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_templates');
+        Schema::dropIfExists('messages');
     }
 }

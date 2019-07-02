@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
  * @author https://tableplus.com
  * @source https://github.com/TablePlus/tabledump
  */
-class CreatePostattachmentsTable extends Migration
+class CreatePosts extends Migration
 {
     /**
      * Run the migrations.
@@ -18,11 +18,17 @@ class CreatePostattachmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('post_attachments', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->integer('id');
-            $table->integer('post_id');
-            $table->string('name', 100);
-            $table->string('path', 255);
+            $table->integer('pid');
+            $table->integer('project_id');
+            $table->integer('user_id');
+            $table->string('name', 200);
+            $table->mediumtext('content');
+            $table->mediumtext('html');
+            $table->integer('sort');
+            $table->tinyInteger('status');
+            $table->integer('views');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
@@ -35,6 +41,6 @@ class CreatePostattachmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_attachments');
+        Schema::dropIfExists('posts');
     }
 }

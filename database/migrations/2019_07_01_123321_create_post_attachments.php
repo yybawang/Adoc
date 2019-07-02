@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
  * @author https://tableplus.com
  * @source https://github.com/TablePlus/tabledump
  */
-class CreatePostlikesTable extends Migration
+class CreatePostAttachments extends Migration
 {
     /**
      * Run the migrations.
@@ -18,11 +18,11 @@ class CreatePostlikesTable extends Migration
      */
     public function up()
     {
-        Schema::create('post_likes', function (Blueprint $table) {
+        Schema::create('post_attachments', function (Blueprint $table) {
             $table->integer('id');
             $table->integer('post_id');
-            $table->integer('user_id');
-            $table->char('emoji', 4);
+            $table->string('name', 100);
+            $table->string('path', 255);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
@@ -35,6 +35,6 @@ class CreatePostlikesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_likes');
+        Schema::dropIfExists('post_attachments');
     }
 }

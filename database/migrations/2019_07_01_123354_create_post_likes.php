@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
  * @author https://tableplus.com
  * @source https://github.com/TablePlus/tabledump
  */
-class CreateProjecttagsTable extends Migration
+class CreatePostLikes extends Migration
 {
     /**
      * Run the migrations.
@@ -18,10 +18,11 @@ class CreateProjecttagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_tags', function (Blueprint $table) {
+        Schema::create('post_likes', function (Blueprint $table) {
             $table->integer('id');
-            $table->integer('project_id');
-            $table->string('name', 100);
+            $table->integer('post_id');
+            $table->integer('user_id');
+            $table->char('emoji', 4);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
@@ -34,6 +35,6 @@ class CreateProjecttagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_tags');
+        Schema::dropIfExists('post_likes');
     }
 }

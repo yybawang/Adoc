@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
  * @author https://tableplus.com
  * @source https://github.com/TablePlus/tabledump
  */
-class CreateProjecttopsTable extends Migration
+class CreatePostHistories extends Migration
 {
     /**
      * Run the migrations.
@@ -18,10 +18,11 @@ class CreateProjecttopsTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_tops', function (Blueprint $table) {
+        Schema::create('post_histories', function (Blueprint $table) {
             $table->integer('id');
+            $table->integer('post_id');
             $table->integer('user_id');
-            $table->integer('project_id');
+            $table->mediumtext('content');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
@@ -34,6 +35,6 @@ class CreateProjecttopsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_tops');
+        Schema::dropIfExists('post_histories');
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
  * @author https://tableplus.com
  * @source https://github.com/TablePlus/tabledump
  */
-class CreatePostsTable extends Migration
+class CreatePostCommentlikes extends Migration
 {
     /**
      * Run the migrations.
@@ -18,17 +18,11 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('post_comment_likes', function (Blueprint $table) {
             $table->integer('id');
-            $table->integer('pid');
-            $table->integer('project_id');
+            $table->integer('post_comment_id');
             $table->integer('user_id');
-            $table->string('name', 200);
-            $table->mediumtext('content');
-            $table->mediumtext('html');
-            $table->integer('sort');
-            $table->tinyInteger('status');
-            $table->integer('views');
+            $table->char('emoji', 4);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
@@ -41,6 +35,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('post_comment_likes');
     }
 }
