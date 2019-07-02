@@ -30,13 +30,15 @@ class IndexController extends BaseController
                 $join->on('pt.project_id', '=', 'p.id')->where('pt.user_id', '=', $uid);
             })
             // 所属人是自己，或是开放项目
-            ->where(['p.user_id' => $uid])->orWhere(['p.type' => 0])
-            // 或有权限的
             ->where(function($query) use ($uid){
-                $query->orWhereNotNull('pp.id');
+                $query->where(['p.user_id' => $uid])->orWhere(['p.type' => 0]);
+            })
+            // 有权限的
+            ->orWhere(function($query){
+                $query->whereNotNull('pp.id');
             })
             ->orderByDesc('pt.created_at')
-            ->orderBy('p.id')
+            ->latest('p.id')
             ->with(['tags'])
             ->get()->each(function($v) use ($uid){
                 $v->share = $v->user_id == $uid ? false : true;
