@@ -1,8 +1,8 @@
 ### Adoc
 
-> Just another markdown doc editor
+> Just **A**nother markdown **doc** editor
 
-PHP 7.1.3 + Laravel 5.8 + React + bootstrap v4
+PHP 7.2 + Laravel 5.8 + React-Bootstrap
 
 #### 安装
 
@@ -16,7 +16,9 @@ vi .env
 // 下载包
 composer install
 
-// 运行数据库迁移
+// 生成key，数据库迁移等
+php artisan key:generate
+php artisan storage:link
 php artisan migrate
 
 // 下载 npm 包，进行前端编译
