@@ -4,6 +4,19 @@
 
 PHP 7.2 + Laravel 5.8 + React-Bootstrap
 
+#### Feature
+
+1. UI使用了直角主题
+2. 编辑快捷键添加 ctrl/cmd + shift + s 保存并返回
+3. 添加了文档活动记录，暂无其他用途，只是个历史查看谁改动了哪些文档
+4. github 风格文档历史对比
+5. 添加文档附件功能
+6. 编辑、展示和导出都使用 editor.md，(showdoc编辑和展示是两个不同的程序)
+7. 文档菜单无限极分类(编辑父级同样)
+8. 文档菜单滑动到顶部优化
+9. 文档搜索
+
+
 #### 安装
 
 ```bash
@@ -49,6 +62,7 @@ npm run prod
     * [x] 文档增删改查
     * [x] 文档自定义模版
     * [x] 文档修改历史，对比、还原
+    * [x] 文档模版
     * [x] markdown 编辑器图片上传，上传到 laravel 配置的 filesystem 配置中，默认 public
     * [x] 编辑器快捷键支持， Ctrl/Cmd + s 保存(停留当前页)， Ctrl/Cmd + Shift + S 保存并返回
     * [ ] 文档编辑时可能已被修改过，提示合并
@@ -58,4 +72,7 @@ npm run prod
 
 
 ![示例](https://raw.githubusercontent.com/yybawang/images/master/adoc/Xnip2019-05-25_12-28-38.png)
+![示例](https://raw.githubusercontent.com/yybawang/images/master/adoc/Xnip2019-07-04_18-07-30.png)
+![示例](https://raw.githubusercontent.com/yybawang/images/master/adoc/Xnip2019-07-04_18-07-44.png)
+![示例](https://raw.githubusercontent.com/yybawang/images/master/adoc/Xnip2019-07-04_18-07-58.png)
 ![示例](https://raw.githubusercontent.com/yybawang/images/master/adoc/Xnip2019-05-25_13-06-16.png)
