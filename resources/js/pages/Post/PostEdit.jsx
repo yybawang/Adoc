@@ -80,11 +80,13 @@ export default function PostEdit(props){
     }
     
     function back(){
-        let url = '/project/'+project_id;
         if(postId){
-            url += '/post/'+postId;
+            let url = '/project/'+project_id+'/post/'+postId;
+            props.history.push(url);
+        }else{
+            props.history.goBack();
         }
-        props.history.push(url);
+        
     }
     
     function insertTemplate(type){
@@ -146,9 +148,9 @@ export default function PostEdit(props){
                         <Col xs={3} className={'text-right'}>
                             
                             <Dropdown as={ButtonGroup}>
-                                <Button type={'submit'} onClick={() => submit()}>保存</Button>
+                                <Button variant={"outline-primary"} type={'submit'} onClick={() => submit()}>保存</Button>
         
-                                <Dropdown.Toggle split variant="primary" />
+                                <Dropdown.Toggle split variant="outline-primary" />
                                 <Dropdown.Menu>
                                     <Dropdown.Item onClick={() => postAddTemplate.set(true)}>另存为模版</Dropdown.Item>
                                 </Dropdown.Menu>

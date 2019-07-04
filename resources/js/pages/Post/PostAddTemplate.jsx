@@ -35,7 +35,7 @@ export default function PostAddTemplate(props){
                         setName('');
                         postAddTemplate.set(false);
                     }}>
-                        插入此模版
+                        保存模版
                     </Button>
                 </Modal.Footer>
             </Modal>

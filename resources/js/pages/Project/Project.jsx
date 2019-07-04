@@ -1,9 +1,12 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Route, Link, Switch} from "react-router-dom";
 import {ListGroup, Image, ButtonGroup, Dropdown, Button, DropdownButton} from "react-bootstrap";
-import manager from '../../../images/manager.png'
-import add from '../../../images/add.png'
+import SettingSvg from '../../../images/setting.svg'
+import SettingWhiteSvg from '../../../images/settingWhite.svg'
+import AddSvg from '../../../images/add.svg'
+import AddWhiteSvg from '../../../images/addWhite.svg'
 import ExportSvg from '../../../images/export.svg'
+import ExportWhiteSvg from '../../../images/exportWhite.svg'
 import ProjectMenu from "./ProjectMenu";
 import ProjectPost from "./ProjectPost";
 import axios from '../../configs/axios'
@@ -16,6 +19,9 @@ export default function Project(props) {
     const project = useObject('project');
     const user = useObject('user');
     const postMenuActive = useNumber('postMenuActive', 0);
+    const [addImage, setAddImage] = useState(AddSvg);
+    const [settingImage, setSettingImage] = useState(SettingSvg);
+    const [exportImage, setExportImage] = useState(ExportSvg);
 
     useEffect(() => {
         init();
@@ -38,14 +44,14 @@ export default function Project(props) {
                                      title={project.value.name}>{project.value.name}</ButtonGroup>
                         {user.value.id > 0 &&
                         <DropdownButton variant={'link'} id={'manager'} title={'管理'}>
-                            {project.value.write &&<Dropdown.Item onClick={() => props.history.push('/post/' + props.match.params.id + '/edit/0')}>
-                                <Image src={add} style={{width: 15, paddingBottom: '4px'}} /> 新文档
+                            {project.value.write &&<Dropdown.Item onMouseEnter={() => setAddImage(AddWhiteSvg)} onMouseLeave={() => setAddImage(AddSvg)} onClick={() => props.history.push('/post/' + props.match.params.id + '/edit/0')}>
+                                <Image src={addImage} style={{width: 15, paddingBottom: '4px'}} /> 新文档
                             </Dropdown.Item>}
-                            {project.value.admin && <Dropdown.Item onClick={() => props.history.push('/project_manager/' + props.match.params.id)}>
-                                <Image src={manager} style={{width: 15, paddingBottom: '4px'}} /> 设置
+                            {project.value.admin && <Dropdown.Item onMouseEnter={() => setSettingImage(SettingWhiteSvg)} onMouseLeave={() => setSettingImage(SettingSvg)} onClick={() => props.history.push('/project_manager/' + props.match.params.id)}>
+                                <Image src={settingImage} style={{width: 15, paddingBottom: '4px'}} /> 设置
                             </Dropdown.Item>}
-                            <Dropdown.Item onClick={() => props.history.push(props.match.url + '/export')}>
-                                <Image src={ExportSvg} style={{width: 15, paddingBottom: '4px'}} /> 导出
+                            <Dropdown.Item onMouseEnter={() => setExportImage(ExportWhiteSvg)} onMouseLeave={() => setExportImage(ExportSvg)} onClick={() => props.history.push(props.match.url + '/export')}>
+                                <Image src={exportImage} style={{width: 15, paddingBottom: '4px'}} /> 导出
                             </Dropdown.Item>
                         </DropdownButton>
                         }

@@ -5,8 +5,10 @@
 // Variables
 //@import 'variables';
 
+$purple: #2d2936;
 // Bootstrap
 @import "~bootswatch/dist/Pulse/variables";
+//$primary:       $gray-900;
 @import '~bootstrap/scss/bootstrap';
 @import "~bootswatch/dist/Pulse/bootswatch";
 @import "./nprogress.css";
@@ -118,6 +120,8 @@
             background-color: #e4e4e4 !important;
         }
     }
+    .dropdown-item:hover img {
+    }
 }
 .project-right {
     width: calc(100% - 300px);
@@ -137,8 +141,8 @@
             color: #303132;
         }
         a:hover, a.nav-link.active{
-            color: #FFFFFF;
-            background-color: #533691 !important;
+            color: $white;
+            background-color: $primary;
         }
     }
     .manager-right {
