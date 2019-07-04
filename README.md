@@ -10,6 +10,14 @@ PHP 7.2 + Laravel 5.8 + React-Bootstrap
 git clone https://github.com/yybawang/adoc.git
 cd adoc
 cp .env.example .env
+```
+
+- 新建mysql/maraidb数据库，当然你可以选择其他数据库，运行迁移即可
+```
+sql CREATE SCHEMA `adoc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; 
+```
+
+```bash
 // 编辑配置文件中的 APP_URL、数据库、redis连接
 vi .env
 
@@ -18,7 +26,7 @@ composer install
 
 // 生成key，数据库迁移等
 php artisan key:generate
-php artisan storage:link
+php artisan storage:link    // 导出下载时需要
 php artisan migrate
 
 // 下载 npm 包，进行前端编译

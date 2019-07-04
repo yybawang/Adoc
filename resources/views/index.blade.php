@@ -27,8 +27,8 @@
         <section class="panel banner right">
             <div class="content color0 span-3-75">
                 <h1 class="major">Hello</h1>
-                <p>一个<strong>轻松</strong>的 Markdown 文档编辑器</p>
-                <p><strong>设计完整</strong>的 API 文档工作流</p>
+                <p>一个<strong>轻松</strong>的 MARKDOWN 文档编辑器</p>
+                <p><strong>设计完整</strong>的 API 文档写作工作流</p>
                 <p title="我们又见面了啊">💚️ Nice to meet you ...again :)</p>
                 <ul class="actions">
                     <li><a href="#first" class="button primary color1 circle icon fa-angle-right">Next</a></li>
@@ -38,7 +38,7 @@
             <div class="image filtered span-1-75" data-position="25% 25%">
                 <img src="{{asset('/images/pic01.jpg')}}" alt="" />
                 <div style="position:absolute;top:5rem;left:3rem;">
-                    <h2 class="major">Go</h2>
+                    <h2 class="major">Adoc</h2>
                     <h4><a target="_self" href="/projects">项目列表</a></h4>
                     <h4><a target="_self" href="/project_add">新建项目</a></h4>
                     <h4><a target="_self" href="/login">登录</a></h4>
@@ -53,7 +53,7 @@
                 <h2 class="major">Write</h2>
                 <p>只采用了 Markdown 做为<strong>唯一</strong>的文档编辑格式，这样会更好的统一风格，它易于排版，易于学习</p>
                 <p>更重要的是它应该是你必备的<strong>专业技能</strong></p>
-                <p>可以在<a target="_blank" href="//github.com/riku/Markdown-Syntax-CN/blob/master/syntax.md'">这里</a>查看 Markdown 语法教程</p>
+                <p>可以在<a target="_blank" href="//github.com/riku/Markdown-Syntax-CN/blob/master/syntax.md">这里</a>查看 Markdown 语法教程</p>
                 <p>💛 Enjoy Writing ;)</p>
             </div>
             <div class="image filtered tinted" data-position="top left">
@@ -65,10 +65,10 @@
         <section class="panel color1">
             <div class="intro joined">
                 <h2 class="major">About</h2>
-                <p>为了提升开发与使用的愉悦感，选择了 Laravel + React + Mysql，它们都经得起考验 <small>--像做人做事一样</small></p>
+                <p>为了提升使用的愉悦感，选择了 Laravel + React + Bootstrap，它们都经得起考验 <small>--我们也要一样</small></p>
                 <div>Laravel 5.8</div>
                 <div>React 16.8.6</div>
-                <div>Mysql 5.7</div>
+                <div>Mysql 5.7+</div>
                 <div>Bootstrap v4</div>
                 <p>💙 Yes,  I do</p>
             </div>
@@ -87,10 +87,11 @@
         <!-- Panel (Spotlight) -->
         <section class="panel spotlight large left">
             <div class="content span-5">
-                <h2 class="major">Adoc</h2>
-                <p>就叫它 Adoc 吧，Just another markdown doc editor</p>
-                <p>这是一个免费开源的项目，代码已托管 <a target="_blank" href="//github.com/yybawang/adoc">Github</a>，你可以随时查看它，并且可以 <a target="_blank" href="//github.com/yybawang/adoc">Star</a> 它</p>
-                <p>❤️ I hope Adoc can help you</p>
+                <h2 class="major">Adoc [/eɪ dɑːk/]</h2>
+                <p>就叫它 Adoc 吧，Just <strong>A</strong>nother markdown <strong>DOC</strong> editor</p>
+                <p>就是这么简单，就像一个短发女孩</p>
+                <p>这是一个免费开源的项目，代码已托管 <a target="_blank" href="//github.com/yybawang/Adoc">Github</a>，你可以随时查看它，并且可以 <a target="_blank" href="//github.com/yybawang/adoc">Star</a> 它</p>
+                <p>❤️ 希望它能帮到你什么，anything...</p>
             </div>
             <div class="image filtered tinted" data-position="top right">
                 <img src="{{asset('/images/pic03.jpg')}}" alt="" />
