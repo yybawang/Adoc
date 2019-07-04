@@ -44,7 +44,7 @@ export default function PostHistory(props){
         <div style={{width: 800}} className={'mt-5 mx-auto'}>
             <Card>
                 <Card.Header>
-                    「<Link to={'/project/'+props.match.params.id+'/post/'+props.match.params.post_id}>{post.name}</Link>」的保存历史
+                    <Link to={'/project/'+props.match.params.id+'/post/'+props.match.params.post_id}>&lt;{post.name}</Link> 的修改历史
                 </Card.Header>
                 <Card.Body>
                     {list.length > 0
@@ -57,7 +57,7 @@ export default function PostHistory(props){
                                         <Button className={'p-0 mr-2'} size={'sm'} variant={'link'} onClick={() => view(his)}>对比</Button>
                                         <OverlayTrigger trigger="focus" placement="left" overlay={
                                             <Popover id="popover-basic" title="确认删除？此操作不可恢复">
-                                                <div className={'py-2'}>删除文档<strong>「{name}」</strong></div>
+                                                <div className={'py-2'}>删除文档<strong>「{post.name}」</strong>的历史</div>
                                                 <ButtonGroup>
                                                     <Button variant={'danger'} size={'sm'} onClick={() => del(his.id)}>删除</Button>
                                                 </ButtonGroup>
