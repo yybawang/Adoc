@@ -19,7 +19,7 @@ class CreateProjectTags extends Migration
     public function up()
     {
         Schema::create('project_tags', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('project_id');
             $table->string('name', 100);
             $table->timestamp('created_at')->nullable();

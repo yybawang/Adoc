@@ -19,7 +19,7 @@ class CreatePostEvents extends Migration
     public function up()
     {
         Schema::create('post_events', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('project_id');
             $table->integer('post_id');
             $table->integer('user_id');

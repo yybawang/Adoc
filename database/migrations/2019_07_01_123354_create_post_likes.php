@@ -19,7 +19,7 @@ class CreatePostLikes extends Migration
     public function up()
     {
         Schema::create('post_likes', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('post_id');
             $table->integer('user_id');
             $table->char('emoji', 4);

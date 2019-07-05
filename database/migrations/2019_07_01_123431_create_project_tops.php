@@ -19,7 +19,7 @@ class CreateProjectTops extends Migration
     public function up()
     {
         Schema::create('project_tops', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('user_id');
             $table->integer('project_id');
             $table->timestamp('created_at')->nullable();

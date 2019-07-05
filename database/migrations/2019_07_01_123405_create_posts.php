@@ -19,7 +19,7 @@ class CreatePosts extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('pid');
             $table->integer('project_id');
             $table->integer('user_id');

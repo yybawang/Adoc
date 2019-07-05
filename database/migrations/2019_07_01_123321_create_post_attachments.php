@@ -19,7 +19,7 @@ class CreatePostAttachments extends Migration
     public function up()
     {
         Schema::create('post_attachments', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('post_id');
             $table->string('name', 100);
             $table->string('path', 255);

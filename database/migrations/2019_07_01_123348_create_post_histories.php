@@ -19,7 +19,7 @@ class CreatePostHistories extends Migration
     public function up()
     {
         Schema::create('post_histories', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('post_id');
             $table->integer('user_id');
             $table->mediumtext('content');

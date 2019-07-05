@@ -19,7 +19,7 @@ class CreatePostComments extends Migration
     public function up()
     {
         Schema::create('post_comments', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('pid');
             $table->integer('post_id');
             $table->integer('user_id');

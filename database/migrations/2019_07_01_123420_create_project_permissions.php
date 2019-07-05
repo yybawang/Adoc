@@ -19,7 +19,7 @@ class CreateProjectPermissions extends Migration
     public function up()
     {
         Schema::create('project_permissions', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('project_id');
             $table->integer('admin_id');
             $table->integer('user_id');

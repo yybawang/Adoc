@@ -19,7 +19,7 @@ class CreatePostCommentlikes extends Migration
     public function up()
     {
         Schema::create('post_comment_likes', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('post_comment_id');
             $table->integer('user_id');
             $table->char('emoji', 4);
