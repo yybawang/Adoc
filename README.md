@@ -29,8 +29,8 @@ cp .env.example .env
 ```
 
 - 新建mysql/maraidb数据库，当然你可以选择其他数据库，运行迁移即可
-```
-sql CREATE SCHEMA `adoc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; 
+```sql 
+CREATE SCHEMA `adoc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; 
 ```
 
 ```bash
