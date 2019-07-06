@@ -33,25 +33,25 @@ export default function Register(props){
                     <Card.Header><h5>注册</h5></Card.Header>
                     <Card.Body>
                         <Form.Group>
-                            <Form.Label column={true}>用户名</Form.Label>
+                            <Form.Label column={false}>用户名</Form.Label>
                             <Form.Control ref={focus} value={name} type={'text'} required onChange={(event) =>setName(event.target.value)} placeholder={'姓名'} />
                             <Form.Text className="text-muted">
                                 仅作标识展示用
                             </Form.Text>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label column={true}>邮箱</Form.Label>
+                            <Form.Label column={false}>邮箱</Form.Label>
                             <Form.Control value={email} type={'email'} required onChange={(event) => setEmail(event.target.value)} placeholder={'邮箱'} />
                             <Form.Text className="text-muted">
                                 此邮箱为登录唯一标识
                             </Form.Text>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label column={true}>登录密码</Form.Label>
+                            <Form.Label column={false}>登录密码</Form.Label>
                             <Form.Control value={password} type={'password'} required onChange={(event) => setPassword(event.target.value)} placeholder={'登录密码'} />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label column={true}>确认密码</Form.Label>
+                            <Form.Label column={false}>确认密码</Form.Label>
                             <Form.Control value={passwordConfirmation} type={'password'} required onChange={(event) => setPasswordConfirmation(event.target.value)} placeholder={'确认密码'} />
                         </Form.Group>
                     </Card.Body>

@@ -27,7 +27,7 @@ export default function ProjectExport(props){
                 <Card.Header>批量导出</Card.Header>
                 <Card.Body>
                     <Form.Group>
-                        <Form.Label column={true}>选择一个目录</Form.Label>
+                        <Form.Label column={false}>选择一个目录</Form.Label>
                         <Form.Control as="select" onChange={(e) => setPid(e.target.value)}>
                             <option value={0}>全部</option>
                             {list.filter((val) => val.children.length > 0).map(val => (

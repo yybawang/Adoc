@@ -61,7 +61,7 @@ export default function Permission(props) {
                         event.preventDefault()
                     }}>
                         <Form.Group>
-                            <Form.Label column={true}>用户名/Email 检索</Form.Label>
+                            <Form.Label column={false}>用户名/Email 检索</Form.Label>
                             <Row>
                                 <Col>
                                     <Form.Control value={keyword} onChange={(event) => {

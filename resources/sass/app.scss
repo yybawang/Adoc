@@ -9,6 +9,7 @@ $purple: #2d2936;
 // Bootstrap
 @import "~bootswatch/dist/Pulse/variables";
 //$primary:       $gray-900;
+$secondary: $gray-700;
 @import '~bootstrap/scss/bootstrap';
 @import "~bootswatch/dist/Pulse/bootswatch";
 @import "./nprogress.css";

@@ -40,15 +40,15 @@ export default function Basic(props) {
                     <Card.Header>基本信息修改</Card.Header>
                     <Card.Body>
                         <Form.Group>
-                            <Form.Label column={true}>项目名</Form.Label>
+                            <Form.Label column={false}>项目名</Form.Label>
                             <Form.Control value={name} onChange={(event) => setName(event.target.value)}/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label column={true}>项目描述</Form.Label>
+                            <Form.Label column={false}>项目描述</Form.Label>
                             <Form.Control value={description} as={'textarea'} onChange={(event) => setDescription(event.target.value)}/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label column={true}>可见性</Form.Label>
+                            <Form.Label column={false}>可见性</Form.Label>
                             <div>
                                 <Form.Check type={'radio'} checked={type === 0} inline custom id={'type0'} name={'type'}
                                             onChange={(event) => setType(0)} label={'公共'}/>

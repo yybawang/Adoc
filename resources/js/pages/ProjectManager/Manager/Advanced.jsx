@@ -44,11 +44,11 @@ export default function Advanced(props) {
                     <Card.Header>转移项目归属人</Card.Header>
                     <Card.Body>
                         <FormGroup>
-                            <FormLabel column={true}>输入接收者邮箱</FormLabel>
+                            <FormLabel column={false}>输入接收者邮箱</FormLabel>
                             <FormControl value={email} required onChange={(event) => setEmail(event.target.value)}/>
                         </FormGroup>
                         <FormGroup>
-                            <FormLabel column={true}>输入[登陆密码]确认操作</FormLabel>
+                            <FormLabel column={false}>输入[登陆密码]确认操作</FormLabel>
                             <FormControl type={"password"} value={password} required onChange={(event) => setPassword(event.target.value)}/>
                         </FormGroup>
                     </Card.Body>
@@ -67,7 +67,7 @@ export default function Advanced(props) {
                     <Card.Header className={'bg-danger text-light'}>删除项目（不可恢复）</Card.Header>
                     <Card.Body>
                         <FormGroup>
-                            <FormLabel column={true}>输入[登陆密码]确认操作</FormLabel>
+                            <FormLabel column={false}>输入[登陆密码]确认操作</FormLabel>
                             <FormControl type={"password"} value={password2} required onChange={(event) => setPassword2(event.target.value)}/>
                         </FormGroup>
                     </Card.Body>

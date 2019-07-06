@@ -33,11 +33,11 @@ export default function Login(props){
                     <Card.Header><h5>登录</h5></Card.Header>
                     <Card.Body>
                         <Form.Group>
-                            <Form.Label column={true}>邮箱</Form.Label>
+                            <Form.Label column={false}>邮箱</Form.Label>
                             <Form.Control ref={focus} value={email} type={'email'} required onChange={(event) => setEmail(event.target.value)} placeholder={'邮箱'} />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label column={true}>密码</Form.Label>
+                            <Form.Label column={false}>密码</Form.Label>
                             <Form.Control value={password} type={'password'} required onChange={(event) => setPassword(event.target.value)} placeholder={'密码'} />
                         </Form.Group>
                     </Card.Body>
