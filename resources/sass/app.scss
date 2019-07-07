@@ -6,7 +6,9 @@
 //@import 'variables';
 
 $purple: #2d2936;
-// Bootstrap
+$font-family-sans-serif: monaco,Consolas,"Courier New",Courier,FreeMono,monospace;
+    
+    // Bootstrap
 @import "~bootswatch/dist/Pulse/variables";
 //$primary:       $gray-900;
 $secondary: $gray-700;
