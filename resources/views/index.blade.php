@@ -29,6 +29,7 @@
                 <h1 class="major">Hello</h1>
                 <p>一个<strong>轻松</strong>的 MARKDOWN 文档编辑器</p>
                 <p><strong>设计完整</strong>的 API 文档写作工作流</p>
+                <p>甚至可以把它当作在线的博客、记事本</p>
                 <p title="我们又见面了啊">💚️ Nice to meet you ...again :)</p>
                 <ul class="actions">
                     <li><a href="#first" class="button primary color1 circle icon fa-angle-right">Next</a></li>
@@ -40,7 +41,6 @@
                 <div style="position:absolute;top:5rem;left:3rem;">
                     <h2 class="major">Adoc</h2>
                     <h4><a target="_self" href="/projects">项目列表</a></h4>
-                    <h4><a target="_self" href="/project_add">新建项目</a></h4>
                     <h4><a target="_self" href="/login">登录</a></h4>
                     <h4><a target="_self" href="/register">注册</a></h4>
                 </div>

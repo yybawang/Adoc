@@ -42,7 +42,7 @@ axios.interceptors.response.use(function (response){
         if(location.pathname !== '/login' && location.pathname !== '/register'){
             localStorage.setItem('auth_jump', location.pathname);
         }
-    
+        Tips('请先登录');
         history.push('/login');
         return Promise.reject(errors.response.data.message);
     }
