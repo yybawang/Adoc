@@ -15,6 +15,7 @@ PHP 7.2 + Laravel 5.8 + React-Bootstrap
 7. 文档菜单无限极分类(编辑父级同样)
 8. 文档菜单滑动到顶部优化
 9. 文档搜索
+10. 编辑器/显示 使用等宽字体，避免空格排版、数字/符号显示不明显问题
 
 #### 💚github
 [github](https://github.com/yybawang/Adoc)
@@ -23,8 +24,8 @@ PHP 7.2 + Laravel 5.8 + React-Bootstrap
 #### 安装
 
 ```bash
-git clone https://github.com/yybawang/adoc.git
-cd adoc
+git clone https://github.com/yybawang/Adoc.git
+cd Adoc
 cp .env.example .env
 ```
 
