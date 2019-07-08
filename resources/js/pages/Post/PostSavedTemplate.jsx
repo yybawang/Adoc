@@ -21,8 +21,9 @@ export default function PostSavedTemplate(props){
     }
     
     async function del(id){
-        await axios.delete('/project/'+id+'/template')
+        await axios.delete('/project/'+id+'/template');
         Tips('已删除模版', 'success');
+        init();
     }
     
     return (

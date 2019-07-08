@@ -23,16 +23,16 @@
         "react-dom": "^16.8.6",
         "react-router-dom": "^5.0.1",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.22.0",
+        "sass": "^1.22.3",
         "sass-loader": "^7.1.0"
     },
     "dependencies": {
         "@babel/plugin-syntax-dynamic-import": "^7.2.0",
         "bootswatch": "^4.3.1",
         "cogo-toast": "^1.0.7",
-        "collect.js": "^4.12.5",
+        "collect.js": "^4.12.6",
         "diff": "^4.0.1",
-        "diff2html": "^2.10.0",
+        "diff2html": "^2.10.1",
         "history": "^4.9.0",
         "nprogress": "^0.2.0",
         "rc-cascader": "^0.17.4",
@@ -40,6 +40,6 @@
         "react-bootstrap": "^1.0.0-beta.9",
         "react-code-diff": "^1.0.8",
         "react-editor-md": "^1.0.10",
-        "react-hooks-easy": "^1.0.10"
+        "react-hooks-easy": "^1.0.11"
     }
 }
