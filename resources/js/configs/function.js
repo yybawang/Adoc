@@ -54,6 +54,22 @@ function Tips(message, type = 'info'){
 }
 
 /**
+ * 匹配到汉字长度
+ * @param strValue
+ * @return {string|*}
+ * @constructor
+ */
+function stringChineseLength(strValue) {
+    let reg = /[\u4e00-\u9fa5]/g;
+    let len = 0;
+    let chinese = strValue.match(reg);
+    if(chinese){
+        len = chinese.join("").length;
+    }
+    return len;
+}
+
+/**
  * 获取字符串长度
  * 中文为两字节
  * @param str
@@ -61,11 +77,31 @@ function Tips(message, type = 'info'){
  * @constructor
  */
 function stringLength(str){
-    return str.replace(/[\u0391-\uFFE5]/g,"aa").length;  //先把中文替换成两个字节的英文，在计算长度
+    if(!str){
+        return 0;
+    }
+    return str.replace(/[\u0391-\uFFE5]/g, "00").length;  //先把中文替换成两个字节的英文，在计算长度
+}
+
+function calcLength(str){
+    if(!str){
+        return 0;
+    }
+    let len = str.length;
+    let len_chinese = stringChineseLength(str);
+    len += len_chinese;
+    if(Math.floor(len_chinese / 5) > 0){
+        len -= Math.floor(len_chinese / 5);
+    }
+    if(Math.floor(len_chinese / 8) > 0){
+        len -= Math.floor(len_chinese / 8);
+    }
+    
+    return len;
 }
 
 function stringPadEnd(str, length = null, char = ' '){
-    let len = stringLength(str);
+    let len = calcLength(str);
     if(length > len){
         let pad = '';
         for(let i = 0; i < length - len; i++){
@@ -97,7 +133,7 @@ function FormatMDTable(table){
     let fields_flip = flip(fields);
     let maxs = fields_flip.map(row => {
         let max = 0;
-        return collect(row.map(col => max = Math.max(max, stringLength(col)))).max()
+        return collect(row.map(col => max = col.length > 20 ? max :Math.max(max, stringLength(col)))).max()
     });
     let table_new = fields_flip.map((row, i) => {
         return row.map(col => stringPadEnd(col, maxs[i]))
