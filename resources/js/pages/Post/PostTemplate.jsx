@@ -16,11 +16,11 @@ class PostTemplate {
 
 **参数：**
 
-| 参数名   |必选  | 类型   | 说明   |
-|:----    |:---  |:----- |-----   |
-|username |是    |string |用户名   |
-|password |是    |string | 密码    |
-|name     |否    |string | 姓名    |
+| 参数名   |必选  | 类型   | 说明   | 默认 |
+|:----    |:---  |:----- |-----   | --- |
+|username |是    |string |用户名   |     |
+|password |是    |string | 密码    |     |
+|name     |否    |string | 姓名    | 空字符 |
 
  **返回示例**
 
@@ -59,7 +59,7 @@ class PostTemplate {
         return `
 -  **数据源说明**
 
-|字段        |类型         |空   |默认  |注释         |
+|字段        |类型        |空   |默认  |注释         |
 |:----      |:-------    |:--- |---   |------      |
 |uid        |int(10)     |否   |      |            |
 |username   |varchar(20) |否   |      |   用户名    |

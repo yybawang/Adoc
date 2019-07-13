@@ -79,7 +79,7 @@ export default function ProjectPost(props){
                     <h5>📎 文档包含附件，点击预览/下载</h5>
                     <ul>
                         {post.attachments.map((attachment) => (
-                            <li key={attachment.id}><a href={attachment.path} target={"_black"}>{attachment.path.split('/').pop()}</a></li>
+                            <li key={attachment.id} title={'点击预览/下载'}><a href={attachment.path} target={"_black"}>{attachment.path.split('/').pop()}</a></li>
                         ))}
                     </ul>
                 </div>}
