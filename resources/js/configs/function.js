@@ -89,12 +89,14 @@ function calcLength(str){
     }
     let len = str.length;
     let len_chinese = stringChineseLength(str);
-    len += len_chinese;
-    if(Math.floor(len_chinese / 5) > 0){
-        len -= Math.floor(len_chinese / 5);
+    if(len_chinese >= 2){
+        len += len_chinese - 1;
     }
     if(Math.floor(len_chinese / 8) > 0){
         len -= Math.floor(len_chinese / 8);
+    }
+    if(Math.floor(len_chinese / 5) > 0){
+        len -= Math.floor(len_chinese / 5);
     }
     
     return len;
