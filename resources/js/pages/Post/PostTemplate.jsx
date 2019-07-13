@@ -25,17 +25,17 @@ class PostTemplate {
  **返回示例**
 
 \`\`\`
-    {
-        "code": 0,
-        "message": "OK",
-        "data": {
-            "id": "1",
-            "username": "yybawang",
-            "name": "测试",
-            "created_at": "2020-11-11 12:09:21",
-            "updated_at": "2020-11-11 12:09:21",
-        }
+{
+    "code": 0,
+    "message": "OK",
+    "data": {
+      "id": "1",
+      "username": "yybawang",
+      "name": "测试",
+      "created_at": "2020-11-11 12:09:21",
+       updated_at": "2020-11-11 12:09:21",
     }
+}
 \`\`\`
 
  **返回参数说明**
