@@ -11,6 +11,7 @@ import PostSavedTemplate from "./PostSavedTemplate";
 import PostAddTemplate from "./PostAddTemplate";
 import JSONToRequestTable from "./JSON/JSONToRequestTable";
 import JSONToResponseTable from "./JSON/JSONToResponseTable";
+import JSONParse from "./JSON/JSONParse";
 
 window.editormd.defaults.toolbarIconsClass['template'] = 'fa-circle';
 window.editormd.defaults.toolbarHandlers['template'] = () => {alert(1)};
@@ -81,7 +82,7 @@ export default function PostEdit(props){
         let html = editor.getHTML();
         let res = await axios.post('/post/'+postId, {name,content, html, pid, project_id, sort, attachments});
         setPostId(res.id);
-        Tips('已保存');
+        Tips('保存完成', 'success');
     }
     
     function back(){
@@ -176,7 +177,7 @@ export default function PostEdit(props){
                                 <DropdownButton className={'ml-3 d-inline-block'} variant={'outline-dark'} id={'manager'} title={'JSON 工具'}>
                                     <Dropdown.Item onClick={() => JsonToRequestTable.set(true)}>JSON 转参数表格</Dropdown.Item>
                                     <Dropdown.Item onClick={() => JsonToResponseTable.set(true)}>JSON 转返回值表格</Dropdown.Item>
-                                    <Dropdown.Item>JSON 美化</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => JsonParse.set(true)}>JSON 美化</Dropdown.Item>
                                 </DropdownButton>
                             </Form.Group>
                         </Col>
@@ -244,6 +245,7 @@ export default function PostEdit(props){
             <PostAddTemplate project_id={project_id} getContent={() => editor.getMarkdown()} />
             <JSONToRequestTable insertContent={insertContent} />
             <JSONToResponseTable insertContent={insertContent} />
+            <JSONParse />
             <p className={'text-muted'}>焦点定于任意输入框中可使用快捷键操作</p>
             <p className={'text-muted'}>Ctrl/Cmd + S 保存</p>
             <p className={'text-muted'}>Ctrl/Cmd + Shift + S 保存并返回列表</p>

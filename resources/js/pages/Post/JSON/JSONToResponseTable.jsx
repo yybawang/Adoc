@@ -12,13 +12,14 @@ export default function JSONToResponseTable(props){
         let table = parseJson();
         if(table){
             props.insertContent(table);
+            JsonToResponseTable.set(false);
         }
     }
     
     function parseJson(){
         let table =
-`| 参数名 | 类型 | 说明 | 默认 |
-| ------ | ---- | ---- | ---- |`;
+`| 参数名 | 类型 | 说明 |
+| ------ | ---- | ---- |`;
         let jsonObj = '';
         try {
             jsonObj = (new Function("return " + json))();
@@ -26,7 +27,7 @@ export default function JSONToResponseTable(props){
                 throw new Error('');
             }
         }catch (e) {
-            Tips('JSON 未正常解析');
+            Tips('JSON 未正常解析', 'error');
             return false
         }
     
@@ -36,7 +37,7 @@ export default function JSONToResponseTable(props){
         }
         table = FormatMDTable(table);
         table = `
-- **返回参数列表**
+- **返回参数说明**
 
 ${table}
 `;
@@ -63,7 +64,7 @@ ${table}
                     let child = children[i], p2 = p ?  p+ '.' + i : i;
                     let type = typeof child === 'object' && typeof child.length === "number" ? 'array' : typeof child;
                     fields.push(`
-| ${p2} | ${type} |    |  　|`);
+| ${p2} | ${type} | 　|`);
                     each(child, p2, fields);
                 }
             }
@@ -89,7 +90,6 @@ ${table}
                     <Button type={'submit'} onClick={() => {
                         submit();
                         // setJson('');
-                        JsonToResponseTable.set(false);
                     }}>
                         转为表格并添加编辑器
                     </Button>

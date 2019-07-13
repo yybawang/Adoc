@@ -12,6 +12,7 @@ export default function JSONToRequestTable(props){
         let table = parseJson();
         if(table){
             props.insertContent(table);
+            JsonToRequestTable.set(false);
         }
     }
     
@@ -26,7 +27,7 @@ export default function JSONToRequestTable(props){
                 throw new Error('');
             }
         }catch (e) {
-            Tips('JSON 未正常解析');
+            Tips('JSON 未正常解析', 'error');
             return false
         }
         
@@ -36,7 +37,7 @@ export default function JSONToRequestTable(props){
         }
         table = FormatMDTable(table);
         table = `
-- **传递参数列表**
+- **传递参数说明**
 
 ${table}
 `;
@@ -89,7 +90,6 @@ ${table}
                     <Button type={'submit'} onClick={() => {
                         submit();
                         // setJson('');
-                        JsonToRequestTable.set(false);
                     }}>
                         转为表格并添加编辑器
                     </Button>
