@@ -97,9 +97,6 @@ npm install && npm run prod
     * [x] 文档附件
     * [x] JSON工具，json 转MD表格，json 美化
 
-#### About
-
-> 我也用过很多写文档的项目工具，但一些功能，审美，交互多多少少会用的不是很舒服，所以这个项目主要是想解决自己使用上的一些痛点，毕竟写文档这件事要伴随我的职业好久好久...希望能帮到同样类强迫症的童鞋们
 
 ![示例](https://raw.githubusercontent.com/yybawang/images/master/adoc/Xnip2019-05-25_12-28-38.png)
 ![示例](https://raw.githubusercontent.com/yybawang/images/master/adoc/Xnip2019-07-04_18-07-30.png)
