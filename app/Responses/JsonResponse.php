@@ -74,12 +74,12 @@ trait JsonResponse
             return '';
         }
         $data = json_decode(json_encode($data), true);
-        foreach($data as $k => $v){
-            if(is_array($v)){
+        if(is_array($data)){
+            foreach($data as $k => $v){
                 $data[$k] = $this->clearNull($v);
-            }
-            if($data[$k] === null){
-                $data[$k] = '';
+                if($data[$k] === null){
+                    $data[$k] = '';
+                }
             }
         }
         return $data;
