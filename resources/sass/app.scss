@@ -6,7 +6,8 @@
 //@import 'variables';
 
 $purple: #2d2936;
-$font-family-sans-serif: monaco,Consolas,"Courier New",Courier,FreeMono,monospace;
+//$secondary: #4c4b4e;
+//$input-color: $purple;
     
     // Bootstrap
 @import "~bootswatch/dist/pulse/variables";
@@ -23,7 +24,7 @@ $secondary: $gray-700;
     background: rgba(255,255,255, 0.9);
 }
 .rc-cascader-menu-item-active, .rc-cascader-menu-item:hover {
-    background: #432c75;
+    background: #2d2936;
     color:#FFFFFF;
 }
 .rc-cascader-menu-item-disabled:hover {
