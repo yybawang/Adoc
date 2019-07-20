@@ -18,8 +18,8 @@
 <script>
     editormd.emoji.path = '/editor.md/plugins/emoji-dialog/emoji/';
 </script>
-<script src="{{mix('js/manifest.js', '/dist')}}"></script>
-<script src="{{mix('js/vendor.js', '/dist')}}"></script>
+{{--<script src="{{mix('js/manifest.js', '/dist')}}"></script>--}}
+{{--<script src="{{mix('js/vendor.js', '/dist')}}"></script>--}}
 <script src="{{mix('js/app.js', '/dist')}}"></script>
 </body>
 </html>
