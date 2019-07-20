@@ -33,7 +33,7 @@ class PostTemplate {
       "username": "yybawang",
       "name": "测试",
       "created_at": "2020-11-11 12:09:21",
-       updated_at": "2020-11-11 12:09:21",
+      "updated_at": "2020-11-11 12:09:21",
     }
 }
 \`\`\`
