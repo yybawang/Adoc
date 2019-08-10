@@ -57,7 +57,7 @@ class IndexController extends BaseController
         $project = Project::find($id);
         if($project){
             $project->admin = $project->user_id == $uid;
-            $project->read = $project->admin;
+            $project->read = $project->admin || $project->type == 0;
             $project->write = $project->admin;
             // 权限
             $permission = ProjectPermission::where(['project_id' => $project->id, 'user_id' => $uid])->first();

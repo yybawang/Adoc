@@ -74,7 +74,7 @@ class ProjectPolicy
     private function authRead($user_id, $project_id){
         // 是否是所属人
         $Project = Project::find($project_id);
-        if($Project->user_id == $user_id){
+        if($Project->type == 0 || $Project->user_id == $user_id){
             return true;
         }
         $permission = ProjectPermission::where(['project_id' => $project_id, 'user_id' => $user_id])->first();
