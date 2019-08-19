@@ -141,9 +141,17 @@ export default function PostEdit(props){
                             <Form.Group>
                                 文档名：
                                 <Form.Control className={'d-inline'} value={name} onChange={(event) => setName(event.target.value)} style={{width: '180px'}} />
-                                <span className={'ml-3'}>上级目录：</span>
+                                <OverlayTrigger
+                                    placement="bottom"
+                                    delay={{ show: 500, hide: 0 }}
+                                    overlay={<Tooltip id={'tooltip-sort'}>
+                                        使用退格键依次删除
+                                    </Tooltip>}
+                                >
+                                    <span className={'ml-3'}>上级目录：</span>
+                                </OverlayTrigger>
                                 <PostCascader project_id={project_id} post_id={postId} parents={parents} onChange={(val) => setParentId(val)} />
-                                <span className={'ml-3'}>排序：</span>
+                                {/*<span className={'ml-3'}>排序：</span>
                                 <OverlayTrigger
                                     placement="bottom"
                                     delay={{ show: 500, hide: 0 }}
@@ -152,7 +160,7 @@ export default function PostEdit(props){
                                     </Tooltip>}
                                 >
                                     <Form.Control className={'d-inline'} value={sort} onChange={(event) => setSort(event.target.value)} style={{width: '80px'}} />
-                                </OverlayTrigger>
+                                </OverlayTrigger>*/}
                             </Form.Group>
                         </Col>
                         <Col xs={3} className={'text-right'}>
