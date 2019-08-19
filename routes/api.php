@@ -55,6 +55,7 @@ Route::namespace('Api')->group(function(){
         Route::post('/post/{id}', [PostController::class, 'store'])->middleware('can:create,App\Models\Post');
         Route::delete('/post/{post}', [PostController::class, 'delete'])->middleware('can:delete,post');
         Route::post('/post/{post}/export', [PostController::class, 'export'])->middleware('can:view,post');
+        Route::post('/post/{project}/sort', [PostController::class, 'sort'])->middleware('can:update,project');
         
         Route::get('/post/{post}/history', [PostController::class, 'history'])->middleware('can:view,post');
         Route::delete('/post/{postHistory}/history', [PostController::class, 'history_delete'])->middleware('can:delete,postHistory');

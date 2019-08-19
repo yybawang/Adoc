@@ -106,6 +106,30 @@ class PostController extends BaseController
     }
     
     /**
+     * 排序
+     * @param Request $request
+     * @param Project $project
+     * @return mixed
+     */
+    public function sort(Request $request, Project $project){
+        ['pid'=> $pid, 'index_from' => $index_from, 'index_to' => $index_to] = $request->validate([
+            'pid'           => 'required|integer|min:0',
+            'index_from'    => 'required|integer|min:0',
+            'index_to'      => 'required|integer|min:0',
+        ]);
+        // 排序需要找到父级下所有，然后依次重新排序
+        $Posts = Post::where('pid', $pid)->active()->orderBy('sort')->get();
+        $removed = $Posts->splice($index_from, 1);
+        $Posts->splice($index_to, 0, $removed->toArray());
+        $Posts->each(function($v, $k){
+            Post::where('id', $v['id'])->update(['sort' => $k]);
+        });
+        $Post = new Post();
+        $posts = $Post->children($project->id, 0, 'id, pid, user_id, name');
+        return $this->success($posts);
+    }
+    
+    /**
      * 删除文档
      * @param Post $post
      * @return mixed
