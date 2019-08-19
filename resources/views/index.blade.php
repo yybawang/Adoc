@@ -38,7 +38,7 @@
             </div>
             <div class="image filtered span-1-75" data-position="25% 25%">
                 <img src="{{asset('/images/pic01.jpg')}}" alt="" />
-                <div style="position:absolute;top:5rem;left:3rem;">
+                <div style="position:absolute;top:5rem;left:5rem;">
                     <h2 class="major">Adoc</h2>
                     <h4><a target="_self" href="/projects">项目列表</a></h4>
                     <h4><a target="_self" href="/login">登录</a></h4>
