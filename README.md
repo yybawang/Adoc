@@ -6,7 +6,7 @@ PHP 7.2 + Laravel 5.8 + React-Bootstrap
 
 ### Features
 
-1. UI使用了直角主题
+1. UI使用直角主题，以及不会腻的黑白色
 2. 编辑快捷键添加 ctrl/cmd + shift + s 保存并返回
 3. 添加了文档活动记录，暂无其他用途，只是个历史查看谁改动了哪些文档
 4. github 风格文档历史对比
@@ -16,7 +16,8 @@ PHP 7.2 + Laravel 5.8 + React-Bootstrap
 8. 文档菜单滑动到顶部优化
 9. 文档搜索
 10. 编辑器/显示 使用等宽字体，避免空格排版、数字/符号显示不明显问题
-11. JSON生成MD表格工具为字段增加了 padEnd 空格填充，使之都在一列，逼死强迫症功能
+11. JSON工具生成MD表格为字段增加了 padEnd 空格填充，使之都在一列，逼死强迫症功能
+12. 文档左侧列表拖动排序(react-beautiful-dnd)，体验湿滑，懒癌福利
 
 #### 💚github
 [github](https://github.com/yybawang/Adoc)
