@@ -26,7 +26,7 @@ class IndexController extends BaseController
             ->leftJoinSub(ProjectPermission::select('id', 'user_id', 'project_id'), 'pp', function($join) use ($uid){
                 $join->on('pp.project_id', '=', 'p.id')->where('pp.user_id', '=', $uid);
             })
-            ->leftJoinSub(ProjectTop::select('created_at', 'user_id', 'project_id'), 'pt', function($join) use ($uid){
+            ->leftJoinSub(ProjectTop::select('updated_at', 'user_id', 'project_id'), 'pt', function($join) use ($uid){
                 $join->on('pt.project_id', '=', 'p.id')->where('pt.user_id', '=', $uid);
             })
             // 所属人是自己，或是开放项目
@@ -37,7 +37,7 @@ class IndexController extends BaseController
             ->orWhere(function($query){
                 $query->whereNotNull('pp.id');
             })
-            ->orderByDesc('pt.created_at')
+            ->latest('pt.updated_at')
             ->latest('p.id')
             ->with(['tags'])
             ->get()->each(function($v) use ($uid){
@@ -127,7 +127,16 @@ class IndexController extends BaseController
         ];
     }
     
-    public function menu(){
+    /**
+     * 首页自定义置顶，只影响当前登录用户
+     *  每次都会更新 updated_at，使用此字段倒序
+     * @param Request $request
+     * @return array
+     */
+    public function top(Request $request){
+        $project_id = $request->input('id');
+        $user_id = Auth::id();
+        ProjectTop::updateOrCreate(['user_id' => $user_id, 'project_id' => $project_id], ['updated_at' => now()]);
         return $this->success();
     }
 }

@@ -6,11 +6,18 @@ export default function ProjectAdd(props){
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [type, setType] = useState(0);
+    const [tags, setTags] = useState([]);
     const focus = useRef(null);
     
     useEffect(() => {
         focus.current.focus();
+        // init();
     }, []);
+    
+    async function init(){
+        let res = await axios.get('/tags');
+        setTags(res);
+    }
     
     async function submit(){
         let res = await axios.post('/project', {name, description, type});

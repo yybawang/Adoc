@@ -22,6 +22,11 @@ export default function ProjectList(props){
         setList(res);
     }
     
+    async function top(id){
+        await axios.post('/top', {id});
+        await init();
+    }
+    
     return (
         <Container>
             {user.value.id ? '':  <Row className={'align-items-center mt-3' + (user.value.id ? ' d-none' : '')}>
@@ -34,7 +39,8 @@ export default function ProjectList(props){
             <Row className={'align-items-center'}>
                 {list.map((project) =>
                     <Col md={3} sm={4} key={project.id} className={{'mt-4': true, 'project-card': true, 'project-share' : project.share}}>
-                        <Card className={'shadow-sm'}>
+                        <Card className={'shadow-sm position-relative'}>
+                            <span className={'position-absolute project-top'} onClick={() => top(project.id)}>顶</span>
                             <Link to={'/project/'+project.id} title={project.description}>
                             <Card.Body>
                                 <div className={'my-3 text-center'}>{project.name}</div>

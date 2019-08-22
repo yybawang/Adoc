@@ -80,6 +80,22 @@ $secondary: $gray-700;
         }
     }
 }
+.project-card:hover {
+    .project-top {
+        display:block;
+    }
+}
+.project-top {
+    font-size:12px;
+    right:8px;
+    top:3px;
+    display:none;
+    cursor: pointer;
+    color:#CCC;
+}
+.project-top:hover {
+    color: #111111;
+}
 .project-share a {
     background-color: #fffded;
 }

@@ -32,6 +32,11 @@ Route::namespace('Api')->group(function(){
         // 公用的
         Route::post('/password_check', [UserController::class, 'password_check'])->name('password_check');
         Route::patch('/password', [UserController::class, 'password_update'])->name('password_update');
+    
+        Route::post('/top', [IndexController::class, 'top']);  // 首页自定义置顶，只影响当前登录用户
+        
+        Route::get('/tags', [TagsController::class, 'index']);
+        Route::post('/tags', [TagsController::class, 'store']);
         
         Route::get('/project/{project}/edit', [ProjectController::class, 'detail'])->middleware('can:update,project');
         Route::post('/project', [ProjectController::class, 'store'])->middleware('can:create,App\Models\Project');
