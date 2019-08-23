@@ -120,6 +120,15 @@
 <script src="{{asset('/assets/js/browser.min.js')}}"></script>
 <script src="{{asset('/assets/js/breakpoints.min.js')}}"></script>
 <script src="{{asset('/assets/js/main.js')}}"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e74da094a5d389c00e8f524ebdd303d1";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 
 </body>
 </html>
