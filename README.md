@@ -76,6 +76,7 @@ npm run prod
 
 ```
 git pull
+composer install
 php artisan migrage
 npm install && npm run prod
 ```

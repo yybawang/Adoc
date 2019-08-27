@@ -40,7 +40,7 @@ export default function ProjectList(props){
                 {list.map((project) =>
                     <Col md={3} sm={4} key={project.id} className={{'mt-4': true, 'project-card': true, 'project-share' : project.share}}>
                         <Card className={'shadow-sm position-relative'}>
-                            <span className={'position-absolute project-top'} onClick={() => top(project.id)}>顶</span>
+                            {user.value.id > 0 && <span className={'position-absolute project-top'} onClick={() => top(project.id)}>顶</span>}
                             <Link to={'/project/'+project.id} title={project.description}>
                             <Card.Body>
                                 <div className={'my-3 text-center'}>{project.name}</div>
