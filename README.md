@@ -16,8 +16,8 @@ PHP 7.2 + Laravel 5.8 + React-Bootstrap
 8. 文档菜单滑动到顶部优化
 9. 文档搜索
 10. 编辑器/显示 使用等宽字体，避免空格排版、数字/符号显示不明显问题
-11. JSON工具生成MD表格为字段增加了 padEnd 空格填充，使之都在一列，逼死强迫症功能
-12. 文档左侧列表拖动排序(react-beautiful-dnd)，湿滑排序，强迫症福利
+11. JSON工具生成MD表格为字段增加了 padEnd 空格填充，使之尽量都在一列
+12. 文档左侧列表拖动排序(react-beautiful-dnd)，湿滑体验
 
 #### 💚github
 [github](https://github.com/yybawang/Adoc)
