@@ -33,17 +33,17 @@ export default function Register(props){
                     <Card.Header><h5>注册</h5></Card.Header>
                     <Card.Body>
                         <Form.Group>
-                            <Form.Label column={false}>用户名</Form.Label>
-                            <Form.Control ref={focus} value={name} type={'text'} required onChange={(event) =>setName(event.target.value)} placeholder={'姓名'} />
+                            <Form.Label column={false}>邮箱</Form.Label>
+                            <Form.Control ref={focus} value={email} type={'email'} required onChange={(event) => setEmail(event.target.value)} placeholder={'邮箱'} />
                             <Form.Text className="text-muted">
-                                仅作标识展示用
+                                此邮箱为登录唯一标识
                             </Form.Text>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label column={false}>邮箱</Form.Label>
-                            <Form.Control value={email} type={'email'} required onChange={(event) => setEmail(event.target.value)} placeholder={'邮箱'} />
+                            <Form.Label column={false}>用户名</Form.Label>
+                            <Form.Control value={name} type={'text'} required onChange={(event) =>setName(event.target.value)} placeholder={'姓名'} />
                             <Form.Text className="text-muted">
-                                此邮箱为登录唯一标识
+                                仅作标识展示用
                             </Form.Text>
                         </Form.Group>
                         <Form.Group>

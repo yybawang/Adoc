@@ -19,11 +19,11 @@ class UserController extends BaseController
         ]);
         $User = User::where(['email' => $email])->first();
         if(empty($User)){
-            exception(__('此邮箱未注册'));
+            exception('此邮箱未注册');
         }
         $pass = Hash::check($password, $User->password);
         if(!$pass){
-            exception(__('密码错误'));
+            exception('登录密码错误');
         }
         $token = Str::random(60);
         $User->api_token = $token;
@@ -38,8 +38,8 @@ class UserController extends BaseController
     
     public function register(Request $request){
         $post = $request->validate([
-            'name'      => 'required',
             'email'     => 'required|email',
+            'name'      => 'required|min:3',
             'password'  => 'required|min:6',
         ]);
         $token = Str::random(60);
@@ -79,7 +79,7 @@ class UserController extends BaseController
         $password = $request->input('password');
         $pass = Hash::check($password, $User->password);
         if(!$pass){
-            exception(__('密码错误'));
+            exception('登录密码错误');
         }
         return $this->success();
     }
@@ -98,9 +98,9 @@ class UserController extends BaseController
         $password_old = $post['password_old'];
         $pass = Hash::check($password_old, $User->password);
         if(!$pass){
-            exception(__('密码错误'));
+            exception('登录密码错误');
         }
-        User::where('id', $User->id)->update(['password' => Hash::make($post['password'])]);
+        User::where('id', $User->id)->update(['password' => Hash::make($post['password']), 'api_token'=> null]);
         return $this->success();
     }
 }
