@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Router, Route, Link, Switch, Redirect} from "react-router-dom";
+import {Router, Route, Link, Switch} from "react-router-dom";
 import history from "../../configs/history";
 import {Form, FormControl, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import ProjectList from "../Project/ProjectList";
@@ -9,7 +9,6 @@ import ProjectManager from "../ProjectManager/ProjectManager";
 import Register from "../User/Register";
 import Login from "../User/Login";
 import Password from "../User/Password";
-// import PostAdd from "../Post/PostAdd";
 import PostEdit from "../Post/PostEdit";
 import {useObject} from "react-hooks-easy";
 import axios from '../../configs/axios'
@@ -18,7 +17,6 @@ export default function App(props){
     // 全局的用戶信息，否則是空數組
     const user = useObject('user', {});
     const project = useObject('project', {});
-    // const project = {};
     const [keyword, setKeyword] = useState('');
     const [keywordLoading, setKeywordLoading] = useState(false);
     const [keywordResult, setKeywordResult] = useState([]);
@@ -119,8 +117,6 @@ export default function App(props){
                     <Route path={'/login'} component={Login} />
                     <Route path={'/password'} component={Password} />
                     <Route path={'/post/:project_id/edit/:id'} component={PostEdit} />
-                    {/*<Route path={'/post/:project_id/add'} component={PostAdd} />*/}
-                    {/*<Route path={'/post/:id/edit'} component={PostEdit} />*/}
                     </Switch>
                 </React.Suspense>
             </Router>

@@ -39,7 +39,7 @@ class ProjectController extends BaseController
         ]);
         $post['user_id'] = Auth::id();
         if(Project::where(['user_id' => $post['user_id'], 'name' => $post['name']])->exists()){
-            exception(__('该项目名已存在'));
+            exception('该项目名已存在');
         }
         $Project = Project::create($post);
         
@@ -112,7 +112,7 @@ class ProjectController extends BaseController
         // 自己不用转让，没有权限不能转让
         $User = User::where('email', $post['email'])->firstOrFail();
         if($User->id == $project->user_id){
-            exception(__('该项目所有者已经是所填接收者'));
+            exception('该项目归属者已经是所填接收者');
         }
         $project->update(['user_id' => $User->id]);
         return $this->success();

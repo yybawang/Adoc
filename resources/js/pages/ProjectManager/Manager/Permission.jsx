@@ -6,14 +6,11 @@ import {useObject, useString} from "react-hooks-easy";
 
 export default function Permission(props) {
     const managerPage = useString('projectManager');
-    const project = useObject('projectManager');
     const user = useObject('user');
     const [keyword, setKeyword] = useState('');
     const [keywordUsers, setKeywordUsers] = useState([]);
     const [userId, setUserId] = useState(0);
     const [list, setList] = useState([]);
-    const [write, setWrite] = useState(false);
-    const [admin, setAdmin] = useState(false);
     
     useEffect(() => {
         managerPage.set('permission');
@@ -35,7 +32,7 @@ export default function Permission(props) {
             Tips('未選擇用戶', 'warn');
             return false;
         }
-        await axios.post('/project/' + props.match.params.id + '/permission', {user_id: userId, write, admin});
+        await axios.post('/project/' + props.match.params.id + '/permission', {user_id: userId, write: false, admin: false});
         init();
     }
     

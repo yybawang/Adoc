@@ -15,7 +15,7 @@ import JSONParse from "./JSON/JSONParse";
 
 window.editormd.defaults.toolbarIconsClass['template'] = 'fa-circle';
 window.editormd.defaults.toolbarHandlers['template'] = () => {alert(1)};
-let postId, setPostId, name, setName, parentId, setParentId, sort, setSort, attachments, setAttachments, editor = {};
+let postId, setPostId, name, setName, parentId, setParentId, attachments, setAttachments, editor = {};
 export default function PostEdit(props){
     const project = useObject('project');
     const templateShow = useBoolean('postSavedTemplate', false);
@@ -26,7 +26,6 @@ export default function PostEdit(props){
     [postId, setPostId] = useState(-1);
     [name, setName] = useState('');
     [parentId, setParentId] = useState(0);
-    [sort, setSort] = useState(100);
     [attachments, setAttachments] = useState([]);
     const [parents, setParents] = useState([]);
     const [uploading, setUploading] = useState(false);
@@ -43,6 +42,8 @@ export default function PostEdit(props){
             setName = undefined;
             parentId = undefined;
             setParentId = undefined;
+            attachments = undefined;
+            setAttachments = undefined;
         }
     }, []);
     
@@ -53,7 +54,6 @@ export default function PostEdit(props){
             setPostId(res.id);
             setName(res.name);
             setParentId(res.pid);
-            setSort(res.sort);
             setAttachments(res.attachments);
             let interval = setInterval(() => {
                 if(editor.id){
@@ -80,7 +80,7 @@ export default function PostEdit(props){
         let pid = parentId;
         let content = editor.getMarkdown();
         let html = editor.getHTML();
-        let res = await axios.post('/post/'+postId, {name,content, html, pid, project_id, sort, attachments});
+        let res = await axios.post('/post/'+postId, {name,content, html, pid, project_id, attachments});
         setPostId(res.id);
         Tips('保存完成', 'success');
     }
@@ -151,16 +151,6 @@ export default function PostEdit(props){
                                     <span className={'ml-3'}>上级目录：</span>
                                 </OverlayTrigger>
                                 <PostCascader project_id={project_id} post_id={postId} parents={parents} onChange={(val) => setParentId(val)} />
-                                {/*<span className={'ml-3'}>排序：</span>
-                                <OverlayTrigger
-                                    placement="bottom"
-                                    delay={{ show: 500, hide: 0 }}
-                                    overlay={<Tooltip id={'tooltip-sort'}>
-                                        从小到大排序
-                                    </Tooltip>}
-                                >
-                                    <Form.Control className={'d-inline'} value={sort} onChange={(event) => setSort(event.target.value)} style={{width: '80px'}} />
-                                </OverlayTrigger>*/}
                             </Form.Group>
                         </Col>
                         <Col xs={3} className={'text-right'}>
