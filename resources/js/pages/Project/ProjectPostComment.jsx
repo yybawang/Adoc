@@ -67,10 +67,10 @@ export default function ProjectPostComment(props){
             <div className={'comment-textarea'}>
                 <Card>
                     <Card.Body className={'p-0'}>
-                        <Form.Control className={'border-0'} as={'textarea'} rows={5} value={content} onChange={(e) => setContent(e.target.value)} />
+                        <Form.Control className={'border-0'} as={'textarea'} rows={5} disabled={!user.value.id} placeholder={!user.value.id ? '请先登录，登录后才可进行评论' : '请勿发布不友善或者负能量的内容。与人为善，比聪明更重要！'} value={content} onChange={(e) => setContent(e.target.value)} />
                     </Card.Body>
                     <Card.Footer>
-                        <Button onClick={() => submit()} disabled={loading}>提交评论</Button>
+                        <Button onClick={() => submit()} disabled={!user.value.id || loading}>提交评论</Button>
                     </Card.Footer>
                 </Card>
             </div>
