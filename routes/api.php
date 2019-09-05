@@ -21,6 +21,7 @@ Route::namespace('Api')->group(function(){
     Route::get('/project/{id}/events', [IndexController::class, 'events']);
     Route::post('/project/{id}/search', [ProjectController::class, 'search']);
     Route::get('/post/{id}', [IndexController::class, 'post']);
+    Route::get('/post/{id}/comments', [IndexController::class, 'comments']);
     Route::post('/upload', [BaseController::class, 'upload']);
     Route::post('/upload_md', [IndexController::class, 'upload_md']);
     Route::get('/user', [UserController::class, 'user']);
@@ -65,8 +66,9 @@ Route::namespace('Api')->group(function(){
         Route::get('/post/{post}/history', [PostController::class, 'history'])->middleware('can:view,post');
         Route::delete('/post/{postHistory}/history', [PostController::class, 'history_delete'])->middleware('can:delete,postHistory');
         
-        Route::post('/like/{post}', [PostController::class, 'like']);
-        Route::post('/comment/{post}', [PostController::class, 'comment']);
-        Route::post('/comment/{postComment}/like', [PostController::class, 'comment_like']);
+        Route::post('/like/{post}', [PostController::class, 'like'])->middleware('can:view,post');
+        Route::post('/comment/{post}', [PostController::class, 'comment'])->middleware('can:view,post');
+        Route::post('/comment/{postComment}/like', [PostController::class, 'comment_like'])->middleware('can:view,postComment');
+        Route::delete('/comment/{postComment}', [PostController::class, 'comment_delete'])->middleware('can:view,postComment');
     });
 });

@@ -26,7 +26,7 @@ function Loading(close = false){
  */
 function Tips(message, type = 'info'){
     let options = {
-        position: 'top-right',
+        position: 'top-center',
     };
     switch (type) {
         case 'info':

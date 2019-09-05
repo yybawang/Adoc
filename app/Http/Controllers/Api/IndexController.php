@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Models\Post;
+use App\Models\PostComment;
 use App\Models\PostEvent;
 use App\Models\Project;
 use App\Models\ProjectPermission;
@@ -91,7 +92,7 @@ class IndexController extends BaseController
      * @return mixed
      */
     public function events(int $id){
-        $events = PostEvent::where(['project_id' => $id])->with(['user', 'post'])->latest()->limit(50)->get()->each->parse();
+        $events = PostEvent::where(['project_id' => $id])->with(['user', 'post'])->latest()->limit(100)->get()->each->parse();
         return $this->success($events);
     }
     
@@ -101,11 +102,21 @@ class IndexController extends BaseController
      * @return Post
      */
     public function post(int $id){
-        $Post = Post::active()->with(['attachments', 'comments', 'comments.likeEmojis', 'likes'])->where('id', $id)->firstOrFail();
+        $Post = Post::active()->with(['attachments', 'likesGroup'])->where('id', $id)->firstOrFail();
         $Post->comments->each->parent;
-        $Post->views += 1;
-        $Post->save();
+//        $Post->views += 1;
+//        $Post->save();
         return $this->success($Post);
+    }
+    
+    /**
+     * 评论列表
+     * @param int $id
+     * @return mixed
+     */
+    public function comments(int $id){
+        $Comments = PostComment::where('post_id', $id)->with(['user', 'likeEmojis'])->latest()->get();
+        return $this->success($Comments);
     }
     
     /**

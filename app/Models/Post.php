@@ -34,11 +34,15 @@ class Post extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments(){
-        return $this->hasMany(PostComment::class)->where('pid', 0)->latest()->limit(10);
+        return $this->hasMany(PostComment::class)->where('pid', 0)->latest();
     }
     
     public function likes(){
         return $this->hasMany(PostLike::class)->latest();
+    }
+    
+    public function likesGroup(){
+        return $this->hasMany(PostLike::class)->selectRaw('*, count(*) as count')->groupBy('code')->latest('count')->oldest();
     }
     
     public function getToggleAttribute(){

@@ -34,8 +34,6 @@ class PostEvent extends Model
         foreach($match[0] as $k => $m){
             $this->description = str_replace($m, $replaces[$match[1][$k]], $this->description);
         }
-//        dd($match);
-//        $this->description = preg_replace('/\{(\$.*?)\}/', '$replaces[\'$1\']', $this->description);
         return $this;
     }
 }

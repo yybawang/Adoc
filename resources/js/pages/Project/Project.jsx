@@ -41,7 +41,7 @@ export default function Project(props) {
                 <ListGroup>
                     <ListGroup.Item variant={'light'} className={'d-flex text-dark'}>
                         <ButtonGroup className={'h4 mr-auto text-truncate'}
-                                     title={project.value.name}>{project.value.name}</ButtonGroup>
+                                     title={project.value.name}><Link to={'/project/'+props.match.params.id}>{project.value.name}</Link></ButtonGroup>
                         {user.value.id > 0 &&
                         <DropdownButton variant={'link'} id={'manager'} title={'管理'}>
                             {project.value.write &&<Dropdown.Item onMouseEnter={() => setAddImage(AddWhiteSvg)} onMouseLeave={() => setAddImage(AddSvg)} onClick={() => props.history.push('/post/' + props.match.params.id + '/edit/0')}>

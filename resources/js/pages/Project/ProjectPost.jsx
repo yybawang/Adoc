@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react'
-import {Button, Col, Container, Dropdown, Modal, DropdownButton, Row} from "react-bootstrap";
+import {Button, Col, Container, Dropdown, Modal, DropdownButton, Row, OverlayTrigger, Popover} from "react-bootstrap";
 import axios from '../../configs/axios'
 import Editor from 'react-editor-md'
 import {useBoolean, useNumber, useObject} from "react-hooks-easy";
+import AddSvg from '../../../images/AddEmoji.svg';
+import EmojiSvg from '../../../images/emoji.svg';
 import history from "../../configs/history";
 import {Tips} from "../../configs/function";
+import ProjectPostComment from "./ProjectPostComment";
 
 export default function ProjectPost(props){
     const user = useObject('user');
@@ -14,12 +17,29 @@ export default function ProjectPost(props){
     const [confirm, setConfirm] = useState(false);
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState({attachments:[]});
+    const postLikeTipsDefault = '选择你的反应';
+    const [postLikeTips, setPostLikeTips] = useState(postLikeTipsDefault);
+    const [emoji, setEmoji] = useState('');
     const [config, setConfig] = useState({
         width: '100%',
         path: '/editor.md/lib/',
         imageUploadURL: '/api/upload_md',
         markdown: '',
     });
+    const postLikeEmojis = [
+        [
+            {code: 1, emoji:'👍', tips: '赞一个'},
+            {code: 2, emoji:'🙏', tips: '感谢'},
+            {code: 3, emoji:'😄', tips: '开心'},
+            {code: 4, emoji:'🎉', tips: '值得庆祝'},
+        ],
+        [
+            {code: 5, emoji:'😕', tips: '不太明白'},
+            {code: 6, emoji:'❤️', tips: '你是个好人'},
+            {code: 7, emoji:'🚀', tips: '动作神速'},
+            {code: 8, emoji: '👀', tips: '观察等待中'},
+        ],
+    ];
     
     useEffect(() => {
         postMenuActive.set(props.match.params.post_id);
@@ -46,11 +66,17 @@ export default function ProjectPost(props){
         props.history.replace('/project/'+props.match.params.id);
     }
     
+    async function like(code, emoji){
+        let res = await axios.post('/like/'+post.id, {code, emoji});
+        let post2 = Object.assign({}, post, {likes_group: res.likes_group});
+        setPost(post2);
+    }
+    
     return (
         <Container fluid className={'p-0'}>
-            <Row className={'border-bottom px-5'} style={{paddingTop: '0.77rem', paddingBottom: '0.77rem'}} noGutters>
+            <Row className={'border-bottom pl-5 pr-3'} style={{paddingTop: '0.77rem', paddingBottom: '0.77rem'}} noGutters>
                 <Col xs={10}>
-                    <h4>{post.name} {post.attachments.length > 0 && '📎'}</h4>
+                    <h4>{post.name} {post.attachments.length > 0 && <small title={'此文档包含可下载附件'}>📎</small>}</h4>
                 </Col>
                 <Col xs={2} className={'text-right'}>
                     {user.value.id > 0 && (
@@ -70,19 +96,76 @@ export default function ProjectPost(props){
                     )}
                 </Col>
             </Row>
-            <div className={'py-3 px-5 post-center'}>
+            <div>
                 {open &&
-                <Editor.EditorShow config={config}/>
+                <div className={'pt-2'}>
+                    <div className={'px-5 post-center'}>
+                        <Editor.EditorShow config={config}/>
+                    </div>
+                    {post.attachments.length > 0 &&
+                    <div>
+                        <div className={'py-3 px-5 post-center'}>
+                            <h5>📎 文档包含附件，点击预览/下载</h5>
+                            <ul>
+                                {post.attachments.map((attachment) => (
+                                    <li key={attachment.id} title={'点击预览/下载'}><a href={attachment.path} target={"_black"}>{attachment.path.split('/').pop()}</a></li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                    }
+                    <div className={'px-5 py-3 text-muted'}>
+                        👣<span className={'ml-1'}>最新修改于 {post.updated_at}</span>
+                    </div>
+                    <div className={'pr-3 border-top d-flex align-items-center justify-content-between'}>
+                        <div className={'flex-grow-1 overflow-hidden'}>
+                            <div className={'d-flex align-items-center'}>
+                                {post.likes_group && post.likes_group.map(val =>
+                                    <div key={val.id} className={'py-2 px-3 border-right'}>
+                                        <h4 className={'pr-1 mb-0 d-inline-block'}>{val.emoji}</h4>
+                                        <sup style={{fontSize: '13px'}}>{val.count}</sup>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div>
+                            <OverlayTrigger
+                                trigger="focus"
+                                placement="left"
+                                overlay={
+                                    <Popover id={'post-like'} title={postLikeTips}>
+                                        {postLikeEmojis.map((emojis, index) =>
+                                            <div key={index} className={'d-flex'}>
+                                                {emojis.map(val =>
+                                                    <h4 key={val.emoji} className={'px-2 like-emoji'}
+                                                        onMouseOver={() => setPostLikeTips(val.tips)}
+                                                        onMouseLeave={() => setPostLikeTips(postLikeTipsDefault)}
+                                                        onMouseDown={() => {
+                                                            setEmoji(val.emoji);
+                                                            setTimeout(() => setEmoji(''), 800);
+                                                            like(val.code, val.emoji)}}
+                                                    >
+                                                        {val.emoji}
+                                                    </h4>
+                                                )}
+                                            </div>
+                                        )}
+                                    </Popover>
+                                }
+                            >
+                                <div className={'position-relative'} style={{margin: '3px 0'}}>
+                                    <Button variant={"light"} className={'bg-white'}><img src={AddSvg} width={'12px'} /><img src={EmojiSvg} width={'18px'} /></Button>
+                                    <h4 className={'position-absolute' + (emoji ? ' like-animate' : '')}>{emoji}</h4>
+                                </div>
+                            </OverlayTrigger>
+                        </div>
+                    </div>
+                </div>
                 }
-                
-                {post.attachments.length > 0 && <div className={'mt-3 py-3 border-top'}>
-                    <h5>📎 文档包含附件，点击预览/下载</h5>
-                    <ul>
-                        {post.attachments.map((attachment) => (
-                            <li key={attachment.id} title={'点击预览/下载'}><a href={attachment.path} target={"_black"}>{attachment.path.split('/').pop()}</a></li>
-                        ))}
-                    </ul>
-                </div>}
+                <div className={'hr-gray'} />
+                <div className={'post-recommend px-5'}>
+                    <ProjectPostComment post_id={post.id} />
+                </div>
             </div>
             <Modal show={confirm} onHide={() => setConfirm(false)}>
                 <Modal.Header closeButton>

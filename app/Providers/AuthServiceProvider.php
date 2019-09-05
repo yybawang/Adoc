@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Post;
+use App\Models\PostComment;
 use App\Models\PostHistory;
 use App\Models\PostTemplate;
 use App\Models\Project;
 use App\Models\ProjectPermission;
+use App\Policies\PostCommentPolicy;
 use App\Policies\PostHistoryPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\PostTemplatePolicy;
@@ -28,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         PostTemplate::class => PostTemplatePolicy::class,
         Post::class => PostPolicy::class,
         PostHistory::class => PostHistoryPolicy::class,
+        PostComment::class => PostCommentPolicy::class,
     ];
 
     /**

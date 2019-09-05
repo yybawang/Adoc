@@ -21,7 +21,11 @@ class PostComment extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
      */
     public function likeEmojis(){
-        return $this->hasMany(PostCommentLike::class)->selectRaw("id, post_comment_id, emoji, count(*) as count")->groupBy('post_comment_id')->groupBy('emoji');
+        return $this->hasMany(PostCommentLike::class)->selectRaw("id, post_comment_id, code, emoji, count(*) as count")->groupBy('post_comment_id')->groupBy('code')->latest('count')->oldest();
+    }
+    
+    public function user(){
+        return $this->belongsTo(User::class);
     }
     
     /**

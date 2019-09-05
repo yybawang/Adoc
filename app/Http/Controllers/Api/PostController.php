@@ -64,15 +64,18 @@ class PostController extends BaseController
         $post['status'] = 1;
         $attachments = $post['attachments'] ?? [];
         unset($post['attachments']);
-        
+    
+        $content_old = Post::firstOrNew(['id' => $id], [
+            'content'   => '',
+        ]);
         $Post = Post::updateOrCreate(['id' => $id], $post);
     
         // 存入记录
-        if($post['content']){
+        if($post['content'] && $post['content'] != $content_old->content){
             PostHistory::create([
                 'user_id'   => Auth::id(),
                 'post_id'   => $Post->id,
-                'content'   => $post['content'],
+                'content'   => $content_old->content,
             ]);
         }
         
@@ -173,18 +176,22 @@ class PostController extends BaseController
      * @return mixed
      */
     public function like(Request $request, Post $post){
-        $request->validate([
+        $param = $request->validate([
+            'code' => 'required|integer',
             'emoji' => 'required',
         ]);
-        $PostLike = PostLike::create([
+        $PostLike = PostLike::updateOrCreate([
             'user_id'   => Auth::id(),
             'post_id'   => $post->id,
-            'emoji'     => $post['emoji'],
+            'code'      => $param['code'],
+        ], [
+            'emoji'     => $param['emoji'],
         ]);
         
         // 分发日志记录
         event(new PostLikeEvent($PostLike));
-        return $this->success($PostLike);
+        $post->likesGroup;
+        return $this->success($post);
     }
     
     /**
@@ -205,7 +212,8 @@ class PostController extends BaseController
         $param['post_id'] = $post->id;
         $param['user_id'] = Auth::id();
         $PostComment = PostComment::create($param);
-    
+        $PostComment->user;
+        $PostComment->likeEmojis;
         // 分发日志记录
         event(new PostCommentEvent($PostComment));
         return $this->success($PostComment);
@@ -226,6 +234,27 @@ class PostController extends BaseController
             'post_comment_id'=> $postComment->id,
             'emoji'         => $post['emoji'],
         ]);
+        return $this->success();
+    }
+    
+    /**
+     * 删除评论
+     *  3 天之内可以删除
+     * @param Request     $request
+     * @param PostComment $postComment
+     * @return mixed
+     * @throws \Exception
+     */
+    public function comment_delete(Request $request, PostComment $postComment){
+        if($postComment->user_id != Auth::id()){
+            exception('信息非本人所属');
+        }
+        $seconds = 86400 * 3;
+        $diff = now()->diffInSeconds($postComment->created_at);
+        if($diff > $seconds){
+            exception('已超时，仅可删除三天内评论');
+        }
+        $postComment->delete();
         return $this->success();
     }
 }
