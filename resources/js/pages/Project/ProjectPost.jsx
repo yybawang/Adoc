@@ -3,7 +3,7 @@ import {Button, Col, Container, Dropdown, Modal, DropdownButton, Row, OverlayTri
 import axios from '../../configs/axios'
 import Editor from 'react-editor-md'
 import {useBoolean, useNumber, useObject} from "react-hooks-easy";
-import AddSvg from '../../../images/AddEmoji.svg';
+import AddSvg from '../../../images/addEmoji.svg';
 import EmojiSvg from '../../../images/emoji.svg';
 import history from "../../configs/history";
 import {Tips} from "../../configs/function";
