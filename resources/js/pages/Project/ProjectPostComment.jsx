@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {Button, Card, Form} from "react-bootstrap";
+import {Button, Card, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
 import axios from '../../configs/axios'
 import {Tips} from "../../configs/function";
 import {useObject} from "react-hooks-easy";
@@ -49,7 +49,17 @@ export default function ProjectPostComment(props){
             {list.map((val, index) =>
                 <div key={val.id} className={'comment-list py-2'}>
                     <div className={'list-head'}>
-                        <strong title={val.user.email}>{val.user.name}</strong>
+                        <OverlayTrigger
+                            delay={500}
+                            placement={'right'}
+                            overlay={
+                                <Tooltip id={'comment-user-email'}>
+                                    {val.user.email}
+                                </Tooltip>
+                            }
+                        >
+                            <strong>{val.user.name}</strong>
+                        </OverlayTrigger>
                         <small className={'ml-2'}>{val.created_at}</small>
                         {user.value.id === val.user_id && new Date().getTime() - new Date(val.created_at).getTime() < 86400 * 3 &&
                         <small className={'ml-2 text-muted'}>
