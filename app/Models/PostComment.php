@@ -6,8 +6,12 @@
  */
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class PostComment extends Model
 {
+    use SoftDeletes;
+    
     /**
      * 点赞列表
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

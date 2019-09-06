@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\PostAttachment;
 use App\Models\PostComment;
 use App\Models\PostCommentLike;
+use App\Models\PostEvent;
 use App\Models\PostHistory;
 use App\Models\PostLike;
 use App\Models\Project;
@@ -77,19 +78,19 @@ class PostController extends BaseController
                 'post_id'   => $Post->id,
                 'content'   => $content_old->content,
             ]);
+    
+            // 分发日志记录
+            if($id > 0){
+                event(new PostUpdateEvent($Post));
+            }else{
+                event(new PostStoreEvent($Post));
+            }
         }
         
         // 不在post里面的，肯定是被点击删除了的
         PostAttachment::where(['post_id' => $Post->id])->whereNotIn('path', $attachments)->delete();
         foreach(array_reverse($attachments) as $attachment){
             PostAttachment::updateOrCreate(['post_id' => $Post->id, 'path' => $attachment]);
-        }
-        
-        // 分发日志记录
-        if($id > 0){
-            event(new PostUpdateEvent($Post));
-        }else{
-            event(new PostStoreEvent($Post));
         }
         
         return $this->success($Post);
@@ -189,7 +190,7 @@ class PostController extends BaseController
         ]);
         
         // 分发日志记录
-        event(new PostLikeEvent($PostLike));
+//        event(new PostLikeEvent($PostLike));
         $post->likesGroup;
         return $this->success($post);
     }
@@ -215,7 +216,7 @@ class PostController extends BaseController
         $PostComment->user;
         $PostComment->likeEmojis;
         // 分发日志记录
-        event(new PostCommentEvent($PostComment));
+//        event(new PostCommentEvent($PostComment));
         return $this->success($PostComment);
     }
     
@@ -254,6 +255,8 @@ class PostController extends BaseController
         if($diff > $seconds){
             exception('已超时，仅可删除三天内评论');
         }
+        // 删除 event
+        PostEvent::where(['post_id'=> $postComment->post_id, 'user_id'=> Auth::id(), 'created_at'=> $postComment->created_at])->delete();
         $postComment->delete();
         return $this->success();
     }
