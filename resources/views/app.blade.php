@@ -8,7 +8,7 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
     <link href="{{mix('css/app.css', '/dist')}}" rel="stylesheet" type="text/css">
     <link href="/editor.md/css/editormd.min.css" rel="stylesheet" type="text/css">
-    <title>{{config('app.name')}}</title>
+    <title>{{config('app.name')}} - 接口文档</title>
 </head>
 <body>
 <div id="app"></div>

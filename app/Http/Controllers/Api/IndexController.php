@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Post;
 use App\Models\PostComment;
 use App\Models\PostEvent;
+use App\Models\PostHistory;
 use App\Models\Project;
 use App\Models\ProjectPermission;
 use App\Models\ProjectTop;
@@ -102,10 +103,12 @@ class IndexController extends BaseController
      * @return Post
      */
     public function post(int $id){
-        $Post = Post::active()->with(['attachments', 'likesGroup'])->where('id', $id)->firstOrFail();
+        $Post = Post::active()->with(['attachments', 'likesGroup'])->withCount(['histories', 'comments'])->where('id', $id)->firstOrFail();
         $Post->comments->each->parent;
-//        $Post->views += 1;
-//        $Post->save();
+        // 不用更新 updated_at， 设置为 false
+        $Post->timestamps = false;
+        $Post->views += 1;
+        $Post->save();
         return $this->success($Post);
     }
     

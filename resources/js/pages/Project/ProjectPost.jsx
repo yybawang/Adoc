@@ -20,6 +20,8 @@ export default function ProjectPost(props){
     const postLikeTipsDefault = '选择你的反应';
     const [postLikeTips, setPostLikeTips] = useState(postLikeTipsDefault);
     const [emoji, setEmoji] = useState('');
+    const [apiMs, setApiMs] = useState(0.00);
+    const [mdMs, setMdMs] = useState(0.00);
     const [config, setConfig] = useState({
         width: '100%',
         path: '/editor.md/lib/',
@@ -48,7 +50,10 @@ export default function ProjectPost(props){
     
     async function init(){
         setOpen(false);
+        let time = new Date().getTime();
         let res = await axios.get('/post/'+props.match.params.post_id);
+        let time2 = new Date().getTime();
+        setApiMs(((time2 - time) / 1000).toFixed(2));
         setPost(res);
         setConfig(Object.assign({}, config, {markdown: res.content}));
         setOpen(true);
@@ -108,7 +113,7 @@ export default function ProjectPost(props){
                             <h5>📎 文档包含附件，点击预览/下载</h5>
                             <ul>
                                 {post.attachments.map((attachment) => (
-                                    <li key={attachment.id} title={'点击预览/下载'}><a href={attachment.path} target={"_black"}>{attachment.path.split('/').pop()}</a></li>
+                                    <li key={attachment.id}><a href={attachment.path} target={"_black"} title={'点击预览/下载'}>{attachment.path.split('/').pop()}</a></li>
                                 ))}
                             </ul>
                         </div>
@@ -165,6 +170,23 @@ export default function ProjectPost(props){
                 <div className={'hr-gray'} />
                 <div className={'post-recommend px-5'}>
                     <ProjectPostComment post_id={post.id} />
+                </div>
+                <div className={'post-footer px-5 py-3 bg-dark text-light'}>
+                    <div className={'d-flex justify-content-around py-3'}>
+                        <div>
+                            <h4 className={'mb-3'}>统计报告</h4>
+                            <p className={'text-muted'}>字符数：{post.content && post.content.length}</p>
+                            <p className={'text-muted'}>浏览量：{post.views}</p>
+                            <p className={'text-muted'}>附件数：{post.attachments && post.attachments.length}</p>
+                            <p className={'text-muted'}>历史记录：{post.histories_count}</p>
+                        </div>
+                        <div>
+                            <h4 className={'mb-3'}>　</h4>
+                            <p className={'text-muted'}>接口耗时: {apiMs}ms</p>
+                            <p><a className={'text-muted'} target={'_blank'} href={'https://github.com/yybawang/Adoc'}>github 开源项目</a></p>
+                            <p>🍻🍻</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <Modal show={confirm} onHide={() => setConfirm(false)}>
