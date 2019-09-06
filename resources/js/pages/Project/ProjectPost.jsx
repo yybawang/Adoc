@@ -21,7 +21,6 @@ export default function ProjectPost(props){
     const [postLikeTips, setPostLikeTips] = useState(postLikeTipsDefault);
     const [emoji, setEmoji] = useState('');
     const [apiMs, setApiMs] = useState(0.00);
-    const [mdMs, setMdMs] = useState(0.00);
     const [config, setConfig] = useState({
         width: '100%',
         path: '/editor.md/lib/',
