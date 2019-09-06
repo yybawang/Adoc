@@ -20,7 +20,7 @@ export default function ProjectPost(props){
     const postLikeTipsDefault = '选择你的反应';
     const [postLikeTips, setPostLikeTips] = useState(postLikeTipsDefault);
     const [emoji, setEmoji] = useState('');
-    const [apiMs, setApiMs] = useState(0.00);
+    const [apiSec, setApiSec] = useState(0.00);
     const [config, setConfig] = useState({
         width: '100%',
         path: '/editor.md/lib/',
@@ -52,7 +52,7 @@ export default function ProjectPost(props){
         let time = new Date().getTime();
         let res = await axios.get('/post/'+props.match.params.post_id);
         let time2 = new Date().getTime();
-        setApiMs(((time2 - time) / 1000).toFixed(2));
+        setApiSec(((time2 - time) / 1000).toFixed(2));
         setPost(res);
         setConfig(Object.assign({}, config, {markdown: res.content}));
         setOpen(true);
@@ -181,7 +181,7 @@ export default function ProjectPost(props){
                         </div>
                         <div>
                             <h4 className={'mb-3'}>　</h4>
-                            <p className={'text-muted'}>接口耗时: {apiMs}ms</p>
+                            <p className={'text-muted'}>接口耗时: {apiSec}s</p>
                             <p><a className={'text-muted'} target={'_blank'} href={'https://github.com/yybawang/Adoc'}>github 开源项目</a></p>
                             <p>🍻🍻</p>
                         </div>
