@@ -46,7 +46,7 @@ export default function ProjectMenu(props) {
         // 得到两个index，互换
         let pid = posts.slice(0, 1).shift().pid;
         let res = await axios.post('/post/' + props.project_id + '/sort', {pid, index_from: e.source.index, index_to: e.destination.index});
-        // it's hack 必须重新设置一次，不然拖动二级排序，之前的会还原
+        // This's hack 必须重新设置一次，不然拖动二级排序，之前的会还原
         setList(res);
     }
     
