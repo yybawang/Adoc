@@ -148,7 +148,7 @@ class ProjectController extends BaseController
      * @param Project $project
      * @return mixed
      */
-    public function destroy(Project $project){
+    public function delete(Project $project){
         $project->tags->each->delete();                                     // 删除tag
         $project->permissions->each->delete();                              // 删除权限配置
         $project->posts->each->attachments->each->delete();                 // 删除文档附件

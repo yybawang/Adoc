@@ -171,18 +171,18 @@ export default function ProjectPost(props){
                     <ProjectPostComment post_id={post.id} />
                 </div>
                 <div className={'post-footer px-5 py-3 bg-dark text-light'}>
-                    <div className={'d-flex justify-content-around py-3'}>
+                    <div className={'d-flex justify-content-around py-3 text-muted'}>
                         <div>
                             <h4 className={'mb-3'}>统计报告</h4>
-                            <p className={'text-muted'}>字符数：{post.content && post.content.length}</p>
-                            <p className={'text-muted'}>浏览量：{post.views}</p>
-                            <p className={'text-muted'}>附件数：{post.attachments && post.attachments.length}</p>
-                            <p className={'text-muted'}>历史记录：{post.histories_count}</p>
+                            <p>字符数：{post.content && post.content.length}</p>
+                            <p>浏览量：{post.views}</p>
+                            <p>附件数：{post.attachments && post.attachments.length}</p>
+                            <p>历史记录：{post.histories_count}</p>
                         </div>
                         <div>
                             <h4 className={'mb-3'}>　</h4>
-                            <p className={'text-muted'}>接口耗时: {apiSec}s</p>
-                            <p><a className={'text-muted'} target={'_blank'} href={'https://github.com/yybawang/Adoc'}>github 开源项目</a></p>
+                            <p>接口耗时: {apiSec}s</p>
+                            <p><a className={'text-muted'} title={'如果你喜欢，可以访问此链接自己尝试搭建一个'} target={'_blank'} href={'https://github.com/yybawang/Adoc'}>github 开源项目</a></p>
                             <p>🍻🍻</p>
                         </div>
                     </div>

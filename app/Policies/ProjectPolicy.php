@@ -34,29 +34,29 @@ class ProjectPolicy
     // 修改权限
     public function update(User $user, Project $project)
     {
-        return $this->authWrite($user->id, $project->id);
+        return $this->authWrite($user->id, $project);
     }
     
     // 转让所属人权限
     public function transfer(User $user, Project $project)
     {
-        return $this->authAdmin($user->id, $project->id);
+        return $this->authAdmin($user->id, $project);
     }
 
     // 删除项目
     public function delete(User $user, Project $project)
     {
-        return $this->authAdmin($user->id, $project->id);
+        return $this->authAdmin($user->id, $project);
     }
     
     // 配置权限
     public function permission(User $user, Project $project){
-        return $this->authAdmin($user->id, $project->id);
+        return $this->authAdmin($user->id, $project);
     }
     
     // 自定义模版
     public function template(User $user, Project $project){
-        return $this->authWrite($user->id, $project->id);
+        return $this->authWrite($user->id, $project);
     }
     
     
@@ -68,32 +68,30 @@ class ProjectPolicy
     /**
      * 读权限权限，基本权限
      * @param $user_id
-     * @param $project_id
+     * @param $Project
      * @return bool
      */
-    private function authRead($user_id, $project_id){
+    private function authRead($user_id, $Project){
         // 是否是所属人
-        $Project = Project::find($project_id);
         if($Project->type == 0 || $Project->user_id == $user_id){
             return true;
         }
-        $permission = ProjectPermission::where(['project_id' => $project_id, 'user_id' => $user_id])->first();
+        $permission = ProjectPermission::where(['project_id' => $Project->id, 'user_id' => $user_id])->first();
         return $permission ? true : false;
     }
     
     /**
      * 可写权限
      * @param $user_id
-     * @param $project_id
+     * @param $Project
      * @return bool
      */
-    private function authWrite($user_id, $project_id){
+    private function authWrite($user_id, $Project){
         // 是否是所属人
-        $Project = Project::find($project_id);
         if($Project->user_id == $user_id){
             return true;
         }
-        $permission = ProjectPermission::where(['project_id' => $project_id, 'user_id' => $user_id, 'write' => 1])->first();
+        $permission = ProjectPermission::where(['project_id' => $Project->id, 'user_id' => $user_id, 'write' => 1])->first();
         return $permission ? true : false;
     }
     
@@ -101,16 +99,15 @@ class ProjectPolicy
      * 管理员权限
      * 控制转让/删除
      * @param $user_id
-     * @param $project_id
+     * @param $Project
      * @return bool
      */
-    private function authAdmin($user_id, $project_id){
+    private function authAdmin($user_id, $Project){
         // 是否是所属人
-        $Project = Project::find($project_id);
         if($Project->user_id == $user_id){
             return true;
         }
-        $permission = ProjectPermission::where(['project_id' => $project_id, 'user_id' => $user_id, 'admin' => 1])->first();
+        $permission = ProjectPermission::where(['project_id' => $Project->id, 'user_id' => $user_id, 'admin' => 1])->first();
         return $permission ? true : false;
     }
 }
