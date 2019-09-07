@@ -32,6 +32,7 @@ export default function ProjectPostComment(props){
         setLoading(true);
         try {
             let res = await axios.post('/comment/'+props.post_id, {pid:0, content});
+            setContent('');
             Tips('评论成功', 'success');
             let list2 = Array.from(list);
             list2.unshift(res);
