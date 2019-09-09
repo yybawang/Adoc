@@ -22,7 +22,7 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project)
     {
-        return $this->authRead($user->id, $project->id);
+        return $this->authRead($user->id, $project);
     }
 
     // 创建新项目权限，任何人都可以创建
