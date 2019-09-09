@@ -49,7 +49,7 @@ Route::namespace('Api')->group(function(){
         Route::get('/project/{project}/permission', [ProjectController::class, 'permission'])->middleware('can:permission,project');
         Route::get('/project/{project}/permission/{keyword}', [ProjectController::class, 'permission_user'])->middleware('can:permission,project');
         Route::post('/project/{project}/permission', [ProjectController::class, 'permission_store'])->middleware('can:permission,project');
-        Route::delete('/project/{projectPermission}/permission', [ProjectController::class, 'permission_delete'])->middleware('can:permission,projectPermission');
+        Route::delete('/project/{projectPermission}/permission', [ProjectController::class, 'permission_delete'])->middleware('can:delete,projectPermission');
         
         Route::get('/project/{project}/template', [ProjectController::class, 'template'])->middleware('can:template,project');
         Route::post('/project/{project}/template', [ProjectController::class, 'template_store'])->middleware('can:template,project');

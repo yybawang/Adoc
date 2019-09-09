@@ -56,11 +56,12 @@ export default function PostHistory(props){
                                     <div className={'position-absolute'} style={{right:0, top:0}}>
                                         <Button className={'p-0 mr-2'} size={'sm'} variant={'link'} onClick={() => view(his)}>对比</Button>
                                         <OverlayTrigger trigger="focus" placement="left" overlay={
-                                            <Popover id="popover-basic" title="确认删除？此操作不可恢复">
-                                                <div className={'py-2'}>删除文档<strong>「{post.name}」</strong>的历史</div>
-                                                <ButtonGroup>
-                                                    <Button variant={'danger'} size={'sm'} onClick={() => del(his.id)}>删除</Button>
-                                                </ButtonGroup>
+                                            <Popover id="popover-basic">
+                                                <Popover.Title className={'py-2'}>确认删除？</Popover.Title>
+                                                <Popover.Content className={'mt-2'}>
+                                                    <p>删除文档<strong>「{post.name}」</strong>的历史</p>
+                                                    <Button variant={'danger'} size={'sm'} onMouseDown={() => del(his.id)}>删除</Button>
+                                                </Popover.Content>
                                             </Popover>
                                         }>
                                             <Button className={'p-0 text-danger'} size={'sm'} variant={'link'}>删除</Button>

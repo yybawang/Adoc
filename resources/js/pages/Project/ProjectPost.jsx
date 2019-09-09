@@ -137,7 +137,9 @@ export default function ProjectPost(props){
                                 trigger="focus"
                                 placement="left"
                                 overlay={
-                                    <Popover id={'post-like'} title={postLikeTips}>
+                                    <Popover id={'post-like'}>
+                                        <Popover.Title>{postLikeTips}</Popover.Title>
+                                        <Popover.Content className={'mt-2'}>
                                         {postLikeEmojis.map((emojis, index) =>
                                             <div key={index} className={'d-flex'}>
                                                 {emojis.map(val =>
@@ -154,6 +156,7 @@ export default function ProjectPost(props){
                                                 )}
                                             </div>
                                         )}
+                                        </Popover.Content>
                                     </Popover>
                                 }
                             >

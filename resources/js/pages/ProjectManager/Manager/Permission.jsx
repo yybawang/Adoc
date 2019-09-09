@@ -152,11 +152,14 @@ export default function Permission(props) {
                                 </td>
                                 <td>
                                     <OverlayTrigger trigger="focus" placement="left" overlay={
-                                        <Popover id="popover-basic" title="删除?">
-                                            <div className={'py-2'}>移除用户 <strong>{permission.user.name}</strong> 的权限</div>
+                                        <Popover id="popover-basic">
+                                            <Popover.Title>删除？</Popover.Title>
+                                            <Popover.Content className={'mt-2'}>
+                                            <p>移除用户 <strong>{permission.user.name}</strong> 的权限</p>
                                             <ButtonGroup>
-                                                <Button variant={'danger'} size={'sm'} onClick={() => del(permission.id)}>删除</Button>
+                                                <Button variant={'danger'} size={'sm'} onMouseDown={() => del(permission.id)}>删除</Button>
                                             </ButtonGroup>
+                                            </Popover.Content>
                                         </Popover>
                                     }>
                                         <Button size={'sm'} variant={'warning'}>删除</Button>
