@@ -75,6 +75,17 @@ $secondary: $gray-700;
     }
 }
 
+@keyframes fade-in {
+    0% {opacity: 0;}
+    30% {opacity: 0;}
+    100% {opacity: 1;}
+}
+@-webkit-keyframes fade-in {
+    0% {opacity: 0;}
+    30% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
 
 
 .project-add {
@@ -170,6 +181,11 @@ $secondary: $gray-700;
 
 .project-right {
     width: calc(100% - 300px);
+    #post-content.post-content {
+        animation: fade-in;
+        animation-duration: 0.5s;
+        -webkit-animation:fade-in 0.5s;
+    }
     .post-center {
         max-width:900px;
         margin:0 auto;
