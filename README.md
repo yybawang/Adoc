@@ -92,7 +92,6 @@ npm install && npm run prod
     * [x] 文档修改历史，对比、还原
     * [x] 文档模版
     * [x] markdown 编辑器图片上传，上传到 laravel 配置的 filesystem 配置中，默认 public
-    * [x] 编辑器快捷键支持， Ctrl/Cmd + s 保存(停留当前页)， Ctrl/Cmd + Shift + S 保存并返回
     * [ ] 文档编辑时可能已被修改过，提示合并
     * [x] 文档搜索，头部右上角，暂只支持搜索当前展示项目下文档
     * [x] 文档列表拖动排序
@@ -100,6 +99,11 @@ npm install && npm run prod
     * [x] JSON工具，json 转MD表格，json 美化
     * [x] 文档 github 风格选择 emoji 反应
     * [x] 文档评论，三天内可删除
+* [x] 编辑器快捷键优化
+    * [x] Ctrl/Cmd + s 保存(停留当前页)， Ctrl/Cmd + Shift + s 保存并返回到列表
+    * [x] Ctrl + d 插入当前时间
+    * [x] Cmd + d 复制当前行到下一行
+    
 
 
 ![示例](https://raw.githubusercontent.com/yybawang/images/master/adoc/Xnip2019-05-25_12-28-38.png)

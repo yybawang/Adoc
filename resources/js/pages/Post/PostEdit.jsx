@@ -189,14 +189,27 @@ export default function PostEdit(props){
                             imageUploadURL: '/api/upload_md',
                             editorTheme: 'default',
                             onload: (edit, func) => {
-                                // this.setState({editor});
+                                let duplicate = ()=>{
+                                    let cursor = edit.getCursor();  //  {line: 5, ch: 14}
+                                    edit.setSelection({line: cursor.line, ch: 0}, {line: cursor.line+1, ch: 0});
+                                    let line_data = edit.getSelection({line: cursor.line, ch: 0}, {line: cursor.line+1, ch: 0})
+                                    if(line_data.substr(-1, 1) !== '\n'){
+                                        line_data += '\n';
+                                    }
+                                    edit.replaceSelection(line_data+line_data);
+                                    edit.setCursor({...cursor, line: cursor.line+1});
+                                }
                                 edit.removeKeyMap({'Shift-Ctrl-S'(){}});
+                                edit.removeKeyMap({'Cmd-D'(){}});
                                 edit.addKeyMap({
                                     'Cmd-S'(){
                                         submit();
                                     },
                                     'Ctrl-S'(){
                                         submit();
+                                    },
+                                    'Cmd-D'(){
+                                        duplicate();
                                     },
                                     async 'Shift-Cmd-S'(){
                                         await submit();
