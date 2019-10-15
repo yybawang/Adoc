@@ -18,6 +18,9 @@ $secondary: $gray-700;
 @import "./nprogress.css";
 @import "~rc-cascader/assets/index.css";
 
+body {
+    min-width: 800px;
+}
 .rc-cascader-menus {
     border-radius: 0;
     z-index:20;
