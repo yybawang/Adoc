@@ -29,7 +29,7 @@ export default function Permission(props) {
     
     async function add() {
         if (!userId) {
-            Tips('未選擇用戶', 'warn');
+            Tips('未选择用户', 'warn');
             return false;
         }
         await axios.post('/project/' + props.match.params.id + '/permission', {user_id: userId, write: false, admin: false});

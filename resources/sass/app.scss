@@ -184,13 +184,20 @@ body {
 
 .project-right {
     width: calc(100% - 300px);
+    .post-delete {
+        color:#e50303;
+    }
+    .post-delete:hover, .post-delete:focus {
+        color:#FFFFFF;
+        background-color:#e50303;
+    }
     #post-content.post-content {
         animation: fade-in;
         animation-duration: 0.5s;
         -webkit-animation:fade-in 0.5s;
     }
     .post-center {
-        max-width:900px;
+        max-width:940px;
         margin:0 auto;
     }
     .like-animate {
@@ -199,6 +206,13 @@ body {
         opacity: 0;
         -webkit-animation: up 0.8s cubic-bezier(.2,0,.13,2);
         animation: up 0.8s cubic-bezier(.2,0,.13,2);
+    }
+    .post-comment {
+        max-width:900px;
+        margin:0 auto;
+        .title {
+            border-bottom: 4px solid #616161;
+        }
     }
 }
 #post-like {

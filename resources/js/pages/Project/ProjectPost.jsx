@@ -100,7 +100,7 @@ export default function ProjectPost(props) {
                                     onClick={() => history.push('/project/' + props.match.params.id + '/history/' + props.match.params.post_id)}>历史</Dropdown.Item>
                                 <Dropdown.Item onClick={() => exports()}>导出</Dropdown.Item>
                                 {project.value.write && <Dropdown.Divider/>}
-                                {project.value.write && <Dropdown.Item onClick={() => setConfirm(true)}>删除</Dropdown.Item>}
+                                {project.value.write && <Dropdown.Item className={'post-delete'} onClick={() => setConfirm(true)}>删除</Dropdown.Item>}
                                 
                                 {/*<Dropdown.Item onClick={() => {}}>分享</Dropdown.Item>*/}
                             </DropdownButton>
@@ -113,7 +113,7 @@ export default function ProjectPost(props) {
                 {open &&
                 <div>
                     <div className={'pt-2'}>
-                        <div className={'px-5 post-center'}>
+                        <div className={'post-center'}>
                             <Editor.EditorShow config={config}/>
                         </div>
                         {post.attachments.length > 0 &&

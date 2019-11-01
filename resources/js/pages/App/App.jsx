@@ -50,7 +50,7 @@ export default function App(props){
             <Router history={history}>
                 <Navbar bg={'light'} expand="md">
                     <Navbar.Brand>
-                        <a className={'text-dark text-decoration-none'} href={'/'}>Adoc</a>
+                        <Link className={'text-dark text-decoration-none'} to={'/projects'}>Adoc</Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
