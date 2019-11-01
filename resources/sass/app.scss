@@ -98,22 +98,22 @@ body {
 .project-card {
     a {
         color:black;
+        text-decoration: none;
         transition: all 0.3s ease-in-out;
-        .text-center {
-            transition: all 0.3s ease-in-out;
+        .project-name {
+            transition: all 0.20s ease-in-out;
         }
     }
     a:hover{
         opacity:1;
-        text-decoration: none;
         background-color: #efefef;
+        transition: all 0.3s ease-in-out;
         //-webkit-transform:translateY(-6px);
         //transform: translateY(-6px);
-        transition: all 0.3s ease-in-out;
-        .text-center {
-            transform:scale(1.05);
-            -webkit-transform:scale(1.05);
-            transition: all 0.3s ease-in-out;
+        .project-name {
+            transform:scale(1.07);
+            -webkit-transform:scale(1.07);
+            transition: all 0.20s ease-in-out;
         }
     }
 }
@@ -128,10 +128,10 @@ body {
     top:3px;
     display:none;
     cursor: pointer;
-    color:#CCC;
+    color: #dddddd;
 }
 .project-top:hover {
-    color: #111111;
+    color: #202020;
 }
 .project-share a {
     background-color: #fffded;

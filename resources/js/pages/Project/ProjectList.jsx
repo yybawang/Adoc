@@ -40,10 +40,11 @@ export default function ProjectList(props){
                 {list.map((project) =>
                     <Col md={3} sm={4} key={project.id} className={{'mt-4': true, 'project-card': true, 'project-share' : project.share}}>
                         <Card className={'shadow-sm position-relative'}>
-                            {user.value.id > 0 && <span className={'position-absolute project-top'} onClick={() => top(project.id)}>顶</span>}
+                            {user.value.id > 0 && <span className={'position-absolute project-top'} title={'排序置顶'} onClick={() => top(project.id)}>顶</span>}
                             <Link to={'/project/'+project.id} title={project.description}>
-                            <Card.Body>
-                                <div className={'my-3 text-center'}>{project.name}</div>
+                            <Card.Body className={'text-center'}>
+                                <div className={'my-1 project-name'}>{project.name}</div>
+                                <div className={'text-muted text-truncate'}><small>{project.description}</small></div>
                             </Card.Body>
                             </Link>
                         </Card>
@@ -52,8 +53,9 @@ export default function ProjectList(props){
                 {user.value.id > 0 &&<Col md={3} sm={4} className={{'mt-4': true, 'project-card': true}}>
                     <Card className={'shadow-sm'}>
                         <Link to={'/project_add'} title={'新建项目'}>
-                            <Card.Body style={{background: `url(${AddSvg}) no-repeat center center transparent`, backgroundSize: '20px 20px'}}>
-                                <div className={'my-3 text-center'}>　</div>
+                            <Card.Body className={'text-center'} style={{background: `url(${AddSvg}) no-repeat center center transparent`, backgroundSize: '20px 20px'}}>
+                                <div className={'my-1 text-center'}>　</div>
+                                <div className={'text-muted text-truncate'}><small>　</small></div>
                             </Card.Body>
                         </Link>
                     </Card>
