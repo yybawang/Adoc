@@ -45,7 +45,7 @@ export default function ProjectPostComment(props){
     }
     
     return (
-        <div className={'post-comment post-comment pt-3 pb-5'}>
+        <div className={'post-comment pt-3 pb-5'}>
             <Card>
                 <Card.Body>
                     <h4 className={'pb-3 pt-1 title'}>最新评论（{list.length}）</h4>
@@ -63,7 +63,7 @@ export default function ProjectPostComment(props){
                                 >
                                     <strong>{val.user.name}</strong>
                                 </OverlayTrigger>
-                                <small className={'ml-2'}>{val.created_at}</small>
+                                <small className={'ml-2 text-muted'}>{val.created_at}</small>
                                 {user.value.id === val.user_id && new Date().getTime() - new Date(val.created_at).getTime() < 86400 * 3 &&
                                 <small className={'ml-2 text-muted'}>
                                     <Link to={'#'} onClick={() => del(val.id, index)}>删除</Link>

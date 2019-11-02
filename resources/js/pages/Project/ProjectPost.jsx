@@ -129,7 +129,7 @@ export default function ProjectPost(props) {
                             </div>
                         </div>
                         }
-                        <div className={'px-5 py-3 text-muted'}>
+                        <div className={'px-3 py-3 text-muted'}>
                             👣<span className={'ml-1'}>最新修改于 {post.updated_at}</span>
                         </div>
                         <div className={'pr-3 border-top d-flex align-items-center justify-content-between'}>
@@ -182,7 +182,7 @@ export default function ProjectPost(props) {
                         </div>
                     </div>
                     <div className={'hr-gray'}/>
-                    <div className={'post-recommend px-5'}>
+                    <div className={'post-recommend px-3'}>
                         <ProjectPostComment post_id={post.id}/>
                     </div>
                     <div className={'post-footer px-5 py-3 bg-dark text-light'}>
