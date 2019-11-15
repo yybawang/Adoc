@@ -65,10 +65,16 @@ class PostController extends BaseController
         $post['status'] = 1;
         $attachments = $post['attachments'] ?? [];
         unset($post['attachments']);
-    
+        
         $post_old = Post::firstOrNew(['id' => $id], [
             'content'   => '',
+            'updated_at'=> '',
         ]);
+        // 如果被他们修改过，就不能保存了，需要提示备份后再修改
+        if($id > 0 && $post_old->updated_at && $post_old->updated_at != $request->input('updated_at')){
+            exception('文档被中途编辑过，为避免数据覆盖，请备份后再次打开编辑', 422);
+        }
+    
         $Post = Post::updateOrCreate(['id' => $id], $post);
     
         // 存入记录

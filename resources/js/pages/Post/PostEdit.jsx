@@ -15,7 +15,7 @@ import JSONParse from "./JSON/JSONParse";
 
 window.editormd.defaults.toolbarIconsClass['template'] = 'fa-circle';
 window.editormd.defaults.toolbarHandlers['template'] = () => {alert(1)};
-let postId, setPostId, name, setName, parentId, setParentId, attachments, setAttachments, editor = {};
+let postId, setPostId, name, setName, parentId, setParentId, attachments, setAttachments, updated_at, setUpdated_at, editor = {};
 export default function PostEdit(props){
     const project = useObject('project');
     const templateShow = useBoolean('postSavedTemplate', false);
@@ -27,6 +27,7 @@ export default function PostEdit(props){
     [name, setName] = useState('');
     [parentId, setParentId] = useState(0);
     [attachments, setAttachments] = useState([]);
+    [updated_at, setUpdated_at] = useState('');
     const [parents, setParents] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [uploadingProgress, setUploadingProgress] = useState(false);
@@ -54,6 +55,7 @@ export default function PostEdit(props){
             setPostId(res.id);
             setName(res.name);
             setParentId(res.pid);
+            setUpdated_at(res.updated_at);
             setAttachments(res.attachments);
             let interval = setInterval(() => {
                 if(editor.id){
@@ -80,7 +82,7 @@ export default function PostEdit(props){
         let pid = parentId;
         let content = editor.getMarkdown();
         let html = editor.getHTML();
-        let res = await axios.post('/post/'+postId, {name,content, html, pid, project_id, attachments});
+        let res = await axios.post('/post/'+postId, {name,content, html, pid, project_id, attachments, updated_at});
         setPostId(res.id);
         Tips('保存完成', 'success');
     }
