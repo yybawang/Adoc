@@ -66,17 +66,17 @@ class PostController extends BaseController
         $attachments = $post['attachments'] ?? [];
         unset($post['attachments']);
     
-        $content_old = Post::firstOrNew(['id' => $id], [
+        $post_old = Post::firstOrNew(['id' => $id], [
             'content'   => '',
         ]);
         $Post = Post::updateOrCreate(['id' => $id], $post);
     
         // 存入记录
-        if($post['content'] && $post['content'] != $content_old->content){
+        if($post['content'] && $post_old->content && $post['content'] != $post_old->content){
             PostHistory::create([
                 'user_id'   => Auth::id(),
                 'post_id'   => $Post->id,
-                'content'   => $content_old->content,
+                'content'   => $post_old->content,
             ]);
     
             // 分发日志记录

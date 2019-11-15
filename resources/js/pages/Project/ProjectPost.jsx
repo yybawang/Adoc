@@ -97,7 +97,7 @@ export default function ProjectPost(props) {
                                 {project.value.write && <Dropdown.Item
                                     onClick={() => history.push('/post/' + props.match.params.id + '/edit/0?from=' + props.match.params.post_id)}>复制</Dropdown.Item>}
                                 <Dropdown.Item
-                                    onClick={() => history.push('/project/' + props.match.params.id + '/history/' + props.match.params.post_id)}>历史</Dropdown.Item>
+                                    onClick={() => history.push('/project/' + props.match.params.id + '/history/' + props.match.params.post_id)}>历史({post.histories_count})</Dropdown.Item>
                                 <Dropdown.Item onClick={() => exports()}>导出</Dropdown.Item>
                                 {project.value.write && <Dropdown.Divider/>}
                                 {project.value.write && <Dropdown.Item className={'post-delete'} onClick={() => setConfirm(true)}>删除</Dropdown.Item>}

@@ -31,8 +31,6 @@
         "bootswatch": "^4.3.1",
         "cogo-toast": "^1.0.7",
         "collect.js": "^4.16.6",
-        "diff": "^4.0.1",
-        "diff2html": "^2.11.3",
         "history": "^4.9.0",
         "nprogress": "^0.2.0",
         "rc-cascader": "^0.17.5",
@@ -40,6 +38,7 @@
         "react-beautiful-dnd": "^11.0.5",
         "react-bootstrap": "1.0.0-beta.12",
         "react-code-diff": "^1.0.8",
+        "react-diff-viewer": "^2.0.5",
         "react-editor-md": "^1.0.10",
         "react-hooks-easy": "^1.0.11"
     }

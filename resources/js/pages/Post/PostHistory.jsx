@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import {useNumber} from "react-hooks-easy";
 import axios from "../../configs/axios";
 import {Button, ButtonGroup, Card, Form, Modal, OverlayTrigger, Popover} from "react-bootstrap";
-import CodeDiff from "./CodeDiff";
+import ReactDiffViewer from 'react-diff-viewer'
 import {Tips} from "../../configs/function";
 
 export default function PostHistory(props){
@@ -11,7 +11,7 @@ export default function PostHistory(props){
     const [post, setPost] = useState({});
     const [list, setList] = useState([]);
     const [show, setShow] = useState(false);
-    const [content, setContent] = useState('');
+    const [item, setItem] = useState({});
     
     useEffect(() => {
         postMenuActive.set(props.match.params.post_id);
@@ -30,7 +30,7 @@ export default function PostHistory(props){
     }
     
     function view(item){
-        setContent(item.content);
+        setItem(item);
         setShow(true);
     }
     
@@ -79,10 +79,17 @@ export default function PostHistory(props){
         
             <Modal show={show} scrollable={true} onHide={() => setShow(false)} dialogClassName="history-diff-modal" className={'modal-dialog-scrollable'} size={'lg'}>
                 <Modal.Header closeButton>
-                    <Modal.Title>历史记录(左)与当前(右)对比</Modal.Title>
+                    <Modal.Title>
+                        <small>{item.created_at} 的历史</small> VS <small>当前文档</small>
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <CodeDiff oldStr={content} newStr={post.content}/>
+                    <ReactDiffViewer
+                        oldValue={item.content}
+                        newValue={post.content}
+                        splitView={false}
+                        showDiffOnly={false}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShow(false)}>
