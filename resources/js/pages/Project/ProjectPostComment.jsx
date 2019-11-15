@@ -64,7 +64,7 @@ export default function ProjectPostComment(props){
                                     <strong>{val.user.name}</strong>
                                 </OverlayTrigger>
                                 <small className={'ml-2 text-muted'}>{val.created_at}</small>
-                                {user.value.id === val.user_id && new Date().getTime() - new Date(val.created_at).getTime() < 86400 * 3 &&
+                                {user.value.id === val.user_id && new Date().getTime() - new Date(val.created_at).getTime() < 86400000 * 3 &&
                                 <small className={'ml-2 text-muted'}>
                                     <Link to={'#'} onClick={() => del(val.id, index)}>删除</Link>
                                 </small>

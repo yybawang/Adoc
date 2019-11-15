@@ -260,14 +260,14 @@ class PostController extends BaseController
      */
     public function comment_delete(Request $request, PostComment $postComment){
         if($postComment->user_id != Auth::id()){
-            exception('信息非本人所属');
+            exception('非本人评论，信息错误');
         }
         $seconds = 86400 * 3;
         $diff = now()->diffInSeconds($postComment->created_at);
         if($diff > $seconds){
             exception('已超时，仅可删除三天内评论');
         }
-        // 删除 event
+        // 删除 event，暂时用时间查找
         PostEvent::where(['post_id'=> $postComment->post_id, 'user_id'=> Auth::id(), 'created_at'=> $postComment->created_at])->delete();
         $postComment->delete();
         return $this->success();
