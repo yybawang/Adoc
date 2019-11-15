@@ -22,6 +22,7 @@ class CreatePostCommentlikes extends Migration
             $table->increments('id');
             $table->integer('post_comment_id');
             $table->integer('user_id');
+            $table->integer('code');
             $table->char('emoji', 4);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();

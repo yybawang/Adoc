@@ -24,6 +24,7 @@ class CreatePostTemplates extends Migration
             $table->integer('project_id');
             $table->string('name', 200);
             $table->mediumtext('content');
+            $table->tinyInteger('global')->comment('是否全局共享模版');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
