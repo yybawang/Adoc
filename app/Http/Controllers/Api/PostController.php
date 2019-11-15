@@ -161,6 +161,18 @@ class PostController extends BaseController
     }
     
     /**
+     * 使用某一历史还原文档
+     * @param PostHistory $postHistory
+     * @return mixed
+     */
+    public function history_restore(PostHistory $postHistory){
+        Post::where(['id'=> $postHistory->post_id])->update([
+            'content'   => $postHistory->content,
+        ]);
+        return $this->success();
+    }
+    
+    /**
      * 删除历史
      * @param PostHistory $postHistory
      * @return mixed

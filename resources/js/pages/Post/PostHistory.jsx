@@ -34,6 +34,12 @@ export default function PostHistory(props){
         setShow(true);
     }
     
+    async function restore(id){
+        await axios.post('/post/'+id+'/restore');
+        Tips('文档还原完成', 'success');
+        props.history.push('/project/'+props.match.params.id+'/post/'+props.match.params.post_id);
+    }
+    
     async function del(id){
         await axios.delete('/post/'+id+'/history');
         Tips('删除完成', 'success');
@@ -56,7 +62,18 @@ export default function PostHistory(props){
                                     <div className={'position-absolute'} style={{right:0, top:0}}>
                                         <Button className={'p-0 mr-2'} size={'sm'} variant={'link'} onClick={() => view(his)}>对比</Button>
                                         <OverlayTrigger trigger="focus" placement="left" overlay={
-                                            <Popover id="popover-basic">
+                                            <Popover id="popover-restore">
+                                                <Popover.Title className={'py-2'}>再次确认</Popover.Title>
+                                                <Popover.Content className={'mt-2'}>
+                                                    <p>确定使用<strong>「{post.created_at}」</strong>的历史还原文档？</p>
+                                                    <Button variant={'primary'} size={'sm'} onMouseDown={() => restore(his.id)}>确定</Button>
+                                                </Popover.Content>
+                                            </Popover>
+                                        }>
+                                            <Button className={'p-0 mr-2'} size={'sm'} variant={'link'}>还原</Button>
+                                        </OverlayTrigger>
+                                        <OverlayTrigger trigger="focus" placement="left" overlay={
+                                            <Popover id="popover-delete">
                                                 <Popover.Title className={'py-2'}>确认删除？</Popover.Title>
                                                 <Popover.Content className={'mt-2'}>
                                                     <p>删除文档<strong>「{post.name}」</strong>的历史</p>

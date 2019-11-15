@@ -65,6 +65,7 @@ Route::namespace('Api')->group(function(){
         
         Route::get('/post/{post}/history', [PostController::class, 'history'])->middleware('can:view,post');
         Route::delete('/post/{postHistory}/history', [PostController::class, 'history_delete'])->middleware('can:delete,postHistory');
+        Route::post('/post/{postHistory}/restore', [PostController::class, 'history_restore'])->middleware('can:update,postHistory');
         
         Route::post('/like/{post}', [PostController::class, 'like'])->middleware('can:view,post');
         Route::post('/comment/{post}', [PostController::class, 'comment'])->middleware('can:view,post');

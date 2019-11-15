@@ -29,6 +29,10 @@ class PostHistoryPolicy
         return $this->authWrite($user->id, $project_id);
     }
     
+    public function update(User $user, PostHistory $postHistory){
+        $project_id = Post::where('id', $postHistory->post_id)->value('project_id');
+        return $this->authWrite($user->id, $project_id);
+    }
     
     
     
