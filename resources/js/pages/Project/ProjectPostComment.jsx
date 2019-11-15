@@ -46,7 +46,7 @@ export default function ProjectPostComment(props){
     
     return (
         <div className={'post-comment pt-3 pb-5'}>
-            <Card>
+            <Card className={'border-bottom-0'}>
                 <Card.Body>
                     <h4 className={'pb-3 pt-1 title'}>最新评论（{list.length}）</h4>
                     {list.map((val, index) =>
@@ -78,10 +78,18 @@ export default function ProjectPostComment(props){
                     )}
                 </Card.Body>
             </Card>
-            <div className={'mt-3 comment-textarea'}>
+            <div className={'comment-textarea'}>
                 <Card>
                     <Card.Body className={'p-0'}>
-                        <Form.Control className={'border-0'} as={'textarea'} rows={5} disabled={!user.value.id} placeholder={!user.value.id ? '请先登录，登录后才可进行评论' : '请勿发布不友善或者负能量的内容。与人为善，比聪明更重要！'} value={content} onChange={(e) => setContent(e.target.value)} />
+                        <Form.Control
+                            className={'border-0'}
+                            as={'textarea'}
+                            rows={5}
+                            disabled={!user.value.id}
+                            placeholder={!user.value.id ? '请先登录，登录后才可进行评论' : '请勿发布不友善或者负能量的内容。与人为善，比聪明更重要！'}
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                        />
                     </Card.Body>
                     <Card.Footer>
                         <Button onClick={() => submit()} disabled={!user.value.id || loading}>提交评论</Button>

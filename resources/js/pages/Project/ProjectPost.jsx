@@ -195,7 +195,7 @@ export default function ProjectPost(props) {
                                 <p>历史记录：{post.histories_count}</p>
                             </div>
                             <div>
-                                <h4 className={'mb-3'}></h4>
+                                <h4 className={'mb-3'}>　</h4>
                                 <p>接口耗时: {apiSec}s</p>
                                 <p><a className={'text-muted'} title={'如果你喜欢，可以访问此链接自己尝试搭建一个'} target={'_blank'} href={'//github.com/yybawang/Adoc'}>github
                                     开源项目</a></p>
