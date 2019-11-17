@@ -84,6 +84,7 @@ export default function PostEdit(props){
         let html = editor.getHTML();
         let res = await axios.post('/post/'+postId, {name,content, html, pid, project_id, attachments, updated_at});
         setPostId(res.id);
+        setUpdated_at(res.updated_at);
         Tips('保存完成', 'success');
     }
     
