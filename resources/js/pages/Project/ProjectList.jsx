@@ -12,21 +12,21 @@ import {useObject} from "react-hooks-easy";
 export default function ProjectList(props){
     const user = useObject('user');
     const [list, setList] = useState([]);
-    
+
     useEffect(() => {
         init();
     }, []);
-    
+
     async function init(){
         let res = await axios.get('/');
         setList(res);
     }
-    
+
     async function top(id){
         await axios.post('/top', {id});
         await init();
     }
-    
+
     return (
         <Container>
             {user.value.id ? '':  <Row className={'align-items-center mt-3' + (user.value.id ? ' d-none' : '')}>
@@ -44,7 +44,7 @@ export default function ProjectList(props){
                             <Link to={'/project/'+project.id} title={project.description}>
                             <Card.Body className={'text-center'}>
                                 <div className={'my-1 project-name'}>{project.name}</div>
-                                <div className={'text-muted text-truncate'}><small>{project.description}</small></div>
+                                <div className={'text-muted text-truncate'}><small>{project.description || '暂无描述'}</small></div>
                             </Card.Body>
                             </Link>
                         </Card>
