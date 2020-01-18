@@ -1,7 +1,7 @@
 import React from 'react'
 
 class PostTemplate {
-    
+
     static Api(){
         return `
 **简要描述：**
@@ -9,17 +9,17 @@ class PostTemplate {
 - 描述
 
 **请求URL：**
-- \` http://xx.com/api/ \`
+- \` BASE_URL/api/xx \`
 
 **请求方式：**
 - POST
 
 **参数：**
 
-| 参数名   |必选  | 类型   | 说明   | 默认 |
-|:----    |:---  |:----- |-----   | --- |
-|username |是    |string |用户名   |     |
-|password |是    |string | 密码    |     |
+| 参数名   |必选   | 类型   | 说明   | 默认   |
+|:----    |:---  |:----- |-----   | ---  |
+|id       |是    |int    | ID     |       |
+|password |是    |string | 密码    |      |
 |name     |否    |string | 姓名    | 空字符 |
 
  **返回示例**
@@ -42,10 +42,9 @@ class PostTemplate {
 
 |参数名 | 类型 | 说明   |
 |:----- |:-----  |-----  |
-| code | int | 全局错误码，0 成功，其他值都为失败  |
+| code    | int    | 全局错误码，0 成功，其他值都为失败  |
 | message | string | 成功/失败提示信息  |
-| data | array/object | 成功时返回的数据，根据每个接口不同，如果是失败，则只有默认值-->空数组  |
-| data.username | string  | 登录名 |
+| data    | array/object | 成功时返回的数据，根据每个接口不同，如果是失败，则只有默认值-->空数组  |
 
  **备注**
 
@@ -54,19 +53,22 @@ class PostTemplate {
 
 `;
     }
-    
+
     static Table(){
         return `
--  **数据源说明**
+** 数据源说明 **
 
-|字段        |类型        |空   |默认  |注释         |
-|:----      |:-------    |:--- |---   |------      |
-|uid        |int(10)     |否   |      |            |
-|username   |varchar(20) |否   |      |   用户名    |
-|password   |varchar(50) |否   |      |   密码      |
-|name       |varchar(15) |是   |      |   昵称      |
+|字段       |类型         |空   |默认   |注释         |
+|:----      |:-------    |:-- |---   |------      |
+|uid        |int         |否   |      |            |
+|username   |string      |否   |      |   用户名    |
+|password   |string      |否   |      |   密码      |
+|name       |string      |是   |      |   昵称      |
 |created_at | timestamp  |否   | null |   注册时间  |
-- 备注：无
+
+**备注**
+
+- 无
 
 
 `;
