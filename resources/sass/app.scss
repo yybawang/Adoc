@@ -8,8 +8,8 @@
 $purple: #2d2936;
 //$secondary: #4c4b4e;
 //$input-color: $purple;
-    
-    // Bootstrap
+
+// Bootstrap
 @import "~bootswatch/dist/pulse/variables";
 //$primary:       $gray-900;
 $secondary: $gray-700;
@@ -17,7 +17,9 @@ $secondary: $gray-700;
 @import "~bootswatch/dist/pulse/bootswatch";
 @import "./nprogress.css";
 @import "~rc-cascader/assets/index.css";
-
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin:0.3rem 0;
+}
 body {
     min-width: 800px;
 }

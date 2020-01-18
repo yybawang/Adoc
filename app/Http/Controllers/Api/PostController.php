@@ -16,6 +16,7 @@ use App\Models\PostHistory;
 use App\Models\PostLike;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -33,7 +34,7 @@ class PostController extends BaseController
         $post->parents = $post->parentsEach();
         return $this->success($post);
     }
-    
+
     /**
      * 查询所属父级菜单
      * @param  Project $project
@@ -45,7 +46,7 @@ class PostController extends BaseController
         $cascader = $Post->childrenEdit($project->id, 0, $id);
         return $this->success($cascader);
     }
-    
+
     /**
      * @param Request $request
      * @param int $id
@@ -55,17 +56,18 @@ class PostController extends BaseController
         $post = $request->validate([
             'pid'       => 'required',
             'project_id'=> 'required|integer|min:1',
-            'name'      => 'required',
+            'name'      => '',
             'attachments'=> 'array',
             'content'   => '',
             'html'      => '',
             'sort'      => '',
         ]);
+        $post['name'] = $post['name'] ?: now()->toDateString();
         $post['user_id'] = Auth::id();
         $post['status'] = 1;
         $attachments = $post['attachments'] ?? [];
         unset($post['attachments']);
-        
+
         $post_old = Post::firstOrNew(['id' => $id], [
             'content'   => '',
             'updated_at'=> '',
@@ -74,9 +76,9 @@ class PostController extends BaseController
         if($id > 0 && $post_old->updated_at && $post_old->content != $post['content'] && $post_old->updated_at != $request->input('updated_at')){
             exception('文档被中途编辑过，为避免数据覆盖，请备份后再次打开编辑', 422);
         }
-    
+
         $Post = Post::updateOrCreate(['id' => $id], $post);
-    
+
         // 存入记录
         if($post['content'] && $post_old->content && $post['content'] != $post_old->content){
             PostHistory::create([
@@ -84,7 +86,7 @@ class PostController extends BaseController
                 'post_id'   => $Post->id,
                 'content'   => $post_old->content,
             ]);
-    
+
             // 分发日志记录
             if($id > 0){
                 event(new PostUpdateEvent($Post));
@@ -92,16 +94,16 @@ class PostController extends BaseController
                 event(new PostStoreEvent($Post));
             }
         }
-        
+
         // 不在post里面的，肯定是被点击删除了的
         PostAttachment::where(['post_id' => $Post->id])->whereNotIn('path', $attachments)->delete();
         foreach(array_reverse($attachments) as $attachment){
             PostAttachment::updateOrCreate(['post_id' => $Post->id, 'path' => $attachment]);
         }
-        
+
         return $this->success($Post);
     }
-    
+
     /**
      * 导出单个文档为 Word
      * @param Post $post
@@ -114,7 +116,7 @@ class PostController extends BaseController
             'fileurl' => $url,
         ]);
     }
-    
+
     /**
      * 排序
      * @param Request $request
@@ -138,7 +140,7 @@ class PostController extends BaseController
         $posts = $Post->children($project->id, 0, 'id, pid, user_id, name');
         return $this->success($posts);
     }
-    
+
     /**
      * 删除文档
      * @param Post $post
@@ -155,7 +157,7 @@ class PostController extends BaseController
         $post->delete();
         return $this->success();
     }
-    
+
     /**
      * 修改历史
      * @param Post $post
@@ -165,7 +167,7 @@ class PostController extends BaseController
         $Histories = PostHistory::select('id', 'created_at', 'post_id', 'user_id', 'content')->with(['user'])->where(['post_id' => $post->id])->latest()->limit(50)->get();
         return $this->success($Histories);
     }
-    
+
     /**
      * 使用某一历史还原文档
      * @param PostHistory $postHistory
@@ -177,7 +179,7 @@ class PostController extends BaseController
         ]);
         return $this->success();
     }
-    
+
     /**
      * 删除历史
      * @param PostHistory $postHistory
@@ -187,7 +189,7 @@ class PostController extends BaseController
         $postHistory->delete();
         return $this->success();
     }
-    
+
     /**
      * 文档点赞
      * @param Request $request
@@ -206,13 +208,13 @@ class PostController extends BaseController
         ], [
             'emoji'     => $param['emoji'],
         ]);
-        
+
         // 分发日志记录
 //        event(new PostLikeEvent($PostLike));
         $post->likesGroup;
         return $this->success($post);
     }
-    
+
     /**
      * 提交评论
      * @param Request $request
@@ -237,7 +239,7 @@ class PostController extends BaseController
 //        event(new PostCommentEvent($PostComment));
         return $this->success($PostComment);
     }
-    
+
     /**
      * 文档评论点赞
      * @param Request $request
@@ -255,7 +257,7 @@ class PostController extends BaseController
         ]);
         return $this->success();
     }
-    
+
     /**
      * 删除评论
      *  3 天之内可以删除

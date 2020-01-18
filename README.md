@@ -99,6 +99,7 @@ npm install && npm run prod
     * [x] JSON工具，json 转MD表格，json 美化
     * [x] 文档 github 风格选择 emoji 反应
     * [x] 文档评论，三天内可删除
+    * [x] 新建文档如果未填写标题，默认为 Y-m-d，用于在线记事本使用
 * [x] 编辑器快捷键优化
     * [x] Ctrl/Cmd + s 保存(停留当前页)， Ctrl/Cmd + Shift + s 保存并返回到列表
     * [x] Ctrl + d 插入当前时间
