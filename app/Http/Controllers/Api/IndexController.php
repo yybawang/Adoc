@@ -45,10 +45,10 @@ class IndexController extends BaseController
             ->get()->each(function($v) use ($uid){
                 $v->share = $v->user_id == $uid ? false : true;
             });
-    
+
         return $this->success($list);
     }
-    
+
     /**
      * 项目基本信息
      * @param int $id
@@ -75,7 +75,7 @@ class IndexController extends BaseController
         }
         return $this->success($project);
     }
-    
+
     /**
      * 项目下文档递归结构
      * @param int $id
@@ -86,7 +86,7 @@ class IndexController extends BaseController
         $posts = $Post->children($id, 0, 'id, pid, user_id, name');
         return $this->success($posts);
     }
-    
+
     /**
      * 项目日志
      * @param int $id
@@ -96,7 +96,7 @@ class IndexController extends BaseController
         $events = PostEvent::where(['project_id' => $id])->with(['user', 'post'])->latest()->limit(100)->get()->each->parse();
         return $this->success($events);
     }
-    
+
     /**
      * 文档内容
      * @param int $id
@@ -111,17 +111,17 @@ class IndexController extends BaseController
         $Post->save();
         return $this->success($Post);
     }
-    
+
     /**
      * 评论列表
      * @param int $id
      * @return mixed
      */
     public function comments(int $id){
-        $Comments = PostComment::where('post_id', $id)->with(['user', 'likeEmojis'])->latest()->get();
+        $Comments = PostComment::where('post_id', $id)->with(['user', 'likeEmojis'])->latest()->paginate();
         return $this->success($Comments);
     }
-    
+
     /**
      * markdown 单独上传配置
      * @param Request $request
@@ -140,7 +140,7 @@ class IndexController extends BaseController
             'url'       => array_shift($files)
         ];
     }
-    
+
     /**
      * 首页自定义置顶，只影响当前登录用户
      *  每次都会更新 updated_at，使用此字段倒序

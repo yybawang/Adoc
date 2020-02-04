@@ -35,11 +35,11 @@ class UserController extends BaseController
             'api_token' => $token,
         ]);
     }
-    
+
     public function register(Request $request){
         $post = $request->validate([
             'email'     => 'required|email',
-            'name'      => 'required|min:3',
+            'name'      => 'required|min:1',
             'password'  => 'required|min:6',
         ]);
         $token = Str::random(60);
@@ -53,12 +53,12 @@ class UserController extends BaseController
             'api_token' => $token,
         ]);
     }
-    
+
     public function logout(){
         Auth::logout();
         return $this->success();
     }
-    
+
     /**
      * 获取登陆人基本信息
      * @param Request $request
@@ -68,7 +68,7 @@ class UserController extends BaseController
         $user = Auth::guard('api')->user() ?? [];
         return $this->success($user);
     }
-    
+
     /**
      * 验证登陆人的登陆密码
      * @param Request $request
@@ -83,7 +83,7 @@ class UserController extends BaseController
         }
         return $this->success();
     }
-    
+
     /**
      * 修改用户密码
      * @param Request $request

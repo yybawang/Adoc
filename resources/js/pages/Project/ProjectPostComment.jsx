@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {Button, Card, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Alert, Button, Card, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
 import axios from '../../configs/axios'
 import {Tips} from "../../configs/function";
 import {useObject} from "react-hooks-easy";
@@ -8,18 +8,24 @@ import {useObject} from "react-hooks-easy";
 export default function ProjectPostComment(props){
     const user = useObject('user');
     const [list, setList] = useState([]);
+    const [page, setPage] = useState(1);
     const [content, setContent] = useState('');
     const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(false);
 
     useEffect(() => {
         props.post_id && init();
-    }, [props.post_id]);
-    
+    }, [props.post_id, page]);
+
     async function init(){
-        let res = await axios.get('/post/'+props.post_id+'/comments');
-        setList(res);
+        let res = await axios.get('/post/'+props.post_id+'/comments', {params: {page}});
+        setList(list.concat(res.data));
+        setHasMore(res.data.length === res.per_page);
+        if(page > 1 && res.data.length <= 0){
+            Tips('没有更多数据');
+        }
     }
-    
+
     async function del(id, index){
         await axios.delete('/comment/'+id);
         let list2 = Array.from(list);
@@ -27,7 +33,7 @@ export default function ProjectPostComment(props){
         setList(list2);
         return false;
     }
-    
+
     async function submit(){
         setLoading(true);
         try {
@@ -38,12 +44,12 @@ export default function ProjectPostComment(props){
             list2.unshift(res);
             setList(list2);
         }catch (e) {
-        
+
         }
-        
+
         setLoading(false);
     }
-    
+
     return (
         <div className={'post-comment pt-3 pb-5'}>
             <Card className={'border-bottom-0'}>
@@ -76,6 +82,9 @@ export default function ProjectPostComment(props){
                             <div className={'list-foot' + (index < list.length-1 ? ' border-top' : '')} />
                         </div>
                     )}
+                    {hasMore && <div className={'py-2'}>
+                        <Button className={'w-100'} variant={'secondary'} onClick={()=> setPage(page+1)}>加载更多</Button>
+                    </div>}
                 </Card.Body>
             </Card>
             <div className={'comment-textarea'}>

@@ -32,7 +32,7 @@ export default function ProjectList(props){
             {user.value.id ? '':  <Row className={'align-items-center mt-3' + (user.value.id ? ' d-none' : '')}>
                 <Col>
                     <Alert variant={"primary"} className={'text-center'}>
-                        该页面为公共页面，可查看共享的文档，<Link to={'/login'}>登录</Link>后可查看用户所属文档
+                        该页面为公共页面，可查看共享的文档，<Link to={'/login'}>登录</Link> 后可查看用户所属文档
                     </Alert>
                 </Col>
             </Row>}
