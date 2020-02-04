@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Dotenv\Dotenv;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -66,23 +65,24 @@ class AppInstall extends Command
         }
         $envs = $this->readEnv();
 
-        $APP_NAME = $this->ask('输入项目名称：['.($envs['APP_NAME'] ?: 'Adoc').']', $envs['APP_NAME'] ?: 'Adoc');
+        $APP_NAME = $this->ask('输入项目名称', $envs['APP_NAME'] ?: 'Adoc');
         $envs['APP_NAME'] = $APP_NAME;
-        $APP_URL = $this->ask('输入项目地址：['.($envs['APP_URL'] ?: 'http://adoc.test').']', $envs['APP_URL'] ?: 'http://adoc.test');
+        $APP_URL = $this->ask('输入项目地址]', $envs['APP_URL'] ?: 'http://adoc.test');
         $envs['APP_URL'] = $APP_URL;
-        $DB_HOST = $this->ask('输入 MYSQL 连接地址：['.($envs['DB_HOST'] ?: '127.0.0.1').']', $envs['DB_HOST'] ?: '127.0.0.1');
+        $DB_HOST = $this->ask('输入 MYSQL 连接地址', $envs['DB_HOST'] ?: '127.0.0.1');
         $envs['DB_HOST'] = $DB_HOST;
-        $DB_PORT = $this->ask('输入 MYSQL 连接端口：['.($envs['DB_PORT'] ?: '3306').']', $envs['DB_PORT'] ?: '3306');
+        $DB_PORT = $this->ask('输入 MYSQL 连接端口', $envs['DB_PORT'] ?: '3306');
         $envs['DB_PORT'] = $DB_PORT;
-        $DB_USERNAME = $this->ask('输入 MYSQL 连接用户名：['.($envs['DB_USERNAME'] ?: 'root').']', $envs['DB_USERNAME'] ?: 'root');
+        $DB_USERNAME = $this->ask('输入 MYSQL 连接用户名', $envs['DB_USERNAME'] ?: 'root');
         $envs['DB_USERNAME'] = $DB_USERNAME;
-        $DB_PASSWORD = $this->secret('输入 MYSQL 连接密码：['.($envs['DB_PASSWORD'] ?: '').']', $envs['DB_PASSWORD'] ?: '');
+        // 使用显式密码，方便安装
+        $DB_PASSWORD = $this->ask('输入 MYSQL 连接密码', $envs['DB_PASSWORD'] ?: '');
         $envs['DB_PASSWORD'] = $DB_PASSWORD;
-        $REDIS_HOST = $this->ask('输入 REDIS 连接地址：['.($envs['REDIS_HOST'] ?: '127.0.0.1').']', $envs['REDIS_HOST'] ?: '127.0.0.1');
+        $REDIS_HOST = $this->ask('输入 REDIS 连接地址', $envs['REDIS_HOST'] ?: '127.0.0.1');
         $envs['REDIS_HOST'] = $REDIS_HOST;
-        $REDIS_PORT = $this->ask('输入 REDIS 连接端口：['.($envs['REDIS_PORT'] ?: '6379').']', $envs['REDIS_PORT'] ?: '6379');
+        $REDIS_PORT = $this->ask('输入 REDIS 连接端口', $envs['REDIS_PORT'] ?: '6379');
         $envs['REDIS_PORT'] = $REDIS_PORT;
-        $REDIS_PASSWORD = $this->ask('输入 REDIS 连接密码：['.($envs['REDIS_PASSWORD'] ?: 'null').']', $envs['REDIS_PASSWORD'] ?: 'null');
+        $REDIS_PASSWORD = $this->ask('输入 REDIS 连接密码', $envs['REDIS_PASSWORD'] ?: 'null');
         $envs['REDIS_PASSWORD'] = $REDIS_PASSWORD;
 
         $ok = $this->writeEnv($envs);
@@ -92,18 +92,28 @@ class AppInstall extends Command
         }else{
             $this->info('配置写入完成.');
         }
-        $Dotenv = Dotenv::create(base_path());
-        $Dotenv->load();
-        config(['database.connections.mysql.database'=> 'sys']);
+        // 底层 env 配置是静态数组，无法reload，所以动态写入mysql配置
+        config([
+            'database.connections.mysql.host'=> $DB_HOST,
+            'database.connections.mysql.port'=> $DB_PORT,
+            'database.connections.mysql.database'=> '',
+            'database.connections.mysql.username'=> $DB_USERNAME,
+            'database.connections.mysql.password'=> $DB_PASSWORD,
+        ]);
+        DB::statement('drop schema if exists adoc');
         $ok = DB::statement('CREATE SCHEMA `adoc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
         config(['database.connections.mysql.database'=> 'adoc']);
         if(!$ok){
             $this->error('创建数据库失败，请检查数据库配置');
             exit(1);
+        }else{
+            $this->info('创建数据库[adoc]完成');
         }
         $this->call('key:generate');
+        // 切换数据库之后要建立一个新的连接
+        DB::reconnect();
+        $this->call('migrate:fresh', ['--force'=> true]);
         $this->call('storage:link');
-        $this->call('migrate');
         file_put_contents($installed, now());
 
         $this->line('');
