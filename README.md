@@ -28,53 +28,20 @@ PHP 7.2 + Laravel 5.8 + React-Bootstrap
 ```bash
 git clone https://github.com/yybawang/Adoc.git
 cd Adoc
-cp .env.example .env
-
-// 编辑配置文件中的 APP_URL、数据库、redis连接
-vi .env
-```
-
-- 新建mysql/maraidb数据库，当然你可以选择其他数据库，运行迁移即可
-```sql 
-CREATE SCHEMA `adoc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; 
-```
-
-- Linux/Mac 下 Makefile 一步安装
-
-```
-make && make install
-
-// 访问 APP_URL 测试
-```
-
-- Windows 下手动步骤安装
-
-```
-// 下载包
 composer install
-
-// 生成key，数据库迁移等
-php artisan key:generate
-php artisan storage:link    // 导出下载时需要
-php artisan migrate
-
-// 下载 npm 包，进行前端编译
-npm install
-npm run prod
+php artisan app:install
 
 // 访问 APP_URL 测试
 ```
+
 
 #### 升级
 
 - 更新代码和数据库迁移
-- 更新前端
 
-```
+```bash
 git pull
 composer install
-php artisan migrage
-npm install && npm run prod
 ```
 
 * [x] 项目功能
