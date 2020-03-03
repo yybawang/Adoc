@@ -130,9 +130,10 @@ body {
     top:3px;
     display:none;
     cursor: pointer;
-    color: #dddddd;
+    opacity: 0;
 }
 .project-top:hover {
+    opacity: 1;
     color: #202020;
 }
 .project-share a {
