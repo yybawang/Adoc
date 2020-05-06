@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Storage;
 class Word {
     protected $html = '';
     protected $count = 1;
-    
+
     public function addPost($post){
         $html = <<<EOT
-<h1>{$this->count}、{$post->name}</h1>
+<h2>{$this->count}. {$post->name}</h2>
 {$post->html}
 EOT;
 
@@ -20,7 +20,7 @@ EOT;
         $this->count++;
         return $this;
     }
-    
+
     /**
      * 保存文件并返回 url
      * @param string $path
