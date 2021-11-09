@@ -18,10 +18,10 @@
 
 <!-- Page Wrapper -->
 <div id="page-wrapper">
-    
+
     <!-- Wrapper -->
     <div id="wrapper">
-        
+
         <!-- Panel (Banner) -->
 {{--        可以用它临时分享文档--}}
         <section class="panel banner right">
@@ -30,7 +30,7 @@
                 <p>一个<strong>轻松</strong>的 MARKDOWN 文档编辑器</p>
                 <p><strong>设计完整</strong>的 API 文档写作工作流</p>
                 <p>甚至可以把它当作在线的博客、记事本</p>
-                <p title="我们又见面了啊">💚️ Nice to meet you ...again :)</p>
+{{--                <p title="我们又见面了啊">💚️ Nice to meet you ...again :)</p>--}}
                 <ul class="actions">
                     <li><a href="#first" class="button primary color1 circle icon fa-angle-right">Next</a></li>
 {{--                    <li><a href="/project">项目列表</a></li>--}}
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Panel (Spotlight) -->
         <section class="panel spotlight medium right" id="first">
             <div class="content span-7">
@@ -54,13 +54,13 @@
                 <p>只采用了 Markdown 做为<strong>唯一</strong>的文档编辑格式，这样会更好的统一风格，它易于排版，易于学习</p>
                 <p>更重要的是它应该是你必备的<strong>专业技能</strong></p>
                 <p>可以在<a target="_blank" href="//github.com/riku/Markdown-Syntax-CN/blob/master/syntax.md">这里</a>查看 Markdown 语法教程</p>
-                <p>💛 Enjoy Writing ;)</p>
+{{--                <p>💛 Enjoy Writing ;)</p>--}}
             </div>
             <div class="image filtered tinted" data-position="top left">
                 <img src="{{asset('/images/pic02.jpg')}}" alt="" />
             </div>
         </section>
-        
+
         <!-- Panel -->
         <section class="panel color1">
             <div class="intro joined">
@@ -70,7 +70,7 @@
                 <div>React 16.8.6</div>
                 <div>Mysql 5.7+</div>
                 <div>Bootstrap v4</div>
-                <p>💙 Yes,  I do</p>
+{{--                <p>💙 Yes,  I do</p>--}}
             </div>
             <div class="inner">
                 <ul class="grid-icons three connected">
@@ -83,34 +83,33 @@
                 </ul>
             </div>
         </section>
-        
+
         <!-- Panel (Spotlight) -->
         <section class="panel spotlight large left">
             <div class="content span-5">
                 <h2 class="major">Adoc [/eɪ dɑːk/]</h2>
-                <p>就叫它 Adoc 吧，Just <strong>A</strong>nother markdown <strong>DOC</strong> editor</p>
+                <p>Just <strong>A</strong>nother markdown <strong>DOC</strong> editor</p>
                 <p>就是这么简单，就像一个短发女孩</p>
                 <p>这是一个免费开源的项目，代码已托管 <a target="_blank" href="//github.com/yybawang/Adoc">Github</a>，你可以随时查看它，并且可以 <a target="_blank" href="//github.com/yybawang/adoc">Star</a> 它</p>
-                <p>❤️ 希望它能帮到你什么，anything...</p>
+                <p>希望能提升你的工作幸福指数</p>
             </div>
             <div class="image filtered tinted" data-position="top right">
                 <img src="{{asset('/images/pic03.jpg')}}" alt="" />
             </div>
         </section>
-        
+
         <!-- Panel -->
         <section class="panel">
             <div class="intro color2">
                 <h2 class="major">Finally</h2>
-                <p>Try me</p>
-                <p>🍻🍻🍻🍻🍻 Cheers!</p>
-                <p>😘</p>
+                <p><a target="_blank" href="//github.com/yybawang/Adoc">Try me</a></p>
+                <p>🍻🍻</p>
             </div>
         </section>
-        
+
         <!-- Copyright -->
         <div class="copyright">&copy; 由 <a target="_blank" href="//github.com/yybawang">yybawang</a> 设计和编码 💜</div>
-    
+
     </div>
 
 </div>

@@ -42,6 +42,7 @@ php artisan app:install
 ```bash
 git pull
 composer install
+php artisan migrate
 ```
 
 * [x] 项目功能
